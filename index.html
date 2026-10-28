@@ -839,6 +839,8 @@ a.tel{color:#2b50c8;text-decoration:none;font-size:11.5px}
 .lmore{display:block;margin:10px auto}
 #login .hfoot{color:#aebbe6}
 .pdtb td.l{font-weight:700}
+.gt2 td.gc{padding:0;min-width:0;height:auto}.gt2 input{border:0;background:transparent;font:inherit;padding:4px 6px;min-width:96px;width:100%;box-sizing:border-box;outline:0;color:inherit}.gt2 input.b{font-weight:700}.gt2 input:focus{outline:2px solid var(--pri);outline-offset:-2px;background:#fff}.gt2 td.lk input{cursor:not-allowed;color:#4b5875}.gt2 tr.bad input{background:#fdeaf1}.gt2 tr.dirty input:not(:focus){background:#fffbe3}.gt2 button.rx{border:0;background:none;color:#b91c1c;cursor:pointer;font-size:13px;padding:2px 6px}.gt2 td.ix,.gt2 th.ix{position:static;left:auto;min-width:34px}.gt2 th.ix{position:sticky;top:0}
+.ok{color:#15803d;font-weight:700}.bad{color:#b91c1c;font-weight:700}
 header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media(max-width:640px){header h1{flex:1 1 auto;white-space:nowrap}header .u{order:9;flex:1 1 100%;text-align:center}}
 
@@ -870,7 +872,9 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
   </header>
   <nav>
     <button data-t="sum" id="tsum" class="on">Summary</button>
-    <button data-t="cmp" id="tcmp">Comparison</button>
+    <button data-t="data" id="tdata">Data Sheet</button>
+    <button data-t="drv" id="tdrv">Drivers</button>
+    <button data-t="adm" id="tadm">Admin</button>
   </nav></div>
   <main>
     <!-- SUMMARY -->
@@ -888,24 +892,88 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
       <div id="sout"></div>
     </section>
 
-    <!-- COMPARISON -->
-    <section id="t-cmp" class="hide">
-      <div class="card">
-        <div class="bar sbar">
-          <div><label>From</label><div class="dt"><input type="text" class="dtx" id="cf" inputmode="numeric" placeholder="DD.MM.YYYY"><span class="calw">&#128197;<input type="date" data-c="cf"></span></div></div>
-          <div><label>To</label><div class="dt"><input type="text" class="dtx" id="ct" inputmode="numeric" placeholder="DD.MM.YYYY"><span class="calw">&#128197;<input type="date" data-c="ct"></span></div></div>
-          <div class="cmw"><label>Compare</label><div class="seg" id="cmode"><button data-m="div" class="on">Division wise</button><button data-m="day">Day wise</button></div></div>
-          <div class="cdw"><label>Division</label><select id="cdiv"><option value="">All Divisions</option></select></div>
-          <button class="btn" id="cbtn">Compare</button><button class="btn sec" id="cxl">&#11015; Excel</button><button class="btn sec" id="cpr">Print</button>
+    <!-- DATA SHEET -->
+    <section id="t-data" class="hide">
+      <div class="card" id="dcard">
+        <div class="tools">
+          <div class="tg">
+            <button class="ib" id="dprev" title="Previous day">&#9664;</button>
+            <div class="dt"><input type="text" class="dtx" id="dd" inputmode="numeric" placeholder="DD.MM.YYYY"><span class="calw">&#128197;<input type="date" data-c="dd"></span></div>
+            <button class="ib" id="dnext" title="Next day">&#9654;</button>
+            <button class="btn sec sm" id="dtoday">Today</button>
+            <label class="chk"><input type="checkbox" id="dall"> All dates</label>
+          </div>
+          <div class="tg">
+            <select id="dws"><option value="">All workshops</option></select>
+            <input type="text" class="q" id="dq" placeholder="Search PR no, place, firm...">
+          </div>
+          <div class="tg r">
+            <button class="btn sec sm" id="dxl">&#11015; Excel</button><button class="btn sec sm" id="dpr">Print</button>
+            <button class="btn sec sm" id="dadd">+ Add PR</button><button class="btn sec sm" id="dpaste">Paste from Excel</button>
+            <button class="btn" id="dsave">Save</button>
+          </div>
         </div>
-        <details class="dtl"><summary>How it works</summary>PRs (by PR DATE) of the dates you choose are compared with the <b>same dates of the previous year</b>. By default this month is shown. <b>Inc/Dec %</b> = change against last year (green = fewer damages, red = more). Tap any number to see its records.</details>
+        <div class="muted" style="font-size:12px"><span id="dcnt"></span> &middot; <span id="dstat" class="muted"></span> <span id="dro" class="hide">&middot; View only: you cannot change data.</span></div>
+        <details class="dtl"><summary>How it works</summary>Pick the <b>PR date</b> to see that day's PRs (or tick <b>All dates</b> for the newest 6000). Type in any cell: the row is <b>saved automatically</b> a moment after you stop typing. A <b>new row</b> is saved by itself once Workshop, Division, Capacity, PR NO and PR DATE are filled (the Save button saves it at once). PR NO, PR DATE and Workshop are compulsory. <b>Workshop, Division, Substation, Feeder, Place, Capacity, Complain no, PR NO and PR DATE</b> of a saved PR are locked; to correct them delete the row and add it again. Choose the firm <b>DUPLICATE/WRONG PR</b> for a wrong or duplicate PR: its issue, replacement and return dates are cleared. <b>Paste from Excel</b> adds many PRs at once: a PR that already exists only gets its empty cells filled.</details>
       </div>
-      <div id="cmsg"></div>
-      <div id="cout"></div>
+      <div id="dmsg"></div>
+      <div class="gwrap"><table class="gt gt2" id="dt"></table></div>
+      <button class="btn sec lmore hide" id="dmore"></button>
+      <datalist id="wsdl"></datalist><datalist id="frdl"></datalist><datalist id="drdl"></datalist>
+    </section>
+
+    <!-- DRIVER MASTER -->
+    <section id="t-drv" class="hide">
+      <div class="card">
+        <div class="tools">
+          <div class="tg"><select id="vws"><option value="">All workshops</option></select><input type="text" class="q" id="vq" placeholder="Search firm, driver, mobile, vehicle..."></div>
+          <div class="tg r"><button class="btn sec sm" id="vxl">&#11015; Excel</button><button class="btn sec sm" id="vadd">+ Add driver</button></div>
+        </div>
+        <div class="muted" style="font-size:12px"><span id="vcnt"></span> <span id="vro" class="hide">&middot; View only: you cannot change the Driver Master.</span></div>
+        <details class="dtl"><summary>How it works</summary>Write each firm, its driver, mobile no., vehicle no. and GPS link once, workshop wise. In the <b>Data Sheet</b>, when you choose the firm / driver, the list comes from here and the driver's mobile no. is filled by itself. Every change is saved as soon as you leave the box. The entry <b>DUPLICATE/WRONG PR</b> (driver JE(D)) is a default entry of every workshop and cannot be changed.</details>
+      </div>
+      <div id="vmsg"></div>
+      <div class="gwrap"><table class="gt gt2" id="vt"></table></div>
+    </section>
+
+    <!-- ADMIN -->
+    <section id="t-adm" class="hide">
+      <div id="amsg"></div>
+      <div class="card acard"><h3>Workshops</h3>
+        <div class="muted" style="font-size:12px;margin-bottom:6px">Write the names of your own workshops here. Then give each user the workshops he works for.</div>
+        <div class="bar"><input type="text" id="wn" placeholder="New workshop name" style="max-width:240px"><span id="wdw" class="hide"><input type="text" id="wd" list="dvl" placeholder="Division name" style="max-width:240px"></span><button class="btn" id="wadd">Add workshop</button></div>
+        <div class="wrap"><table id="wlt"></table></div>
+      </div>
+      <div class="card acard"><h3>Create a new user</h3>
+        <div class="bar" style="align-items:flex-end">
+          <div><label>User ID</label><input type="text" id="nu" autocapitalize="off" spellcheck="false" placeholder="e.g. je.mau1"></div>
+          <div><label>Name</label><input type="text" id="nn" placeholder="Full name"></div>
+          <div id="nrw"><label>Role</label><select id="nrole"></select></div>
+          <div id="nvw" class="hide"><label>Division</label><input type="text" id="nv" list="dvl" placeholder="Division name"></div>
+          <div id="nacc"><label>Access</label><select id="ne"><option value="1">Can edit</option><option value="0">View only</option></select></div>
+        </div>
+        <div id="nsw"><div class="muted" style="font-size:12px;margin-top:8px">Workshop(s) of this user</div><div id="ns" class="wchk"></div></div>
+        <div id="ntw"><div class="muted" style="font-size:12px;margin-top:8px">Tabs this user can see (untick to hide; e.g. keep only Summary)</div><div id="ntabs" class="wchk"></div></div>
+        <div class="bar" style="margin-top:10px"><button class="btn" id="ncreate">Create user</button></div>
+        <datalist id="dvl"></datalist>
+      </div>
+      <div class="card acard"><h3>Users</h3>
+        <div class="bar"><input type="text" id="auq" placeholder="Search user..." style="max-width:260px"></div>
+        <div class="wrap"><table id="aut"></table></div>
+      </div>
     </section>
   </main>
 </div>
 <div id="pz"></div>
+
+<!-- PASTE FROM EXCEL -->
+<div id="xov" class="ov hide" style="z-index:70"><div class="md">
+  <div class="bar" style="justify-content:space-between;align-items:center"><h2 style="margin:0">Paste from Excel</h2><button class="btn sec" id="xclose">Close &#10005;</button></div>
+  <div class="muted" style="font-size:12px;margin:6px 0">Copy the rows in Excel (with the heading row, or without it in the same column order as the Data Sheet) and paste them here. Columns are found by their heading names. Dates: DD.MM.YYYY.</div>
+  <textarea id="xta" rows="12" style="width:100%;font:12px ui-monospace,Consolas,monospace" placeholder="Paste here (Ctrl+V)"></textarea>
+  <div id="xmsg"></div>
+  <div class="bar" style="margin-top:8px"><button class="btn" id="xgo">Save these rows</button></div>
+</div></div>
 
 <!-- LIST MODAL -->
 <div id="lov" class="ov hide"><div class="md">
@@ -916,6 +984,26 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
   <div id="lmsg2"></div>
   <div class="wrap"><table id="lt"></table></div>
   <button class="btn sec lmore hide" id="lmore"></button>
+</div></div>
+
+<!-- TEMP PASSWORD -->
+<div id="tpov" class="ov hide" style="z-index:90"><div class="md s">
+  <h2 id="tptitle"></h2>
+  <div class="f"><label>User ID</label><div id="tpid" style="font-weight:700"></div></div>
+  <div class="f"><label>Temporary password</label><div id="tppw" style="font:700 20px ui-monospace,Consolas,monospace;user-select:all"></div></div>
+  <div class="muted" style="font-size:12px">Give this to the user now. It is shown only once. He must set his own password at the first login.</div>
+  <div class="bar"><button class="btn" id="tpclose">Done</button></div>
+</div></div>
+
+<!-- EDIT USER -->
+<div id="ueov" class="ov hide" style="z-index:85"><div class="md s">
+  <h2 id="uetitle"></h2>
+  <div class="f"><label>Name</label><input type="text" id="uen"></div>
+  <div id="uesw" class="f"><label>Workshop(s)</label><div id="ues" class="wchk"></div></div>
+  <div class="f"><label>Access</label><select id="uee"><option value="1">Can edit</option><option value="0">View only</option></select></div>
+  <div class="f"><label>Tabs</label><div id="uet" class="wchk"></div></div>
+  <div id="uemsg"></div>
+  <div class="bar"><button class="btn" id="uesave">Save</button><button class="btn sec" id="uecancel">Cancel</button></div>
 </div></div>
 
 <!-- PASSWORD MODAL -->
@@ -1036,11 +1124,9 @@ function printHtml(title, inner) {
 }
 window.addEventListener('afterprint', cleanPrint);
 
-var CMODE = 'div', CRES = null;
-var CCAPS = [10, 16, 25, 63, 100, 160, 250, 400, 630, 1000];
 
 /* =====================  TF-Tracker (Supabase)  =====================
- * Summary + Comparison only. Data comes from the database through the functions summary_json / compare2_json / list_json.
+ * Summary, Data Sheet, Drivers and Admin. Data comes from the database through the functions summary_json / compare2_json / list_json.
  * ================================================================= */
 var $ = function (id) { return document.getElementById(id); };
 var SB = null, ME = null, WSL = [], DIVLIST = [], SUM = null, LIST = null, LSPEC = null, LROWS = [], LVIS = [];
@@ -1097,17 +1183,20 @@ function showLogin(note) {
 function showApp() { document.body.classList.remove('on-home'); $('login').classList.add('hide'); $('app').classList.remove('hide'); }
 var ROLE = { creator: 'App Creator', discom: 'DISCOM head', admin: 'Admin', je: 'User' };
 function enter(user) {
-  return SB.from('profiles').select('login_id,display,role,org_division,scope,can_edit,active,must_change').eq('user_id', user.id).maybeSingle().then(function (r) {
+  return SB.from('profiles').select('login_id,display,role,org_division,scope,can_edit,active,must_change,tabs').eq('user_id', user.id).maybeSingle().then(function (r) {
     var p = r.data;
     if (r.error || !p || !p.active) { return SB.auth.signOut().then(function () { showLogin(r.error ? friendly(r.error) : 'This ID is not active. Please contact your Admin.'); }); }
-    ME = { id: user.id, login: p.login_id, name: p.display || p.login_id, role: p.role, div: p.org_division, scope: p.scope || [], edit: !!p.can_edit, must: !!p.must_change };
-    return SB.from('workshops').select('name').order('name').then(function (w) {
+    ME = { id: user.id, login: p.login_id, name: p.display || p.login_id, role: p.role, div: p.org_division, scope: p.scope || [], edit: !!p.can_edit, must: !!p.must_change, tabs: p.tabs || null };
+    return SB.from('workshops').select('name,org_division').order('name').then(function (w) {
+      WSDIV = {}; (w.data || []).forEach(function (x) { WSDIV[x.name] = x.org_division; });
       WSL = (w.data || []).map(function (x) { return x.name; });
       if (ME.role === 'je' && ME.scope.length) WSL = WSL.filter(function (x) { return ME.scope.indexOf(x) >= 0; });
       $('who').textContent = ME.name + ' · ' + (ROLE[ME.role] || ME.role) + (ME.div ? ' · ' + ME.div : '');
-      showApp(); initDates(); showTab('sum');
+      showApp(); initDates(); DROWS = []; $('dt').innerHTML = ''; fillWs(); DRV = []; drvLoad(true);
+      var ok = allowedTabs(); document.querySelectorAll('nav button').forEach(function (b) { b.classList.toggle('hide', ok.indexOf(b.dataset.t) < 0); });
+      var first = ok[0] || 'sum'; showTab(first);
       if (ME.must) openPw(true);
-      loadSummary();
+      if (first === 'sum') loadSummary(); else if (first === 'adm') admLoad(); else if (first === 'drv') drvLoad(); else loadData();
     });
   });
 }
@@ -1126,6 +1215,7 @@ function doLogout(expired) {
 }
 $('bout').onclick = function () { doLogout(false); };
 
+function fillWs() { $('dws').innerHTML = '<option value="">All workshops</option>' + WSL.map(function (w) { return '<option>' + esc(w) + '</option>'; }).join(''); $('wsdl').innerHTML = WSL.map(function (w) { return '<option value="' + esc(w) + '">'; }).join(''); }
 /* ---------- password ---------- */
 var PWFORCE = false;
 function openPw(force) { PWFORCE = !!force; $('pw0').value = $('pw1').value = $('pw2').value = ''; msg('pwmsg', force ? 'Please create a new password before you continue.' : '', 'info'); $('pcancel').classList.toggle('hide', !!force); $('pov').classList.remove('hide'); }
@@ -1173,19 +1263,25 @@ document.addEventListener('change', function (e) {
 // by default: this month (1st of the month .. today)
 function initDates() {
   var t = new Date(), td = fmt(t), f = '01.' + p2(t.getMonth() + 1) + '.' + t.getFullYear();
-  $('sd').value = td; $('sf').value = f; $('st').value = td; $('cf').value = f; $('ct').value = td;
-  CMODE = 'div'; Array.prototype.forEach.call($('cmode').children, function (x) { x.classList.toggle('on', x.dataset.m === 'div'); });
+  $('sd').value = td; $('sf').value = f; $('st').value = td; $('dd').value = td; $('dall').checked = false;
 }
 
 /* ---------- tabs ---------- */
 var CURTAB = 'sum', SSEQ = 0;
+var WSDIV = {}, DRV = [];
+function allowedTabs() {
+  var base = { creator: ['sum', 'adm'], discom: ['sum'], admin: ['sum', 'data', 'drv', 'adm'], je: ['sum', 'data', 'drv'] }[ME.role] || ['sum'];
+  if (ME.tabs && ME.role === 'je') base = base.filter(function (t) { return ME.tabs.indexOf(t) >= 0; });
+  else if (ME.tabs && ME.role !== 'je') base = base.filter(function (t) { return t === 'adm' || ME.tabs.indexOf(t) >= 0; });
+  return base.length ? base : ['sum'];
+}
 function showTab(t) {
   CURTAB = t;
   document.querySelectorAll('nav button').forEach(function (x) { x.classList.toggle('on', x.dataset.t === t); });
-  ['sum', 'cmp'].forEach(function (k) { $('t-' + k).classList.toggle('hide', k !== t); });
+  ['sum', 'data', 'drv', 'adm'].forEach(function (k) { $('t-' + k).classList.toggle('hide', k !== t); });
 }
 document.querySelectorAll('nav button').forEach(function (b) {
-  b.onclick = function () { var t = b.dataset.t; showTab(t); if (t === 'sum') loadSummary(); else loadCompare(); };
+  b.onclick = function () { var t = b.dataset.t; showTab(t); if (t === 'sum') loadSummary(); else if (t === 'adm') admLoad(); else if (t === 'drv') drvLoad(); else if (!dirtyN()) loadData(); };
 });
 
 /* =====================  SUMMARY  ===================== */
@@ -1237,7 +1333,7 @@ function buildSummary(raw, p) {
     age: WS.map(function (w) { return { ws: w, v: AGE[w] }; })
   };
 }
-var SKEY = '', CKEY = '';
+var SKEY = '';
 function loadSummary(force) {
   var p = { date: $('sd').value.trim(), from: $('sf').value.trim(), to: $('st').value.trim() };
   if (!validD(p.date) || !validD(p.from) || !validD(p.to)) { msg('smsg', 'Enter all three dates in DD.MM.YYYY format.', 'err'); return Promise.resolve(); }
@@ -1357,183 +1453,6 @@ $('spr').onclick = function () {
   printHtml('Transformer Summary - ' + SUM.date + '  (From ' + SUM.from + ' to ' + SUM.to + ')', '<div class="ps soutp noanim">' + $('sout').innerHTML + '</div>');
 };
 
-/* =====================  COMPARISON  ===================== */
-function cget_(m, k) { return m && m[k] ? m[k] : 0; }
-function csum(m, f) { var t = 0; for (var k in m) if (f(+k)) t += m[k]; return t; }
-function cvals(m) {                       // 10,16,25,63,<100, 100..1000, >=100, total
-  var lo = csum(m, function (k) { return k > 0 && k < 100; }), hi = csum(m, function (k) { return k >= 100; }), all = csum(m, function () { return true; });
-  return CCAPS.slice(0, 4).map(function (c) { return cget_(m, c); }).concat([lo], CCAPS.slice(4).map(function (c) { return cget_(m, c); }), [hi, all]);
-}
-function ipct(cur, prv) {
-  if (!prv && !cur) return '<td class="ic">-</td>';
-  if (!prv) return '<td class="ic up">NEW</td>';
-  var r = Math.round((cur - prv) * 1000 / prv) / 10;
-  if (r === 0) return '<td class="ic">0.0%</td>';
-  return '<td class="ic ' + (r > 0 ? 'up' : 'dn') + '"><i>' + (r > 0 ? '▲' : '▼') + '</i>' + (r > 0 ? '+' : '') + r.toFixed(1) + '%</td>';
-}
-function cspec(r, per, cps, title) {
-  var R = CRES, f = per === 'p' ? (r.pfrom || R.pfrom) : (r.from || R.from), t = per === 'p' ? (r.pto || R.pto) : (r.to || R.to);
-  var sp = { date: t, from: f, to: t, metric: 6, t: title };
-  if (r.divs) sp.divs = r.divs; else if (R.div) sp.divs = [R.div];
-  if (r.subs) sp.subs = r.subs;
-  if (r.ws) sp.ws = r.ws;
-  if (cps) sp.caps = cps;
-  return sp;
-}
-function cn(v, r, per, idx, caps) {                   // clickable number
-  if (!v) return '<td class="z' + (idx === 4 || idx === 11 || idx === 12 ? ' sub' : '') + '">0</td>';
-  var lo = caps.filter(function (c) { return c > 0 && c < 100; }), hi = caps.filter(function (c) { return c >= 100; });
-  var cps = idx < 4 ? [CCAPS[idx]] : idx === 4 ? lo : idx < 11 ? [CCAPS[idx - 1]] : idx === 11 ? hi : null;
-  var nm = idx < 4 ? CCAPS[idx] + ' KVA' : idx === 4 ? 'below 100 KVA' : idx < 11 ? CCAPS[idx - 1] + ' KVA' : idx === 11 ? '100 KVA and above' : 'all capacities';
-  var ttl = 'PR ' + (per === 'p' ? 'previous year' : 'this year') + ' - ' + (r.label || 'TOTAL') + ' - ' + nm + ' (' + (per === 'p' ? (r.pfrom || CRES.pfrom) + ' to ' + (r.pto || CRES.pto) : (r.from || CRES.from) + ' to ' + (r.to || CRES.to)) + ')';
-  return '<td' + (idx === 4 || idx === 11 || idx === 12 ? ' class="sub"' : '') + '><a class="n" data-s=\'' + esc(JSON.stringify(cspec(r, per, cps, ttl))).replace(/'/g, '&#39;') + '\'>' + v + '</a></td>';
-}
-function renderCompare(R, quiet) {
-  if (R.divs) return renderDayDH(R, quiet);
-  if (R.mode === 'day') return renderDay(R, quiet);
-  CRES = R; var mode = R.mode, day = mode === 'day', sb = mode === 'sub';
-  var caps = {}; R.rows.concat([R.total]).forEach(function (r) { for (var k in r.c) caps[k] = 1; for (var k2 in r.p) caps[k2] = 1; });
-  var capL = Object.keys(caps).map(Number);
-  var tp = cvals(R.total.p), tc = cvals(R.total.c);
-  function chg(a, b) { if (!b) return a ? 'NEW' : '0%'; var v = Math.round((a - b) * 1000 / b) / 10; return (v > 0 ? '+' : '') + v.toFixed(1) + '%'; }
-  function kp(cls, lab, a, b) { var d = a - b; return '<div class="cks ' + cls + (d === 0 ? '' : d > 0 ? ' up' : ' dn') + '"><span>' + lab + '</span><b>' + (d === 0 ? '' : d > 0 ? '▲ ' : '▼ ') + chg(a, b) + '</b><em>' + (d > 0 ? '+' : '') + d + '</em></div>'; }
-  var h = '<div class="cks-row">' +
-    '<div class="cks c0"><span>PREVIOUS YEAR TOTAL</span><b>' + tp[12] + '</b><em>' + esc(R.pfrom) + ' to ' + esc(R.pto) + '</em></div>' +
-    '<div class="cks c1"><span>THIS YEAR TOTAL</span><b>' + tc[12] + '</b><em>' + esc(R.from) + ' to ' + esc(R.to) + '</em></div>' +
-    kp('c2', 'CHANGE', tc[12], tp[12]) + kp('c3', '&lt;100 KVA', tc[4], tp[4]) + kp('c4', '&ge;100 KVA', tc[11], tp[11]) + '</div>';
-  var nl = sb || day ? 2 : 1;
-  var sh = ['10', '16', '25', '63', '&lt;100 KVA', '100', '160', '250', '400', '630', '1000', '&ge;100 KVA', 'TOTAL'];
-  h += '<div class="card cmpc"><div class="wrap cmpw"><table class="cmpt"><thead><tr><th class="l" rowspan="2"' + (nl > 1 ? ' colspan="2"' : '') + '>' + (sb ? 'DIVISION / SUBSTATION' : day ? 'DATE (this year / last year)' : mode === 'ws' ? 'WORKSHOP' : 'DIVISION') + '</th>' +
-    '<th class="gp" colspan="13">PREVIOUS YEAR &middot; ' + esc(R.pfrom) + ' to ' + esc(R.pto) + '</th><th class="gc" colspan="13">THIS YEAR &middot; ' + esc(R.from) + ' to ' + esc(R.to) + '</th><th class="gi" colspan="3">Inc / Dec %</th></tr><tr>' +
-    sh.map(function (x, i) { return '<th class="gp' + (i === 4 || i === 11 || i === 12 ? ' sb' : '') + '">' + x + '</th>'; }).join('') +
-    sh.map(function (x, i) { return '<th class="gc' + (i === 4 || i === 11 || i === 12 ? ' sb' : '') + '">' + x + '</th>'; }).join('') +
-    '<th class="gi">&lt;100 KVA</th><th class="gi">&ge;100 KVA</th><th class="gi">TOTAL</th></tr></thead><tbody>';
-  function row(r, cls) {
-    var a = cvals(r.p), b = cvals(r.c), lab;
-    if (day) lab = '<td class="l">' + esc(r.label) + '</td><td class="pl">' + esc(r.plabel) + '</td>';
-    else if (sb) lab = '<td class="l dvn">' + (cls === 'w' ? '' : esc(r.div)) + '</td><td class="l2">' + esc(r.label) + '</td>';
-    else lab = '<td class="l">' + esc(r.label) + '</td>';
-    return '<tr class="' + cls + '">' + lab + a.map(function (v, i) { return cn(v, r, 'p', i, capL); }).join('') + b.map(function (v, i) { return cn(v, r, 'c', i, capL); }).join('') + ipct(b[4], a[4]) + ipct(b[11], a[11]) + ipct(b[12], a[12]) + '</tr>';
-  }
-  R.rows.forEach(function (r) { h += row(r, r.t); });
-  if (R.rows.length !== 1) {
-    var T = { label: 'TOTAL', c: R.total.c, p: R.total.p }, a = tp, b = tc;
-    h += '<tr class="t"><td class="l"' + (nl > 1 ? ' colspan="2"' : '') + '>TOTAL</td>' + a.map(function (v, i) { return cn(v, T, 'p', i, capL); }).join('') + b.map(function (v, i) { return cn(v, T, 'c', i, capL); }).join('') + ipct(b[4], a[4]) + ipct(b[11], a[11]) + ipct(b[12], a[12]) + '</tr>';
-  }
-  h += '</tbody></table></div><div class="cnote">Click any number to open its damage list. PR without a readable capacity are counted in TOTAL only.' + (R.archived ? ' Archived data included.' : '') + '</div></div>';
-  var o = $('cout'); o.classList.toggle('noanim', !!quiet); o.innerHTML = h;
-  var sel = $('cdiv'), cur = R.div || ''; sel.innerHTML = '<option value="">All Divisions</option>' + R.divList.map(function (d) { return '<option' + (d === cur ? ' selected' : '') + '>' + esc(d) + '</option>'; }).join('');
-}
-function dcell(v, r, per, ws) {                      // number (clickable list when not 0)
-  if (!v) return '<td class="z">0</td>';
-  var rr = { label: r.label, from: r.from, to: r.to, pfrom: r.pfrom, pto: r.pto }; if (ws) rr.ws = ws;
-  var ttl = 'PR ' + (per === 'p' ? 'previous year ' + r.plabel : 'this year ' + r.label) + (ws ? ' - ' + ws : '');
-  return '<td><a class="n" data-s=\'' + esc(JSON.stringify(cspec(rr, per, null, ttl))).replace(/'/g, '&#39;') + '\'>' + v + '</a></td>';
-}
-function dchg(cur, prv) { var d = cur - prv; return '<td class="ic' + (d > 0 ? ' up' : d < 0 ? ' dn' : '') + '"><i>' + (d > 0 ? '▲' : d < 0 ? '▼' : '') + '</i>' + (d > 0 ? '+' : '') + d + '</td>'; }
-function nzv(v) { return v ? v : '<span class="z">0</span>'; }
-function chgTxt(a, b) { if (!b) return a ? 'NEW' : '0%'; var v = Math.round((a - b) * 1000 / b) / 10; return (v > 0 ? '+' : '') + v.toFixed(1) + '%'; }
-function dayKpi(tp, tc, R) {
-  var d0 = tc - tp, cls = d0 === 0 ? '' : d0 > 0 ? ' up' : ' dn';
-  return '<div class="cks-row" style="grid-template-columns:repeat(3,1fr)"><div class="cks c0"><span>PREVIOUS YEAR DAMAGE</span><b>' + tp + '</b><em>' + esc(R.pfrom) + ' to ' + esc(R.pto) + '</em></div>' +
-    '<div class="cks c1"><span>THIS YEAR DAMAGE</span><b>' + tc + '</b><em>' + esc(R.from) + ' to ' + esc(R.to) + '</em></div>' +
-    '<div class="cks c2' + cls + '"><span>CHANGE</span><b>' + (d0 === 0 ? '' : d0 > 0 ? '▲ ' : '▼ ') + chgTxt(tc, tp) + '</b><em>' + (d0 > 0 ? '+' : '') + d0 + '</em></div></div>';
-}
-function renderDay(R, quiet) {
-  CRES = R;
-  var W = (R.wsList || []).length > 1 ? R.wsList : [], sumv = function (m) { var t = 0; for (var k in m) t += m[k]; return t; };
-  var tc = 0, tp = 0, wt = W.map(function () { return [0, 0]; });
-  R.rows.forEach(function (r) { r._c = sumv(r.c); r._p = sumv(r.p); tc += r._c; tp += r._p; W.forEach(function (w, i) { var x = (r.wc || {})[w] || [0, 0]; wt[i][0] += x[0]; wt[i][1] += x[1]; }); });
-  var h = dayKpi(tp, tc, R);
-  h += '<div class="card cmpc"><div class="wrap cmpw"><table class="cmpt dayt"><thead><tr><th class="l" rowspan="2">DATE</th>' +
-    W.map(function (w) { return '<th class="gw" colspan="3">' + esc(w) + '</th>'; }).join('') + '<th class="gc" colspan="4">' + (W.length ? 'DIVISION TOTAL' : 'DAMAGE') + '</th></tr><tr>' +
-    W.map(function () { return '<th class="gp">PREV. YEAR</th><th class="gc">THIS YEAR</th><th class="gi">DIFF</th>'; }).join('') + '<th class="gp">PREV. YEAR</th><th class="gc">THIS YEAR</th><th class="gi">DIFF</th><th class="gi">INC / DEC %</th></tr></thead><tbody>';
-  R.rows.forEach(function (r) {
-    h += '<tr><td class="l" title="Previous year: ' + esc(r.plabel) + '">' + esc(r.label) + '</td>' +
-      W.map(function (w) { var x = (r.wc || {})[w] || [0, 0]; return dcell(x[1], r, 'p', w) + dcell(x[0], r, 'c', w) + dchg(x[0], x[1]); }).join('') +
-      dcell(r._p, r, 'p') + dcell(r._c, r, 'c') + dchg(r._c, r._p) + ipct(r._c, r._p) + '</tr>';
-  });
-  h += '<tr class="t"><td class="l">TOTAL</td>' + wt.map(function (x) { return '<td>' + x[1] + '</td><td>' + x[0] + '</td>' + dchg(x[0], x[1]); }).join('') + '<td>' + tp + '</td><td>' + tc + '</td>' + dchg(tc, tp) + ipct(tc, tp) + '</tr>';
-  h += '</tbody></table></div><div class="cnote">Damage = PRs received on that date (PR DATE). The previous year column is the same date one year earlier. Click any number to open its list.' + (R.archived ? ' Archived data included.' : '') + '</div></div>';
-  var o = $('cout'); o.classList.toggle('noanim', !!quiet); o.innerHTML = h;
-  var sel = $('cdiv'), cur = R.div || ''; sel.innerHTML = '<option value="">All Divisions</option>' + R.divList.map(function (d) { return '<option' + (d === cur ? ' selected' : '') + '>' + esc(d) + '</option>'; }).join('');
-}
-function dk(s) { var m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(s || ''); return m ? +m[3] * 10000 + +m[2] * 100 + +m[1] : 0; }
-function shiftYear(k, n) { var y = Math.floor(k / 10000) + n, m = Math.floor(k / 100) % 100, d = k % 100; if (m === 2 && d === 29 && !((y % 4 === 0 && y % 100 !== 0) || y % 400 === 0)) d = 28; return y * 10000 + m * 100 + d; }
-function dayNum(k) { return Date.UTC(Math.floor(k / 10000), Math.floor(k / 100) % 100 - 1, k % 100) / 86400000; }
-function dmy(k) { return p2(k % 100) + '.' + p2(Math.floor(k / 100) % 100) + '.' + Math.floor(k / 10000); }
-function keyOfDay(n) { var b = new Date(n * 86400000); return b.getUTCFullYear() * 10000 + (b.getUTCMonth() + 1) * 100 + b.getUTCDate(); }
-function addMap(a, b) { for (var k in b) a[k] = (a[k] || 0) + b[k]; return a; }
-// database answer [period, day offset, workshop, division, capacity, n] -> the structure of the old getCompare()
-function buildCompare(rows, p, mode) {
-  var F = dk(p.from), T = dk(p.to), PF = shiftYear(F, -1), PT = shiftYear(T, -1), nd = dayNum(T) - dayNum(F) + 1, out = [], tot = { c: {}, p: {} }, M = {}, order = [];
-  function put(s, r) { var m = r[0] === 'c' ? s.c : s.p; m[r[4]] = (m[r[4]] || 0) + r[5]; }
-  if (mode === 'day') {
-    for (var d = 0; d < nd; d++) M[d] = { c: {}, p: {}, w: {} };
-    rows.forEach(function (r) {
-      var s = M[r[1]]; if (!s) return; put(s, r);
-      var w = r[2] || '-', x = s.w[w] || (s.w[w] = [0, 0]); x[r[0] === 'c' ? 0 : 1] += r[5];
-    });
-    for (var i = 0; i < nd; i++) {
-      var kc = keyOfDay(dayNum(F) + i), kp = keyOfDay(dayNum(PF) + i), s = M[i];
-      out.push({ t: 'd', label: dmy(kc), plabel: dmy(kp), from: dmy(kc), to: dmy(kc), pfrom: dmy(kp), pto: dmy(kp), c: s.c, p: s.p, wc: s.w });
-      addMap(tot.c, s.c); addMap(tot.p, s.p);
-    }
-  } else {
-    rows.forEach(function (r) {
-      var key = (r[2] || '') + '\u0001' + r[3], s = M[key];
-      if (!s) { s = M[key] = { div: r[3], ws: r[2] || '', c: {}, p: {} }; order.push(key); }
-      put(s, r);
-    });
-    var groups = {}, gl = [];
-    order.forEach(function (k) { var s = M[k], g = groups[s.ws]; if (!g) { g = groups[s.ws] = []; gl.push(s.ws); } g.push(s); });
-    gl.sort(function (a, b) { return wsIdx(a) - wsIdx(b); });
-    gl.forEach(function (w) {
-      var g = groups[w].sort(function (a, b) { return natural(a.div, b.div); }), sc = {}, sp = {}, keys = [];
-      g.forEach(function (s) { out.push({ t: 'd', label: s.div, divs: [s.div], ws: w, c: s.c, p: s.p }); addMap(sc, s.c); addMap(sp, s.p); keys.push(s.div); });
-      if (w) out.push({ t: 'w', label: w + ' TOTAL', divs: keys, ws: w, c: sc, p: sp });
-      addMap(tot.c, sc); addMap(tot.p, sp);
-    });
-  }
-  return { mode: mode, from: p.from, to: p.to, pfrom: dmy(PF), pto: dmy(PT), days: nd, wsList: WSL, rows: out, total: tot, divList: DIVLIST, archived: false };
-}
-function loadCompare(force) {
-  var p = { mode: CMODE, from: $('cf').value.trim(), to: $('ct').value.trim(), div: $('cdiv').value }, b = $('cbtn');
-  if (!validD(p.from) || !validD(p.to)) { msg('cmsg', 'Enter From and To dates in DD.MM.YYYY format.', 'err'); return Promise.resolve(); }
-  if (parseD(p.from) > parseD(p.to)) { msg('cmsg', 'The "From" date cannot be later than the "To" date.', 'err'); return Promise.resolve(); }
-  if (p.mode === 'day' && dayCount(p.from, p.to) > 400) { msg('cmsg', 'Day wise comparison: please choose a range of up to 400 days.', 'err'); return Promise.resolve(); }
-  var key = 'cmp|' + p.mode + '|' + p.from + '|' + p.to + '|' + p.div, c = cget(key), seq = ++CSEQ; msg('cmsg', '');
-  var fresh = c && (Date.now() - c.t < TTL);
-  if (fresh && !force && CKEY === key && CRES) return Promise.resolve();
-  function show(raw, quiet) { if (!p.div && raw.divs) DIVLIST = raw.divs; var R = buildCompare(raw.rows, p, p.mode); R.div = p.div; renderCompare(R, quiet); }
-  if (c) { show(c.v, true); CKEY = key; if (fresh && !force) { $('cout').classList.remove('stale'); return Promise.resolve(); } $('cout').classList.add('stale'); if (!b.disabled) busy(b, true, 'Updating...'); }
-  else { busy(b, true, 'Loading...'); $('cout').classList.remove('stale'); $('cout').innerHTML = SKH; }
-  return rpc('compare2_json', { p_from: d2i(p.from), p_to: d2i(p.to), p_div: p.div || null, p_day: p.mode === 'day' }).then(function (rows) {
-    if (seq !== CSEQ) return;
-    var raw = { rows: rows }; if (!p.div) { var u = {}; rows.forEach(function (r) { if (r[3]) u[r[3]] = 1; }); raw.divs = Object.keys(u).sort(natural); }
-    cset(key, raw); busy(b, false); CKEY = key; show(raw, !!c); $('cout').classList.remove('stale');
-  }).catch(function (e) { if (seq !== CSEQ) return; busy(b, false); $('cout').classList.remove('stale'); msg('cmsg', esc(e.message) + (c ? ' (showing the last saved view)' : ''), 'err'); });
-}
-var CSEQ = 0;
-$('cbtn').onclick = function () { loadCompare(true); };
-$('cdiv').onchange = function () { loadCompare(); };
-var CTM = null;
-['cf', 'ct'].forEach(function (i) { $(i).addEventListener('keydown', function (e) { if (e.key === 'Enter') { clearTimeout(CTM); loadCompare(true); } }); $(i).addEventListener('change', function () { clearTimeout(CTM); CTM = setTimeout(function () { if (validD($('cf').value.trim()) && validD($('ct').value.trim())) loadCompare(); }, 500); }); });
-$('cmode').onclick = function (e) {
-  var b = e.target.closest('button'); if (!b) return; CMODE = b.dataset.m;
-  Array.prototype.forEach.call($('cmode').children, function (x) { x.classList.toggle('on', x === b); }); loadCompare();
-};
-var CNAME = { div: 'Division wise', day: 'Day wise' };
-$('cxl').onclick = function () {
-  var t = document.querySelector('#cout table'); if (!t || !CRES) return msg('cmsg', 'Show the comparison first.', 'info');
-  var a = tableToAoa(t), title = 'Comparison - ' + CNAME[CRES.mode] + ' (' + CRES.from + ' to ' + CRES.to + ' vs ' + CRES.pfrom + ' to ' + CRES.pto + ')';
-  xlsxDownload('Comparison_' + CRES.mode + '_' + fileSafe(CRES.from) + '_' + fileSafe(CRES.to) + '.xlsx', [{ name: CNAME[CRES.mode], rows: [[{ v: title, s: 3 }]].concat(a.rows), merges: a.merges.map(function (m) { return [m[0] + 1, m[1], m[2] + 1, m[3]]; }), hdr: 0, skipw: 1 }]);
-};
-$('cpr').onclick = function () {
-  if (!CRES) return msg('cmsg', 'Show the comparison first.', 'info');
-  printHtml('Comparison - ' + CNAME[CRES.mode] + '  (' + CRES.from + ' to ' + CRES.to + ' vs ' + CRES.pfrom + ' to ' + CRES.pto + ')', '<div class="ps">' + $('cout').innerHTML + '</div>');
-};
-
 /* =====================  LIST (opened by a click on a number)  ===================== */
 var LSEQ = 0;
 function td(lbl, val, cls) { return '<td' + (cls ? ' class="' + cls + '"' : '') + ' data-l="' + lbl + '">' + val + '</td>'; }
@@ -1581,6 +1500,206 @@ $('lpr').onclick = function () {
   printHtml($('ltitle').textContent + ' (' + LVIS.length + ' records)', h + '</tbody></table>');
 };
 
+
+/* =====================  DATA (list, edit, add, paste from Excel, delete)  ===================== */
+function parseTSV(t) {
+  var rows = [], r = [], c = '', q = false;
+  for (var i = 0; i < t.length; i++) {
+    var ch = t[i];
+    if (q) { if (ch === '"') { if (t[i + 1] === '"') { c += '"'; i++; } else q = false; } else c += ch; }
+    else if (ch === '"' && c === '') q = true;
+    else if (ch === '\t') { r.push(c); c = ''; }
+    else if (ch === '\n' || ch === '\r') { if (ch === '\r' && t[i + 1] === '\n') i++; r.push(c); rows.push(r); r = []; c = ''; }
+    else c += ch;
+  }
+  if (c !== '' || r.length) { r.push(c); rows.push(r); }
+  return rows.filter(function (x) { return x.some(function (v) { return String(v).trim() !== ''; }); });
+}
+function normDate(s) {
+  s = String(s == null ? '' : s).trim(); if (!s) return '';
+  if (/^\d{8}$/.test(s)) return s.slice(0, 2) + '.' + s.slice(2, 4) + '.' + s.slice(4);
+  if (/^\d{6}$/.test(s)) return s.slice(0, 2) + '.' + s.slice(2, 4) + '.20' + s.slice(4);
+  var m = s.match(/^(\d{1,2})([.\/\-])(\d{1,2})[.\/\-](\d{2,4})/);
+  if (m) {                                  // 18.10.2026 = DD.MM.YYYY ; 10/18/2026 (ERP) = MM/DD/YYYY (a slash date is read as MM/DD unless the first number is above 12)
+    var y = +m[4], a1 = +m[1], b1 = +m[3], dd = a1, mm = b1; if (y < 100) y += 2000;
+    if (m[2] === '/' && a1 <= 12) { mm = a1; dd = b1; }
+    return p2(dd) + '.' + p2(mm) + '.' + y;
+  }
+  m = s.match(/^(\d{4})[.\/\-](\d{1,2})[.\/\-](\d{1,2})/); if (m) return p2(m[3]) + '.' + p2(m[2]) + '.' + m[1];
+  m = s.match(/^(\d{1,2})[\-\s\/.]([A-Za-z]{3,9})[\-\s\/.,]*(\d{2,4})/);
+  if (m) { var mi = MONS.indexOf(m[2].slice(0, 3).toUpperCase()); if (mi >= 0) { var y2 = +m[3]; if (y2 < 100) y2 += 2000; return p2(m[1]) + '.' + p2(mi + 1) + '.' + y2; } }
+  return s;
+}
+function cleanMob(v) {            // '' | 10 digit | null (invalid, e.g. 8.88E+09)
+  var s = String(v == null ? '' : v).trim(); if (!s) return '';
+  var m = /^(\d)(?:\.(\d+))?\s*e\s*\+?(\d+)$/i.exec(s);
+  if (m) { var dg = m[1] + (m[2] || ''); if (dg.length !== +m[3] + 1) return null; s = dg; }
+  var d = s.replace(/\D/g, '');
+  if (d.length === 12 && d.indexOf('91') === 0) d = d.slice(2); else if (d.length === 11 && d.charAt(0) === '0') d = d.slice(1);
+  return d.length === 10 ? d : null;
+}
+function dotFmt(v) { var d = String(v).replace(/\D/g, '').slice(0, 8), o = d.slice(0, 2); if (d.length > 2) o += '.' + d.slice(2, 4); if (d.length > 4) o += '.' + d.slice(4); return o; }
+// grid columns: [index in the 20-value row, heading, kind]   (Category (6) and TIME (17) are not used any more)
+var DCOL = [[0, 'WORKSHOP', 'ws'], [1, 'DIVISION'], [2, 'SUBSTATION'], [3, 'FEEDER'], [4, 'PLACE OF DAMAGE'], [5, 'CAPACITY'], [7, 'COMPLAIN NUMBER'], [8, 'PR NO'], [9, 'PR DATE', 'date'], [10, 'JE NAME'], [11, 'JE MOBILE', 'mob'],
+  [12, 'ISSUED TO FIRM'], [13, 'ISSUE DATE', 'date'], [14, 'DRIVER NAME'], [15, 'DRIVER MOBILE', 'mob'], [16, 'REPLACEMENT DATE', 'date'], [18, 'RETURN DATE', 'date'], [19, 'REMARK']];
+var ALLCOLS = ['Workshop', 'DIVISION', 'SUBSTATION', 'FEEDER', 'PLACE OF DAMAGE', 'CAPACITY', 'Category of Transformer', 'COMPLAIN NUMBER', 'PR NO', 'PR DATE', 'JE Name', 'JE Mobile', 'ISSUED TO FIRM', 'ISSUE DATE', 'DRIVER NAME', 'DRIVER MOBILE', 'REPLACEMENT DATE', 'TIME', 'RETURN DATE', 'REMARK'];
+var DATE_IDX = [9, 13, 16, 18], EDIT_FROM = 10, DSHOW = 400;
+var DROWS = [], DCAN = false, DTOTAL = 0, DSEQ = 0, DTM = null, DSAVING = false, DNEED = false, DLOADED = '';
+function blank20() { var a = []; for (var i = 0; i < 20; i++) a.push(''); return a; }
+function oneWs() { return WSL.length === 1 ? WSL[0] : ''; }
+function canWrite() { return !!(ME && ME.edit && (ME.role === 'admin' || ME.role === 'je')); }
+function dstat(t, k) { var s = $('dstat'); s.textContent = t || ''; s.className = 'muted ' + (k || ''); }
+function dirtyN() { var n = 0; DROWS.forEach(function (r) { if (r.dirty) n++; }); return n; }
+function newRow() { var c = blank20(); c[0] = oneWs(); c[9] = $('dd').value.trim(); return { o: null, k: null, c: c, dirty: false, bad: false, ver: 0, isNew: true }; }
+function rowLocked(r, i) { return !canWrite() || (!r.isNew && i < EDIT_FROM); }
+function drawData() {
+  var ws = $('dws').value, q = $('dq').value.trim().toLowerCase(), vis = [];
+  DROWS.forEach(function (r, ri) { if (ws && r.c[0] !== ws && !r.isNew) return; if (q && r.c.join(' ').toLowerCase().indexOf(q) < 0 && !r.isNew) return; vis.push(ri); });
+  var shown = vis.slice(0, DSHOW);
+  var h = '<thead><tr><th class="ix">#</th>' + DCOL.map(function (c) { return '<th>' + c[1] + '</th>'; }).join('') + '<th class="ix"></th></tr></thead><tbody>';
+  shown.forEach(function (ri, n) {
+    var r = DROWS[ri];
+    h += '<tr data-r="' + ri + '" class="' + (r.dirty ? 'dirty ' : '') + (r.bad ? 'bad' : '') + '"><td class="ix">' + (n + 1) + '</td>' + DCOL.map(function (c) {
+      var i = c[0], lk = rowLocked(r, i), kind = c[2] || '';
+      return '<td class="gc' + (lk ? ' lk' : '') + '"><input type="text" data-i="' + i + '" value="' + esc(r.c[i]) + '"' + (lk ? ' readonly tabindex="-1"' : '') + (kind === 'date' ? ' inputmode="numeric" maxlength="10" placeholder="DD.MM.YYYY"' : kind === 'mob' ? ' inputmode="numeric"' : kind === 'ws' ? ' list="wsdl"' : i === 12 ? ' list="frdl"' : i === 14 ? ' list="drdl"' : '') + (i === 8 || i === 9 ? ' class="b"' : '') + '></td>';
+    }).join('') + '<td class="ix">' + (canWrite() ? '<button class="rx" title="Delete this row">&#10005;</button>' : '') + '</td></tr>';
+  });
+  $('dt').innerHTML = h + '</tbody>';
+  $('dmore').classList.toggle('hide', vis.length <= DSHOW); $('dmore').textContent = 'Show more (' + DSHOW + ' of ' + vis.length + ' shown)';
+  $('dcnt').textContent = vis.length + ' records' + (DTOTAL > DROWS.length ? ' (newest ' + DROWS.length + ' of ' + DTOTAL + ' loaded)' : '');
+  ['dadd', 'dpaste', 'dsave'].forEach(function (id) { $(id).classList.toggle('hide', !canWrite()); });
+  $('dro').classList.toggle('hide', canWrite());
+}
+function loadData(force) {
+  var d = $('dd').value.trim(), all = $('dall').checked;
+  if (!all && !validD(d)) { msg('dmsg', 'Enter the PR date in DD.MM.YYYY format.', 'err'); return Promise.resolve(); }
+  var seq = ++DSEQ;
+  return flushData().then(function () {
+    msg('dmsg', ''); dstat('Loading...'); $('dt').innerHTML = '';
+    return rpc('data_json', { p_date: all ? null : d2i(d), p_all: all });
+  }).then(function (r) {
+    if (seq !== DSEQ) return;
+    DCAN = !!r.canEdit; DTOTAL = r.total; DLOADED = all ? 'ALL' : d;
+    DROWS = r.rows.map(function (a) { return { o: a.slice(0, 20), k: [a[0], a[8]], c: a.slice(0, 20), dirty: false, bad: false, ver: 0, isNew: false }; });
+    DSHOW = 400; dstat(''); drawData();
+  }).catch(function (e) { if (seq !== DSEQ) return; dstat(''); msg('dmsg', esc(e.message), 'err'); });
+}
+function fixRow(c) {     // the values the way they are sent: dates as DD.MM.YYYY, PR no without ".0"
+  var r = c.slice(); DATE_IDX.forEach(function (i) { r[i] = normDate(r[i]); }); return r;
+}
+function newReady(c) { return !!(c[0] && c[1] && c[5] && c[8] && c[9]); }      // a NEW row is saved by itself only when these are filled (Save button: any time)
+function flushData(force) {
+  clearTimeout(DTM);
+  if (DSAVING) { DNEED = true; return DWAIT; }
+  var items = [], map = [];
+  DROWS.forEach(function (r, ri) { if (!r.dirty) return; if (r.isNew && !force && !newReady(r.c)) return; var rr = fixRow(r.c); if (!String(rr[8]).trim()) return; items.push(r.k ? { k: r.k, o: r.o, r: rr } : { r: rr }); map.push(ri); });
+  if (!items.length) return Promise.resolve();
+  DSAVING = true; dstat('Saving ' + items.length + ' row(s)...');
+  var vers = map.map(function (ri) { return DROWS[ri].ver; });
+  DWAIT = rpc('save_rows', { p_items: items }).then(function (res) {
+    DSAVING = false;
+    map.forEach(function (ri, j) {
+      var r = DROWS[ri]; if (!r) return;
+      if (res.bad.indexOf(j) >= 0) { r.bad = true; return; }
+      var sv = res.rows[String(j)] ? res.rows[String(j)].slice(0, 20) : fixRow(r.c); r.bad = false; r.o = sv; r.k = [sv[0], sv[8]]; r.isNew = false;
+      if (r.ver === vers[j]) { r.c = sv.slice(); r.dirty = false; } else r.dirty = true;
+    });
+    var parts = []; if (res.added) parts.push(res.added + ' added'); if (res.updated) parts.push(res.updated + ' updated'); if (res.skipped) parts.push(res.skipped + ' NOT saved');
+    dstat(res.skipped ? '' : 'Saved' + (parts.length ? ' (' + parts.join(', ') + ')' : ''), res.skipped ? 'bad' : 'ok');
+    msg('dmsg', res.notes.length ? res.notes.map(esc).join('<br>') : '', 'err');
+    drawData();
+    if (DNEED) { DNEED = false; return flushData(force); }
+  }).catch(function (e) { DSAVING = false; dstat(''); msg('dmsg', 'Not saved: ' + esc(e.message), 'err'); });
+  return DWAIT;
+}
+var DWAIT = Promise.resolve();
+function queueSave() { clearTimeout(DTM); DTM = setTimeout(flushData, 1600); }
+$('dt').addEventListener('input', function (e) {
+  var inp = e.target; if (!inp.dataset || inp.dataset.i === undefined) return;
+  var tr = inp.closest('tr'), r = DROWS[+tr.dataset.r], i = +inp.dataset.i;
+  if (DATE_IDX.indexOf(i) >= 0 && /^[\d.]*$/.test(inp.value)) { var f = dotFmt(inp.value); if (f !== inp.value) inp.value = f; }
+  r.c[i] = inp.value; r.ver++; r.dirty = true; r.bad = false; tr.classList.add('dirty'); tr.classList.remove('bad');
+  dstat('Unsaved changes...'); queueSave();
+});
+$('dt').addEventListener('change', function (e) {          // when a cell is left: dates / mobiles are tidied, then saved
+  var inp = e.target; if (!inp.dataset || inp.dataset.i === undefined) return;
+  var tr = inp.closest('tr'), r = DROWS[+tr.dataset.r], i = +inp.dataset.i;
+  if (DATE_IDX.indexOf(i) >= 0 && inp.value) { var v = normDate(inp.value); if (v !== inp.value) { inp.value = v; r.c[i] = v; } }
+  if ((i === 11 || i === 15) && inp.value) { var m = cleanMob(inp.value); if (m && m !== inp.value) { inp.value = m; r.c[i] = m; } }
+  if (i === 12 || i === 14) drvAuto(inp, r, i, tr);
+  if (r.isNew) queueSave(); else flushData();
+});
+$('dt').addEventListener('click', function (e) {
+  var b = e.target.closest('.rx'); if (!b) return;
+  var ri = +b.closest('tr').dataset.r, r = DROWS[ri];
+  if (!r.k) { DROWS.splice(ri, 1); drawData(); return; }
+  if (!confirm('Delete PR ' + r.k[1] + ' of ' + r.k[0] + '? This cannot be undone.')) return;
+  rpc('delete_pr', { p_ws: r.k[0], p_pr: r.k[1] }).then(function () { DROWS.splice(ri, 1); DTOTAL--; drawData(); dstat('Deleted', 'ok'); cclear(); })
+    .catch(function (er) { msg('dmsg', esc(er.message), 'err'); });
+});
+$('dadd').onclick = function () { var r = newRow(); DROWS.unshift(r); drawData(); var f = $('dt').querySelector('tbody tr input:not([readonly])'); if (f) f.focus(); };
+$('dsave').onclick = function () { flushData(true); };
+$('dmore').onclick = function () { DSHOW += 400; drawData(); };
+$('dws').onchange = drawData; $('dq').oninput = drawData; $('dall').onchange = function () { loadData(); };
+$('dd').addEventListener('change', function () { var v = $('dd').value.trim(); if (validD(v) && (v !== DLOADED || $('dall').checked)) { $('dall').checked = false; loadData(); } });
+$('dtoday').onclick = function () { $('dd').value = fmt(new Date()); $('dall').checked = false; loadData(); };
+function dshift(n) { var d = parseD($('dd').value.trim()); if (isNaN(d)) return; d.setDate(d.getDate() + n); $('dd').value = fmt(d); $('dall').checked = false; loadData(); }
+$('dprev').onclick = function () { dshift(-1); }; $('dnext').onclick = function () { dshift(1); };
+window.addEventListener('beforeunload', function (e) { if (dirtyN() || DSAVING) { e.preventDefault(); e.returnValue = ''; } });
+$('dxl').onclick = function () {
+  var v = DROWS.filter(function (r) { return r.k; }); if (!v.length) return msg('dmsg', 'Nothing to download.', 'info');
+  xlsxDownload('Data_' + fileSafe(DLOADED) + '.xlsx', [{ name: 'DATA', rows: [DCOL.map(function (c) { return c[1]; })].concat(v.map(function (r) { return DCOL.map(function (c) { return r.c[c[0]]; }); })), hdr: 1, freeze: true }]);
+};
+$('dpr').onclick = function () {
+  var v = DROWS.filter(function (r) { return r.k; }); if (!v.length) return msg('dmsg', 'Nothing to print.', 'info');
+  var pc = [8, 9, 0, 1, 2, 4, 5, 12, 13, 14, 16, 18], h = '<table><thead><tr><th>#</th>' + pc.map(function (c) { return '<th>' + esc(ALLCOLS[c]) + '</th>'; }).join('') + '</tr></thead><tbody>';
+  v.forEach(function (r, i) { h += '<tr><td>' + (i + 1) + '</td>' + pc.map(function (c) { return '<td>' + esc(r.c[c]) + '</td>'; }).join('') + '</tr>'; });
+  printHtml('PR list ' + DLOADED + ' (' + v.length + ' records)', h + '</tbody></table>');
+};
+/* ---- paste from Excel ---- */
+function mapCols(rows) {
+  for (var h = 0; h < Math.min(3, rows.length); h++) {
+    var hdr = rows[h].map(function (c) { return String(c).replace(/\s+/g, ' ').trim().toUpperCase(); });
+    if (hdr.indexOf('PR NO') >= 0 || hdr.indexOf('PR NO.') >= 0) {
+      var idx = ALLCOLS.map(function (c) { return hdr.indexOf(c.toUpperCase()); });
+      if (idx[8] < 0) idx[8] = Math.max(hdr.indexOf('PR NO'), hdr.indexOf('PR NO.'));
+      if (idx[9] < 0) throw new Error('The "PR DATE" column was not found in the header.');
+      return { start: h + 1, idx: idx };
+    }
+  }
+  var hasWs = function (v) { var t = String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); return WSL.some(function (w) { return w.toUpperCase().replace(/[^A-Z0-9]/g, '') === t; }); };
+  var off = (rows[0] && !hasWs(rows[0][0]) && hasWs(rows[0][1])) ? 1 : 0;      // a "#" column in front
+  return { start: 0, idx: ALLCOLS.map(function (c, i) { return i + off; }) };
+}
+$('dpaste').onclick = function () { $('xta').value = ''; msg('xmsg', ''); $('xov').classList.remove('hide'); $('xta').focus(); };
+$('xclose').onclick = function () { $('xov').classList.add('hide'); };
+$('xgo').onclick = function () {
+  var t = $('xta').value; if (!t.trim()) return msg('xmsg', 'Paste the rows first.', 'err');
+  var rows, m; try { rows = parseTSV(t); m = mapCols(rows); } catch (e) { return msg('xmsg', esc(e.message), 'err'); }
+  var items = [], lines = [];
+  for (var k = m.start; k < rows.length; k++) {
+    var src = rows[k]; if (!src.some(function (v) { return String(v).trim() !== ''; })) continue;
+    items.push({ r: m.idx.map(function (j, i) { var v = j >= 0 ? String(src[j] == null ? '' : src[j]).trim() : ''; return DATE_IDX.indexOf(i) >= 0 ? normDate(v) : v; }) }); lines.push(k + 1);
+  }
+  if (!items.length) return msg('xmsg', 'No rows found.', 'err');
+  var b = $('xgo'), tot = { added: 0, updated: 0, same: 0, skipped: 0 }, notes = [], pos = 0, B = 500;
+  busy(b, true, 'Saving...');
+  (function next() {
+    if (pos >= items.length) {
+      busy(b, false); cclear();
+      msg('xmsg', '<b>Done.</b> ' + tot.added + ' added, ' + tot.updated + ' updated, ' + tot.same + ' unchanged, ' + tot.skipped + ' skipped.' + (notes.length ? '<br>' + notes.slice(0, 15).map(esc).join('<br>') : ''), tot.skipped ? 'info' : 'ok');
+      return loadData();
+    }
+    var part = items.slice(pos, pos + B), base = pos; pos += B;
+    msg('xmsg', 'Saving ' + Math.min(pos, items.length) + ' of ' + items.length + '...', 'info');
+    rpc('save_rows', { p_items: part }).then(function (res) {
+      ['added', 'updated', 'same', 'skipped'].forEach(function (x) { tot[x] += res[x]; });
+      res.notes.forEach(function (n) { notes.push(n.replace(/^Line (\d+)/, function (_, a) { return 'Line ' + lines[base + (+a) - 1]; })); });
+      next();
+    }).catch(function (e) { busy(b, false); msg('xmsg', 'Stopped after ' + base + ' rows: ' + esc(e.message), 'err'); });
+  })();
+};
+
 /* =====================  start  ===================== */
 function boot() {
   if (!window.supabase || !window.TT_SB_URL || !window.TT_SB_KEY) { showLogin('The app is not configured: check config.js and your internet connection.'); return; }
@@ -1593,6 +1712,237 @@ function boot() {
   }).catch(function () { showLogin(''); });
 }
 boot();
+
+
+/* =====================  DRIVER MASTER  ===================== */
+var DRV_ALL_TABS = [['sum', 'Summary'], ['data', 'Data Sheet'], ['drv', 'Drivers']];
+function digits10(v) {
+  var d = String(v || '').replace(/\D/g, '');
+  if (d.length === 12 && d.indexOf('91') === 0) d = d.slice(2); else if (d.length === 11 && d.charAt(0) === '0') d = d.slice(1);
+  return d;
+}
+function isDupFirm(f) { return String(f || '').toUpperCase().replace(/[^A-Z0-9]/g, '') === 'DUPLICATEWRONGPR'; }
+function drvLoad(quiet) {
+  return SB.from('drivers').select('id,firm,workshop,driver,mobile,gps,vehicle').order('workshop').order('firm').order('driver').then(function (r) {
+    if (r.error) { if (!quiet) msg('vmsg', esc(friendly(r.error)), 'err'); return; }
+    DRV = r.data || []; if (!quiet) drvDraw();
+  });
+}
+function drvCanEdit() { return canWrite() && (!ME.tabs || ME.tabs.indexOf('drv') >= 0 || ME.role === 'admin'); }
+function drvDraw() {
+  var sel = $('vws'), cur = sel.value;
+  sel.innerHTML = '<option value="">All workshops</option>' + WSL.map(function (w) { return '<option>' + esc(w) + '</option>'; }).join(''); sel.value = cur;
+  var q = $('vq').value.trim().toLowerCase(), ed = drvCanEdit(), h = '<thead><tr><th>WORKSHOP</th><th>FIRM NAME</th><th>DRIVER NAME</th><th>MOBILE NO.</th><th>VEHICLE NO.</th><th>VEHICLE GPS URL</th><th class="ix"></th></tr></thead><tbody>';
+  var n = 0;
+  DRV.forEach(function (d, i) {
+    if (sel.value && d.workshop !== sel.value) return;
+    if (q && (d.workshop + ' ' + d.firm + ' ' + d.driver + ' ' + d.mobile + ' ' + d.vehicle).toLowerCase().indexOf(q) < 0) return;
+    n++; h += drvRowHtml(d, i, ed && !isDupFirm(d.firm));
+  });
+  $('vt').innerHTML = h + '</tbody>'; $('vcnt').textContent = n + ' entries';
+  $('vadd').classList.toggle('hide', !ed); $('vro').classList.toggle('hide', ed);
+}
+function drvRowHtml(d, i, ed) {
+  var f = ['workshop', 'firm', 'driver', 'mobile', 'vehicle', 'gps'];
+  return '<tr data-i="' + i + '">' + f.map(function (k) {
+    var lk = !ed || (k === 'workshop' && d.id);
+    return '<td class="gc' + (lk ? ' lk' : '') + '"><input type="text" data-k="' + k + '" value="' + esc(d[k]) + '"' + (lk ? ' readonly tabindex="-1"' : '') + (k === 'workshop' ? ' list="wsdl"' : k === 'mobile' ? ' inputmode="numeric"' : '') + '></td>';
+  }).join('') + '<td class="ix">' + (ed ? '<button class="rx" title="Delete">&#10005;</button>' : '') + '</td></tr>';
+}
+$('vws').onchange = drvDraw; $('vq').oninput = drvDraw;
+$('vadd').onclick = function () {
+  DRV.unshift({ id: null, firm: '', workshop: oneWs(), driver: '', mobile: '', gps: '', vehicle: '' }); $('vws').value = ''; $('vq').value = ''; drvDraw();
+  var f = $('vt').querySelector('tbody tr input:not([readonly])'); if (f) f.focus();
+};
+$('vt').addEventListener('change', function (e) {
+  var inp = e.target, k = inp.dataset && inp.dataset.k; if (!k) return;
+  var tr = inp.closest('tr'), d = DRV[+tr.dataset.i];
+  var val = inp.value.trim(); if (k === 'workshop') val = val.toUpperCase(); if (k === 'mobile') val = digits10(val);
+  inp.value = val; d[k] = val;
+  var up = ['workshop', 'firm', 'driver', 'mobile', 'vehicle', 'gps'].reduce(function (o, x) { o[x] = d[x]; return o; }, {});
+  if (!up.firm || !up.driver || !up.workshop) { if (d.id) { inp.value = d._old || ''; d[k] = d._old || ''; msg('vmsg', 'Firm, Workshop and Driver name cannot be empty.', 'err'); } return; }
+  if (WSL.indexOf(up.workshop) < 0) { msg('vmsg', 'Workshop "' + esc(up.workshop) + '" is not one of your workshops.', 'err'); return; }
+  if (isDupFirm(up.firm)) { msg('vmsg', 'The firm DUPLICATE/WRONG PR is a default entry and cannot be added or changed.', 'err'); return; }
+  if (up.mobile && up.mobile.length !== 10) { msg('vmsg', 'Mobile No. must be 10 digits.', 'err'); return; }
+  msg('vmsg', 'Saving...', 'info');
+  d._q = (d._q || Promise.resolve()).then(function () {            // one save after the other for the same row (a new row must get its id first)
+    return (d.id ? SB.from('drivers').update(up).eq('id', d.id).select('id') : SB.from('drivers').insert(up).select('id'));
+  }).then(function (r) {
+    if (r.error) { msg('vmsg', /duplicate|unique/i.test(r.error.message) ? 'This firm + driver is already in the list for this workshop.' : esc(friendly(r.error)), 'err'); return; }
+    if (!r.data || !r.data.length) { msg('vmsg', 'Not saved (you may not have permission).', 'err'); return; }
+    d.id = r.data[0].id; msg('vmsg', '<span class="ok">Saved</span>', 'info'); cclear();
+  });
+});
+$('vt').addEventListener('click', function (e) {
+  var b = e.target.closest('.rx'); if (!b) return;
+  var i = +b.closest('tr').dataset.i, d = DRV[i];
+  if (!d.id) { DRV.splice(i, 1); drvDraw(); return; }
+  if (!confirm('Delete driver ' + d.driver + ' (' + d.firm + ')?')) return;
+  SB.from('drivers').delete().eq('id', d.id).select('id').then(function (r) {
+    if (r.error || !r.data || !r.data.length) return msg('vmsg', r.error ? esc(friendly(r.error)) : 'Not deleted.', 'err');
+    DRV.splice(i, 1); drvDraw(); msg('vmsg', '<span class="ok">Deleted</span>', 'info');
+  });
+});
+$('vxl').onclick = function () {
+  var rows = [['WORKSHOP', 'FIRM NAME', 'DRIVER NAME', 'MOBILE NO.', 'VEHICLE NO.', 'VEHICLE GPS URL']].concat(DRV.map(function (d) { return [d.workshop, d.firm, d.driver, d.mobile, d.vehicle, d.gps]; }));
+  xlsxDownload('Driver_Master.xlsx', [{ name: 'DRIVERS', rows: rows, hdr: 1, freeze: true }]);
+};
+
+/* ---- Data Sheet: firm / driver drop-downs (from the Driver Master of that row's workshop) ---- */
+function uniq(a) { var s = {}; return a.filter(function (x) { if (!x || s[x]) return false; s[x] = 1; return true; }); }
+function drvLists(ws, firm) {
+  var L = DRV.filter(function (d) { return d.workshop === ws; });
+  $('frdl').innerHTML = uniq(L.map(function (d) { return d.firm; })).map(function (f) { return '<option value="' + esc(f) + '">'; }).join('');
+  var M = firm ? L.filter(function (d) { return d.firm.toUpperCase() === firm.toUpperCase(); }) : L;
+  $('drdl').innerHTML = uniq(M.map(function (d) { return d.driver; })).map(function (f) { return '<option value="' + esc(f) + '">'; }).join('');
+}
+$('dt').addEventListener('focusin', function (e) {
+  var inp = e.target; if (!inp.dataset || (inp.dataset.i !== '12' && inp.dataset.i !== '14')) return;
+  var r = DROWS[+inp.closest('tr').dataset.r]; drvLists(r.c[0], r.c[12]);
+});
+function drvAuto(inp, r, i, tr) {               // after a firm / driver is chosen, fill driver name and mobile from the Driver Master
+  var L = DRV.filter(function (d) { return d.workshop === r.c[0]; }), firm = String(r.c[12] || '').toUpperCase(), drv = String(r.c[14] || '').toUpperCase();
+  var hit = null;
+  if (i === 12) { var f = L.filter(function (d) { return d.firm.toUpperCase() === firm; }); if (f.length && (!drv || !f.some(function (d) { return d.driver.toUpperCase() === drv; }))) { if (f.length === 1) hit = f[0]; } else if (f.length) hit = f.filter(function (d) { return d.driver.toUpperCase() === drv; })[0]; }
+  else hit = L.filter(function (d) { return d.firm.toUpperCase() === firm && d.driver.toUpperCase() === drv; })[0];
+  if (!hit) return;
+  [[14, hit.driver], [15, hit.mobile]].forEach(function (p) {
+    if (p[0] === 14 && r.c[14] && i === 14) return;
+    r.c[p[0]] = p[1]; var x = tr.querySelector('input[data-i="' + p[0] + '"]'); if (x) x.value = p[1];
+  });
+  r.ver++; r.dirty = true; tr.classList.add('dirty');
+}
+
+/* =====================  ADMIN PANEL  ===================== */
+var ADM = [], ADM_EDIT = null;
+function roleName(r) { return { creator: 'App Creator', discom: 'DISCOM head', admin: 'Admin', je: 'User' }[r] || r; }
+function reloadWs() {
+  return SB.from('workshops').select('name,org_division').order('name').then(function (w) {
+    WSDIV = {}; (w.data || []).forEach(function (x) { WSDIV[x.name] = x.org_division; }); WSL = (w.data || []).map(function (x) { return x.name; });
+    fillWs(); cclear();
+  });
+}
+function divOf() { return ME.role === 'admin' ? ME.div : ($('nv').value || '').trim(); }
+function wsOfDiv(d) { return Object.keys(WSDIV).filter(function (w) { return WSDIV[w] === d; }); }
+function chkHtml(items, checked, cls) {
+  return items.map(function (x) { var v = x[0], t = x[1]; return '<label class="wck"><input type="checkbox" value="' + esc(v) + '"' + (checked.indexOf(v) >= 0 ? ' checked' : '') + '> ' + esc(t) + '</label>'; }).join('');
+}
+function chkGet(box) { return Array.prototype.map.call(box.querySelectorAll('input:checked'), function (x) { return x.value; }); }
+function admLoad() {
+  var cr = ME.role === 'creator';
+  $('nrw').classList.toggle('hide', !cr); $('nvw').classList.toggle('hide', !cr); $('wdw').classList.toggle('hide', !cr);
+  $('nrole').innerHTML = cr ? '<option value="admin">Admin (can create users)</option><option value="discom">DISCOM head (view only)</option><option value="je">User</option>' : '<option value="je">User</option>';
+  $('dvl').innerHTML = uniq(Object.keys(WSDIV).map(function (w) { return WSDIV[w]; })).map(function (d) { return '<option value="' + esc(d) + '">'; }).join('');
+  newUserForm(); admWsDraw();
+  return SB.from('profiles').select('user_id,login_id,display,role,org_division,scope,can_edit,active,tabs').order('login_id').then(function (r) {
+    if (r.error) return msg('amsg', esc(friendly(r.error)), 'err');
+    ADM = r.data || []; admUsersDraw();
+  });
+}
+function admWsDraw() {
+  var list = ME.role === 'admin' ? WSL : Object.keys(WSDIV).sort(), h = '';
+  list.forEach(function (w, i) {
+    h += '<tr><td><b>' + esc(w) + '</b></td>' + (ME.role === 'creator' ? '<td>' + esc(WSDIV[w] || '') + '</td>' : '') + '<td><button class="btn sec sm" data-wr="' + i + '">Rename</button> <button class="btn sec sm" data-wd="' + i + '">Delete</button></td></tr>';
+  });
+  $('wlt').innerHTML = '<thead><tr><th>Workshop</th>' + (ME.role === 'creator' ? '<th>Division</th>' : '') + '<th></th></tr></thead><tbody>' + (h || '<tr><td colspan="3" class="muted">No workshop yet. Add your first workshop above.</td></tr>') + '</tbody>';
+  $('wlt')._list = list;
+}
+$('wlt').addEventListener('click', function (e) {
+  var b = e.target.closest('button'); if (!b) return; var list = $('wlt')._list;
+  if (b.dataset.wr !== undefined) {
+    var o = list[+b.dataset.wr], n = prompt('New name for workshop ' + o + ':', o); if (!n || n.trim().toUpperCase() === o) return;
+    rpc('ws_rename', { p_old: o, p_new: n }).then(function () { return reloadWs(); }).then(admLoad).then(function () { msg('amsg', 'Workshop renamed. All its PRs, users and drivers moved to the new name.', 'info'); }).catch(function (er) { msg('amsg', esc(er.message), 'err'); });
+  } else if (b.dataset.wd !== undefined) {
+    var w = list[+b.dataset.wd]; if (!confirm('Delete workshop ' + w + '? (Only possible when it has no PR data.)')) return;
+    rpc('ws_delete', { p_name: w }).then(function () { return reloadWs(); }).then(admLoad).then(function () { msg('amsg', 'Workshop deleted.', 'info'); }).catch(function (er) { msg('amsg', esc(er.message), 'err'); });
+  }
+});
+$('wadd').onclick = function () {
+  var n = $('wn').value.trim(); if (!n) return msg('amsg', 'Type the workshop name.', 'err');
+  var b = $('wadd'); busy(b, true, 'Adding...');
+  rpc('ws_add', { p_name: n, p_div: ME.role === 'admin' ? null : $('wd').value.trim() }).then(function () { $('wn').value = ''; return reloadWs(); }).then(admLoad)
+    .then(function () { busy(b, false); msg('amsg', 'Workshop added.', 'info'); }).catch(function (er) { busy(b, false); msg('amsg', esc(er.message), 'err'); });
+};
+function newUserForm() {
+  $('nu').value = ''; $('nn').value = ''; $('nv').value = ''; $('ne').value = '1'; $('nrole').value = ME.role === 'creator' ? 'admin' : 'je';
+  $('ntabs').innerHTML = chkHtml(DRV_ALL_TABS, DRV_ALL_TABS.map(function (t) { return t[0]; })); nFormSync();
+}
+function nFormSync() {
+  var role = $('nrole').value, je = role === 'je', d = divOf();
+  $('nsw').classList.toggle('hide', !je); $('nvw').classList.toggle('hide', ME.role !== 'creator' || role === 'discom');
+  $('nacc').classList.toggle('hide', role === 'discom'); $('ntw').classList.toggle('hide', role === 'discom');
+  var keep = chkGet($('ns')); $('ns').innerHTML = je ? (wsOfDiv(d).length ? chkHtml(wsOfDiv(d).map(function (w) { return [w, w]; }), keep) : '<span class="muted">' + (ME.role === 'admin' ? 'First add your workshops above.' : 'Type the division name above (it must already have workshops).') + '</span>') : '';
+}
+$('nrole').onchange = nFormSync; $('nv').oninput = nFormSync;
+$('ncreate').onclick = function () {
+  var b = $('ncreate'), role = $('nrole').value, tabs = chkGet($('ntabs')), all = tabs.length === DRV_ALL_TABS.length;
+  var id = $('nu').value.trim().toLowerCase();
+  if (!id) return msg('amsg', 'Enter a User ID.', 'err');
+  if (role !== 'discom' && !tabs.length) return msg('amsg', 'Choose at least one tab.', 'err');
+  var body = { action: 'create', login: id, name: $('nn').value.trim() || id, role: role, div: divOf(), scope: chkGet($('ns')), edit: $('ne').value === '1', tabs: role === 'discom' || all ? null : tabs };
+  if (role === 'je' && !body.scope.length) return msg('amsg', 'Choose at least one workshop for this user.', 'err');
+  busy(b, true, 'Creating...');
+  fnCall(body).then(function (r) { busy(b, false); showPw('User created', id, r.password); newUserForm(); return admLoad(); }).catch(function (e) { busy(b, false); msg('amsg', esc(e.message), 'err'); });
+};
+function fnCall(body) {
+  return SB.functions.invoke('admin-users', { body: body }).then(function (r) {
+    if (r.error && !r.data) throw new Error('The user service is not set up yet (Edge Function "admin-users" is missing). Ask the App Creator.');
+    var d = r.data; if (typeof d === 'string') { try { d = JSON.parse(d); } catch (x) { d = null; } }
+    if (!d || !d.ok) throw new Error((d && d.error) || 'Could not complete this. Please try again.');
+    return d;
+  });
+}
+function showPw(title, id, pw) {
+  $('tptitle').textContent = title; $('tpid').textContent = id; $('tppw').textContent = pw; $('tpov').classList.remove('hide');
+}
+$('tpclose').onclick = function () { $('tpov').classList.add('hide'); $('tppw').textContent = ''; };
+function admUsersDraw() {
+  var q = $('auq').value.trim().toLowerCase();
+  var h = '<thead><tr><th>User ID</th><th>Name</th><th>Role</th><th>Division</th><th>Workshops</th><th>Access</th><th>Tabs</th><th>Status</th><th></th></tr></thead><tbody>';
+  ADM.forEach(function (u, i) {
+    if (q && (u.login_id + ' ' + (u.display || '') + ' ' + (u.scope || []).join(' ')).toLowerCase().indexOf(q) < 0) return;
+    var me = u.user_id === ME.id, mine = !me && u.role !== 'creator';
+    var tabs = u.role === 'discom' ? 'Summary' : (u.tabs ? u.tabs.map(function (t) { return (DRV_ALL_TABS.filter(function (x) { return x[0] === t; })[0] || [0, t])[1]; }).join(', ') : 'All');
+    h += '<tr><td><b>' + esc(u.login_id) + '</b></td><td>' + esc(u.display || '') + '</td><td>' + roleName(u.role) + '</td><td>' + esc(u.org_division || '') + '</td><td>' + esc(u.role === 'je' ? (u.scope || []).join(', ') : (u.role === 'admin' ? 'All of division' : 'All')) + '</td><td>' + (u.role === 'discom' || u.role === 'creator' ? 'View only' : u.can_edit ? 'Can edit' : 'View only') + '</td><td>' + esc(tabs) + '</td><td>' + (u.active ? '<span class="ok">Active</span>' : '<span class="bad">Inactive</span>') + '</td><td style="white-space:nowrap">' +
+      (mine ? (u.role !== 'discom' ? '<button class="btn sec sm" data-e="' + i + '">Edit</button> ' : '') + '<button class="btn sec sm" data-r="' + i + '">Reset password</button> <button class="btn sec sm" data-a="' + i + '">' + (u.active ? 'Deactivate' : 'Activate') + '</button> <button class="btn sec sm" data-x="' + i + '">Delete</button>' : '') + '</td></tr>';
+  });
+  $('aut').innerHTML = h + '</tbody>';
+}
+$('auq').oninput = admUsersDraw;
+function admSave(u, patch) {
+  var p = { p_login: u.login_id, p_name: u.display, p_scope: u.scope || [], p_edit: u.can_edit, p_tabs: u.tabs || null, p_active: u.active };
+  Object.keys(patch).forEach(function (k) { p[k] = patch[k]; });
+  return rpc('admin_set_user', p);
+}
+$('aut').addEventListener('click', function (e) {
+  var b = e.target.closest('button'); if (!b) return; var d = b.dataset, u = ADM[+(d.e || d.r || d.a || d.x)]; if (!u) return;
+  if (d.e !== undefined) return openUe(u);
+  if (d.r !== undefined) {
+    if (!confirm('Reset the password of ' + u.login_id + '? A new temporary password will be made; he must change it at the next login.')) return;
+    busy(b, true, '...'); fnCall({ action: 'reset', login: u.login_id }).then(function (r) { busy(b, false); showPw('New temporary password', u.login_id, r.password); }).catch(function (er) { busy(b, false); msg('amsg', esc(er.message), 'err'); });
+  } else if (d.a !== undefined) {
+    admSave(u, { p_active: !u.active }).then(admLoad).catch(function (er) { msg('amsg', esc(er.message), 'err'); });
+  } else if (d.x !== undefined) {
+    if (!confirm('Delete user ' + u.login_id + ' for ever? (To stop access only, use Deactivate.)')) return;
+    busy(b, true, '...'); fnCall({ action: 'delete', login: u.login_id }).then(admLoad).catch(function (er) { busy(b, false); msg('amsg', esc(er.message), 'err'); });
+  }
+});
+function openUe(u) {
+  ADM_EDIT = u; $('uetitle').textContent = 'Edit ' + u.login_id; $('uen').value = u.display || '';
+  $('uesw').classList.toggle('hide', u.role !== 'je');
+  var d = u.org_division || ME.div; $('ues').innerHTML = chkHtml(wsOfDiv(d).map(function (w) { return [w, w]; }), u.scope || []);
+  $('uee').value = u.can_edit ? '1' : '0';
+  $('uet').innerHTML = chkHtml(DRV_ALL_TABS, u.tabs || DRV_ALL_TABS.map(function (t) { return t[0]; }));
+  msg('uemsg', ''); $('ueov').classList.remove('hide');
+}
+$('uecancel').onclick = function () { $('ueov').classList.add('hide'); };
+$('uesave').onclick = function () {
+  var u = ADM_EDIT, tabs = chkGet($('uet')), all = tabs.length === DRV_ALL_TABS.length, b = $('uesave');
+  if (!tabs.length) return msg('uemsg', 'Choose at least one tab.', 'err');
+  busy(b, true, 'Saving...');
+  admSave(u, { p_name: $('uen').value.trim() || u.login_id, p_scope: u.role === 'je' ? chkGet($('ues')) : u.scope, p_edit: $('uee').value === '1', p_tabs: all ? null : tabs })
+    .then(function () { busy(b, false); $('ueov').classList.add('hide'); return admLoad(); }).catch(function (er) { busy(b, false); msg('uemsg', esc(er.message), 'err'); });
+};
 
 </script>
 <script>if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(function () {});</script>
