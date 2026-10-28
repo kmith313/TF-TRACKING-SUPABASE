@@ -909,12 +909,12 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
           </div>
           <div class="tg r">
             <button class="btn sec sm" id="dxl">&#11015; Excel</button><button class="btn sec sm" id="dpr">Print</button>
-            <button class="btn sec sm" id="dadd">+ Add PR</button><button class="btn sec sm" id="dpaste">Paste from Excel</button>
+            <button class="btn sec sm" id="dpaste">Paste from Excel</button>
             <button class="btn" id="dsave">Save</button>
           </div>
         </div>
         <div class="muted" style="font-size:12px"><span id="dcnt"></span> &middot; <span id="dstat" class="muted"></span> <span id="dro" class="hide">&middot; View only: you cannot change data.</span></div>
-        <details class="dtl"><summary>How it works</summary>Pick the <b>PR date</b> to see that day's PRs (or tick <b>All dates</b> for the newest 6000). Type in any cell: the row is <b>saved automatically</b> a moment after you stop typing. A <b>new row</b> is saved by itself once Workshop, Division, Capacity, PR NO and PR DATE are filled (the Save button saves it at once). PR NO, PR DATE and Workshop are compulsory. <b>Workshop, Division, Substation, Feeder, Place, Capacity, Complain no, PR NO and PR DATE</b> of a saved PR are locked; to correct them delete the row and add it again. Choose the firm <b>DUPLICATE/WRONG PR</b> for a wrong or duplicate PR: its issue, replacement and return dates are cleared. <b>Paste from Excel</b> adds many PRs at once: a PR that already exists only gets its empty cells filled.</details>
+        <details class="dtl"><summary>How it works</summary>Pick the <b>PR date</b> to see that day's PRs (or tick <b>All dates</b> for the newest 6000). Type in any cell: the row is <b>saved automatically</b> a moment after you stop typing. <b>New PRs:</b> type in the empty rows at the top, or copy rows from Excel and press <b>Ctrl+V</b> in any cell (up to 300 rows; use the <b>Paste from Excel</b> button for more). A <b>new row</b> is saved by itself once Workshop, Division, Capacity, PR NO and PR DATE are filled (the Save button saves it at once). PR NO, PR DATE and Workshop are compulsory. <b>Workshop, Division, Substation, Feeder, Place, Capacity, Complain no, PR NO and PR DATE</b> of a saved PR are locked; to correct them delete the row and add it again. Choose the firm <b>DUPLICATE/WRONG PR</b> for a wrong or duplicate PR: its issue, replacement and return dates are cleared. <b>Paste from Excel</b> (button) adds many PRs at once: a PR that already exists only gets its empty cells filled.</details>
       </div>
       <div id="dmsg"></div>
       <div class="gwrap"><table class="gt gt2" id="dt"></table></div>
@@ -1552,7 +1552,17 @@ function dstat(t, k) { var s = $('dstat'); s.textContent = t || ''; s.className 
 function dirtyN() { var n = 0; DROWS.forEach(function (r) { if (r.dirty) n++; }); return n; }
 function newRow() { var c = blank20(); c[0] = oneWs(); c[9] = $('dd').value.trim(); return { o: null, k: null, c: c, dirty: false, bad: false, ver: 0, isNew: true }; }
 function rowLocked(r, i) { return !canWrite() || (!r.isNew && i < EDIT_FROM); }
+var BLANKS = 8;
+function isBlankNew(r) { return r.isNew && !r.dirty && !r.k; }
+function padBlank() {      // empty rows to type or paste into, like an Excel sheet
+  if (!canWrite()) { DROWS = DROWS.filter(function (r) { return !isBlankNew(r); }); return; }
+  var nb = DROWS.filter(isBlankNew).length; if (nb >= BLANKS) return;
+  var pos = 0; while (pos < DROWS.length && DROWS[pos].isNew) pos++;
+  var add = []; for (var n = nb; n < BLANKS; n++) add.push(newRow());
+  DROWS.splice.apply(DROWS, [pos, 0].concat(add));
+}
 function drawData() {
+  padBlank();
   var ws = $('dws').value, q = $('dq').value.trim().toLowerCase(), vis = [];
   DROWS.forEach(function (r, ri) { if (ws && r.c[0] !== ws && !r.isNew) return; if (q && r.c.join(' ').toLowerCase().indexOf(q) < 0 && !r.isNew) return; vis.push(ri); });
   var shown = vis.slice(0, DSHOW);
@@ -1566,8 +1576,8 @@ function drawData() {
   });
   $('dt').innerHTML = h + '</tbody>';
   $('dmore').classList.toggle('hide', vis.length <= DSHOW); $('dmore').textContent = 'Show more (' + DSHOW + ' of ' + vis.length + ' shown)';
-  $('dcnt').textContent = vis.length + ' records' + (DTOTAL > DROWS.length ? ' (newest ' + DROWS.length + ' of ' + DTOTAL + ' loaded)' : '');
-  ['dadd', 'dpaste', 'dsave'].forEach(function (id) { $(id).classList.toggle('hide', !canWrite()); });
+  $('dcnt').textContent = vis.filter(function (ri) { return !isBlankNew(DROWS[ri]); }).length + ' records' + (DTOTAL > DROWS.length ? ' (newest ' + DROWS.length + ' of ' + DTOTAL + ' loaded)' : '');
+  ['dpaste', 'dsave'].forEach(function (id) { $(id).classList.toggle('hide', !canWrite()); });
   $('dro').classList.toggle('hide', canWrite());
 }
 function loadData(force) {
@@ -1637,9 +1647,24 @@ $('dt').addEventListener('click', function (e) {
   rpc('delete_pr', { p_ws: r.k[0], p_pr: r.k[1] }).then(function () { DROWS.splice(ri, 1); DTOTAL--; drawData(); dstat('Deleted', 'ok'); cclear(); })
     .catch(function (er) { msg('dmsg', esc(er.message), 'err'); });
 });
-$('dadd').onclick = function () { var r = newRow(); DROWS.unshift(r); drawData(); var f = $('dt').querySelector('tbody tr input:not([readonly])'); if (f) f.focus(); };
 $('dsave').onclick = function () { flushData(true); };
 $('dmore').onclick = function () { DSHOW += 400; drawData(); };
+$('dt').addEventListener('paste', function (e) {       // several rows copied from Excel can be pasted straight into the sheet
+  var inp = e.target; if (!inp.dataset || inp.dataset.i === undefined || !canWrite()) return;
+  var t = (e.clipboardData || window.clipboardData).getData('text'); if (!/[\t\n\r]/.test(String(t).replace(/[\r\n]+$/, ''))) return;      // one single value: normal paste
+  e.preventDefault();
+  var rows, m; try { rows = parseTSV(t); m = mapCols(rows); } catch (er) { return msg('dmsg', esc(er.message), 'err'); }
+  var src = rows.slice(m.start); if (!src.length) return;
+  if (src.length > 300) return msg('dmsg', 'More than 300 rows: please use the "Paste from Excel" button.', 'err');
+  DROWS = DROWS.filter(function (r) { return !isBlankNew(r); });
+  var add = src.map(function (s2) {
+    var r = newRow();
+    r.c = m.idx.map(function (j, i) { var v = j >= 0 ? String(s2[j] == null ? '' : s2[j]).trim() : ''; if (DATE_IDX.indexOf(i) >= 0) v = normDate(v); else if (i === 11 || i === 15) v = cleanMob(v) || v; return v; });
+    if (!r.c[0]) r.c[0] = oneWs();
+    r.dirty = true; r.ver = 1; return r;
+  });
+  DROWS = add.concat(DROWS); drawData(); dstat('Unsaved changes...'); queueSave();
+});
 $('dws').onchange = drawData; $('dq').oninput = drawData; $('dall').onchange = function () { loadData(); };
 $('dd').addEventListener('change', function () { var v = $('dd').value.trim(); if (validD(v) && (v !== DLOADED || $('dall').checked)) { $('dall').checked = false; loadData(); } });
 $('dtoday').onclick = function () { $('dd').value = fmt(new Date()); $('dall').checked = false; loadData(); };
