@@ -841,6 +841,8 @@ a.tel{color:#2b50c8;text-decoration:none;font-size:11.5px}
 .pdtb td.l{font-weight:700}
 .gt2 td.gc{padding:0;min-width:0;height:auto}.gt2 input{border:0;background:transparent;font:inherit;padding:4px 6px;min-width:96px;width:100%;box-sizing:border-box;outline:0;color:inherit}.gt2 input.b{font-weight:700}.gt2 input:focus{outline:2px solid var(--pri);outline-offset:-2px;background:#fff}.gt2 td.lk input{cursor:not-allowed;color:#4b5875}.gt2 tr.bad input{background:#fdeaf1}.gt2 tr.dirty input:not(:focus){background:#fffbe3}.gt2 button.rx{border:0;background:none;color:#b91c1c;cursor:pointer;font-size:13px;padding:2px 6px}.gt2 td.ix,.gt2 th.ix{position:static;left:auto;min-width:34px}.gt2 th.ix{position:sticky;top:0}
 .ok{color:#15803d;font-weight:700}.bad{color:#b91c1c;font-weight:700}
+tr.sel td{background:#dbe4ff!important}.gt2 td.rn,.gt2 th.rn0{cursor:pointer;user-select:none}.gt2 th.rn0{color:#3b5bdb}
+.pc.isdup .nodup{display:none}.pc .nodup.hide{display:none}
 header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media(max-width:640px){header h1{flex:1 1 auto;white-space:nowrap}header .u{order:9;flex:1 1 100%;text-align:center}}
 
@@ -909,12 +911,12 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
           </div>
           <div class="tg r">
             <button class="btn sec sm" id="dxl">&#11015; Excel</button><button class="btn sec sm" id="dpr">Print</button>
-            <button class="btn sec sm" id="dpaste">Paste from Excel</button>
+            <button class="btn sec sm hide" id="ddel">Delete selected</button><button class="btn sec sm" id="dpaste">Paste from Excel</button>
             <button class="btn" id="dsave">Save</button>
           </div>
         </div>
         <div class="muted" style="font-size:12px"><span id="dcnt"></span> &middot; <span id="dstat" class="muted"></span> <span id="dro" class="hide">&middot; View only: you cannot change data.</span></div>
-        <details class="dtl"><summary>How it works</summary>Pick the <b>PR date</b> to see that day's PRs (or tick <b>All dates</b> for the newest 6000). Type in any cell: the row is <b>saved automatically</b> a moment after you stop typing. <b>New PRs:</b> type in the empty rows at the top, or copy rows from Excel and press <b>Ctrl+V</b> in any cell (up to 300 rows; use the <b>Paste from Excel</b> button for more). A <b>new row</b> is saved by itself once Workshop, Division, Capacity, PR NO and PR DATE are filled (the Save button saves it at once). PR NO, PR DATE and Workshop are compulsory. <b>Workshop, Division, Substation, Feeder, Place, Capacity, Complain no, PR NO and PR DATE</b> of a saved PR are locked; to correct them delete the row and add it again. Choose the firm <b>DUPLICATE/WRONG PR</b> for a wrong or duplicate PR: its issue, replacement and return dates are cleared. <b>Paste from Excel</b> (button) adds many PRs at once: a PR that already exists only gets its empty cells filled.</details>
+        <details class="dtl"><summary>How it works</summary>Pick the <b>PR date</b> to see that day's PRs (or tick <b>All dates</b> for the newest 6000). Type in any cell: the row is <b>saved automatically</b> a moment after you stop typing. <b>Delete:</b> click the row number (Shift = a range, the # heading = all) and press <b>Delete selected</b>. <b>Keys:</b> arrow keys / Enter move between cells. <b>Pending issue / replacement / return:</b> tap that number in the Summary to fill firm, driver and dates on cards. <b>New PRs:</b> type in the empty rows at the top, or copy rows from Excel and press <b>Ctrl+V</b> in any cell (up to 300 rows; use the <b>Paste from Excel</b> button for more). A <b>new row</b> is saved by itself once Workshop, Division, Capacity, PR NO and PR DATE are filled (the Save button saves it at once). PR NO, PR DATE and Workshop are compulsory. <b>Workshop, Division, Substation, Feeder, Place, Capacity, Complain no, PR NO and PR DATE</b> of a saved PR are locked; to correct them delete the row and add it again. Choose the firm <b>DUPLICATE/WRONG PR</b> for a wrong or duplicate PR: the issue date, driver name / mobile, replacement and return dates are cleared and locked (only the Remark can be written). <b>Paste from Excel</b> (button) adds many PRs at once: a PR that already exists only gets its empty cells filled.</details>
       </div>
       <div id="dmsg"></div>
       <div class="gwrap"><table class="gt gt2" id="dt"></table></div>
@@ -969,7 +971,7 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
 <!-- PASTE FROM EXCEL -->
 <div id="xov" class="ov hide" style="z-index:70"><div class="md">
   <div class="bar" style="justify-content:space-between;align-items:center"><h2 style="margin:0">Paste from Excel</h2><button class="btn sec" id="xclose">Close &#10005;</button></div>
-  <div class="muted" style="font-size:12px;margin:6px 0">Copy the rows in Excel (with the heading row, or without it in the same column order as the Data Sheet) and paste them here. Columns are found by their heading names. Dates: DD.MM.YYYY.</div>
+  <div class="muted" style="font-size:12px;margin:6px 0">Copy the rows in Excel (with the heading row, or without it) and paste them here. Column order without a heading row: <b>Workshop, Division, Substation, Feeder, Place of damage, Capacity, Complain no, PR NO, PR DATE, JE name, JE mobile, Firm, Issue date, Driver, Driver mobile, Replacement date, Return date, Remark</b>. With a heading row the columns are found by their names. Dates: DD.MM.YYYY.</div>
   <textarea id="xta" rows="12" style="width:100%;font:12px ui-monospace,Consolas,monospace" placeholder="Paste here (Ctrl+V)"></textarea>
   <div id="xmsg"></div>
   <div class="bar" style="margin-top:8px"><button class="btn" id="xgo">Save these rows</button></div>
@@ -983,6 +985,7 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
   <div class="bar" style="margin:6px 0"><input type="text" id="lq" placeholder="Search: PR no, place, substation, firm..." style="max-width:340px"><span class="muted" id="lcnt"></span><button class="btn sec sm" id="lxl">&#11015; Excel</button><button class="btn sec sm" id="lpr">Print</button></div>
   <div id="lmsg2"></div>
   <div class="wrap"><table id="lt"></table></div>
+  <div id="lcards" class="hide"></div>
   <button class="btn sec lmore hide" id="lmore"></button>
 </div></div>
 
@@ -1476,8 +1479,10 @@ function fetchList(more) {
 }
 $('lmore').onclick = function () { fetchList(true); };
 $('lq').oninput = function () { drawList(); };
-$('lclose').onclick = function () { $('lov').classList.add('hide'); LSEQ++; };
+$('lclose').onclick = function () { $('lov').classList.add('hide'); LSEQ++; if (PCDIRTY) { PCDIRTY = false; SKEY = ''; if (CURTAB === 'sum') loadSummary(true); } };
 function drawList() {
+  if (cardMode()) { $('lt').parentNode.classList.add('hide'); $('lcards').classList.remove('hide'); return drawCards(); }
+  $('lt').parentNode.classList.remove('hide'); $('lcards').classList.add('hide');
   var q = $('lq').value.trim().toLowerCase(), vis = LROWS.filter(function (r) { return !q || r.join(' ').toLowerCase().indexOf(q) >= 0; });
   LVIS = vis; $('lcnt').textContent = vis.length + ' records' + (LIST && LIST.total > LROWS.length ? ' (of ' + LIST.total + ' in all)' : '');
   var h = '<thead><tr><th>#</th><th>PR NO</th><th>PR DATE</th><th class="l">WORKSHOP</th><th class="l">DIVISION</th><th class="l">SUBSTATION</th><th class="l">PLACE OF DAMAGE</th><th>CAPACITY</th><th>ISSUED TO FIRM</th><th>JE</th><th>DRIVER</th><th>ISSUE DATE</th><th>REPLACEMENT DATE</th><th>RETURN DATE</th><th class="l">REMARK</th></tr></thead><tbody>';
@@ -1551,7 +1556,9 @@ function canWrite() { return !!(ME && ME.edit && (ME.role === 'admin' || ME.role
 function dstat(t, k) { var s = $('dstat'); s.textContent = t || ''; s.className = 'muted ' + (k || ''); }
 function dirtyN() { var n = 0; DROWS.forEach(function (r) { if (r.dirty) n++; }); return n; }
 function newRow() { var c = blank20(); c[0] = oneWs(); c[9] = $('dd').value.trim(); return { o: null, k: null, c: c, dirty: false, bad: false, ver: 0, isNew: true }; }
-function rowLocked(r, i) { return !canWrite() || (!r.isNew && i < EDIT_FROM); }
+var DUP_AFTER = [13, 14, 15, 16, 18];       // issue date, driver name, driver mobile, replacement date, return date
+function dupFix(c) { if (isDupFirm(c[12])) { c[13] = ''; c[14] = 'JE(D)'; c[15] = ''; c[16] = ''; c[18] = ''; } return c; }
+function rowLocked(r, i) { return !canWrite() || (!r.isNew && i < EDIT_FROM) || (DUP_AFTER.indexOf(i) >= 0 && isDupFirm(r.c[12])); }
 var BLANKS = 8;
 function isBlankNew(r) { return r.isNew && !r.dirty && !r.k; }
 function padBlank() {      // empty rows to type or paste into, like an Excel sheet
@@ -1566,10 +1573,10 @@ function drawData() {
   var ws = $('dws').value, q = $('dq').value.trim().toLowerCase(), vis = [];
   DROWS.forEach(function (r, ri) { if (ws && r.c[0] !== ws && !r.isNew) return; if (q && r.c.join(' ').toLowerCase().indexOf(q) < 0 && !r.isNew) return; vis.push(ri); });
   var shown = vis.slice(0, DSHOW);
-  var h = '<thead><tr><th class="ix">#</th>' + DCOL.map(function (c) { return '<th>' + c[1] + '</th>'; }).join('') + '<th class="ix"></th></tr></thead><tbody>';
+  var h = '<thead><tr><th class="ix rn0" title="Select / unselect all rows shown">#</th>' + DCOL.map(function (c) { return '<th>' + c[1] + '</th>'; }).join('') + '<th class="ix"></th></tr></thead><tbody>';
   shown.forEach(function (ri, n) {
     var r = DROWS[ri];
-    h += '<tr data-r="' + ri + '" class="' + (r.dirty ? 'dirty ' : '') + (r.bad ? 'bad' : '') + '"><td class="ix">' + (n + 1) + '</td>' + DCOL.map(function (c) {
+    h += '<tr data-r="' + ri + '" class="' + (r.dirty ? 'dirty ' : '') + (r.bad ? 'bad ' : '') + (r.sel ? 'sel' : '') + '"><td class="ix rn" title="Click to select this row (Shift = range)">' + (n + 1) + '</td>' + DCOL.map(function (c) {
       var i = c[0], lk = rowLocked(r, i), kind = c[2] || '';
       return '<td class="gc' + (lk ? ' lk' : '') + '"><input type="text" data-i="' + i + '" value="' + esc(r.c[i]) + '"' + (lk ? ' readonly tabindex="-1"' : '') + (kind === 'date' ? ' inputmode="numeric" maxlength="10" placeholder="DD.MM.YYYY"' : kind === 'mob' ? ' inputmode="numeric"' : kind === 'ws' ? ' list="wsdl"' : i === 12 ? ' list="frdl"' : i === 14 ? ' list="drdl"' : '') + (i === 8 || i === 9 ? ' class="b"' : '') + '></td>';
     }).join('') + '<td class="ix">' + (canWrite() ? '<button class="rx" title="Delete this row">&#10005;</button>' : '') + '</td></tr>';
@@ -1579,7 +1586,31 @@ function drawData() {
   $('dcnt').textContent = vis.filter(function (ri) { return !isBlankNew(DROWS[ri]); }).length + ' records' + (DTOTAL > DROWS.length ? ' (newest ' + DROWS.length + ' of ' + DTOTAL + ' loaded)' : '');
   ['dpaste', 'dsave'].forEach(function (id) { $(id).classList.toggle('hide', !canWrite()); });
   $('dro').classList.toggle('hide', canWrite());
+  selUpd();
 }
+var LASTSEL = -1;
+function selUpd() { var n = DROWS.filter(function (r) { return r.sel && !isBlankNew(r); }).length; $('ddel').classList.toggle('hide', !n || !canWrite()); $('ddel').textContent = 'Delete selected (' + n + ')'; }
+$('dt').addEventListener('click', function (e) {
+  var th = e.target.closest('.rn0'), td0 = e.target.closest('.rn');
+  if (th) { var rows = Array.prototype.map.call($('dt').querySelectorAll('tbody tr'), function (t) { return DROWS[+t.dataset.r]; }).filter(function (r) { return !isBlankNew(r); }); var all = rows.length && rows.every(function (r) { return r.sel; }); rows.forEach(function (r) { r.sel = !all; }); drawData(); return; }
+  if (!td0) return;
+  var trs = Array.prototype.slice.call($('dt').querySelectorAll('tbody tr')), tr = td0.closest('tr'), pos = trs.indexOf(tr), r = DROWS[+tr.dataset.r];
+  if (e.shiftKey && LASTSEL >= 0 && LASTSEL < trs.length) { var a = Math.min(pos, LASTSEL), b = Math.max(pos, LASTSEL); for (var i = a; i <= b; i++) DROWS[+trs[i].dataset.r].sel = true; }
+  else { r.sel = !r.sel; LASTSEL = pos; }
+  drawData();
+});
+$('ddel').onclick = function () {
+  var sel = DROWS.filter(function (r) { return r.sel && !isBlankNew(r); }); if (!sel.length) return;
+  var saved = sel.filter(function (r) { return r.k; }), loose = sel.length - saved.length;
+  if (!confirm('Delete ' + sel.length + ' selected row(s)?' + (saved.length ? '\n' + saved.length + ' saved PR(s) will be deleted from the database for ever.' : ''))) return;
+  DROWS = DROWS.filter(function (r) { return !(r.sel && !r.k); });
+  var b = $('ddel'), n = 0, bad = 0; busy(b, true, 'Deleting...');
+  (function next() {
+    if (n >= saved.length) { busy(b, false); DTOTAL -= (saved.length - bad); DROWS = DROWS.filter(function (r) { return !(r.sel && r.k && r._gone); }); cclear(); drawData(); dstat(bad ? bad + ' could not be deleted' : 'Deleted', bad ? 'bad' : 'ok'); return; }
+    var r = saved[n++]; dstat('Deleting ' + n + ' of ' + saved.length + '...');
+    rpc('delete_pr', { p_ws: r.k[0], p_pr: r.k[1] }).then(function () { r._gone = true; next(); }).catch(function (er) { bad++; r.sel = false; msg('dmsg', esc(er.message), 'err'); next(); });
+  })();
+};
 function loadData(force) {
   var d = $('dd').value.trim(), all = $('dall').checked;
   if (!all && !validD(d)) { msg('dmsg', 'Enter the PR date in DD.MM.YYYY format.', 'err'); return Promise.resolve(); }
@@ -1639,6 +1670,18 @@ $('dt').addEventListener('change', function (e) {          // when a cell is lef
   if (i === 12 || i === 14) drvAuto(inp, r, i, tr);
   if (r.isNew) queueSave(); else flushData();
 });
+$('dt').addEventListener('keydown', function (e) {
+  var inp = e.target; if (!inp.dataset || inp.dataset.i === undefined) return;
+  var k = e.key, hasList = !!inp.getAttribute('list'), tr = inp.closest('tr'), td0 = inp.closest('td'), col = Array.prototype.indexOf.call(tr.children, td0), go = null;
+  if (k === 'ArrowDown' && !hasList || k === 'Enter') go = tr.nextElementSibling && tr.nextElementSibling.children[col];
+  else if (k === 'ArrowUp' && !hasList) go = tr.previousElementSibling && tr.previousElementSibling.children[col];
+  else if (k === 'ArrowRight' && inp.selectionStart === inp.value.length && inp.selectionEnd === inp.value.length) go = td0.nextElementSibling;
+  else if (k === 'ArrowLeft' && inp.selectionStart === 0 && inp.selectionEnd === 0) go = td0.previousElementSibling;
+  else return;
+  var t = go && go.querySelector('input'); if (!t) return;
+  e.preventDefault(); if (inp.value !== inp.defaultValue || true) inp.dispatchEvent(new Event('change', { bubbles: true }));
+  t.focus(); try { t.select(); } catch (x) {}
+});
 $('dt').addEventListener('click', function (e) {
   var b = e.target.closest('.rx'); if (!b) return;
   var ri = +b.closest('tr').dataset.r, r = DROWS[ri];
@@ -1661,7 +1704,7 @@ $('dt').addEventListener('paste', function (e) {       // several rows copied fr
     var r = newRow();
     r.c = m.idx.map(function (j, i) { var v = j >= 0 ? String(s2[j] == null ? '' : s2[j]).trim() : ''; if (DATE_IDX.indexOf(i) >= 0) v = normDate(v); else if (i === 11 || i === 15) v = cleanMob(v) || v; return v; });
     if (!r.c[0]) r.c[0] = oneWs();
-    r.dirty = true; r.ver = 1; return r;
+    dupFix(r.c); r.dirty = true; r.ver = 1; return r;
   });
   DROWS = add.concat(DROWS); drawData(); dstat('Unsaved changes...'); queueSave();
 });
@@ -1694,7 +1737,17 @@ function mapCols(rows) {
   }
   var hasWs = function (v) { var t = String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); return WSL.some(function (w) { return w.toUpperCase().replace(/[^A-Z0-9]/g, '') === t; }); };
   var off = (rows[0] && !hasWs(rows[0][0]) && hasWs(rows[0][1])) ? 1 : 0;      // a "#" column in front
-  return { start: 0, idx: ALLCOLS.map(function (c, i) { return i + off; }) };
+  // no heading row: find the PR DATE column (the first date after the PR NO) to know which layout was copied
+  var isD = function (v) { v = String(v == null ? '' : v).trim(); return /^\d{1,2}[.\/-]\d{1,2}[.\/-]\d{2,4}$/.test(v) || /^\d{4}-\d{2}-\d{2}/.test(v); };
+  var nR = Math.min(rows.length, 40), dc = -1;
+  for (var c = off + 6; c <= off + 11 && dc < 0; c++) {
+    var tot = 0, ok = 0; for (var k = 0; k < nR; k++) { var v = rows[k][c]; if (v == null || String(v).trim() === '') continue; tot++; if (isD(v)) ok++; }
+    if (tot && ok / tot >= 0.8) dc = c;
+  }
+  var rel = dc - off;
+  if (dc >= 0 && rel === 9) return { start: 0, idx: ALLCOLS.map(function (c, i) { return i + off; }) };       // an old sheet WITH the Category column
+  // normal layout (no Category, no TIME): Workshop, Division, Substation, Feeder, Place, Capacity, Complain no, PR NO, PR DATE, JE name ...
+  return { start: 0, idx: ALLCOLS.map(function (c, i) { var j = i < 6 ? i : i === 6 || i === 17 ? -1 : i < 17 ? i - 1 : i - 2; return j < 0 ? -1 : j + off; }) };
 }
 $('dpaste').onclick = function () { $('xta').value = ''; msg('xmsg', ''); $('xov').classList.remove('hide'); $('xta').focus(); };
 $('xclose').onclick = function () { $('xov').classList.add('hide'); };
@@ -1826,6 +1879,7 @@ $('dt').addEventListener('focusin', function (e) {
   var r = DROWS[+inp.closest('tr').dataset.r]; drvLists(r.c[0], r.c[12]);
 });
 function drvAuto(inp, r, i, tr) {               // after a firm / driver is chosen, fill driver name and mobile from the Driver Master
+  if (i === 12 && isDupFirm(r.c[12])) { dupFix(r.c); r.ver++; r.dirty = true; drawData(); return; }       // duplicate / wrong PR: nothing after the firm can be filled
   var L = DRV.filter(function (d) { return d.workshop === r.c[0]; }), firm = String(r.c[12] || '').toUpperCase(), drv = String(r.c[14] || '').toUpperCase();
   var hit = null;
   if (i === 12) { var f = L.filter(function (d) { return d.firm.toUpperCase() === firm; }); if (f.length && (!drv || !f.some(function (d) { return d.driver.toUpperCase() === drv; }))) { if (f.length === 1) hit = f[0]; } else if (f.length) hit = f.filter(function (d) { return d.driver.toUpperCase() === drv; })[0]; }
@@ -1968,6 +2022,95 @@ $('uesave').onclick = function () {
   admSave(u, { p_name: $('uen').value.trim() || u.login_id, p_scope: u.role === 'je' ? chkGet($('ues')) : u.scope, p_edit: $('uee').value === '1', p_tabs: all ? null : tabs })
     .then(function () { busy(b, false); $('ueov').classList.add('hide'); return admLoad(); }).catch(function (er) { busy(b, false); msg('uemsg', esc(er.message), 'err'); });
 };
+
+/* =====================  PENDING CARDS (list of pending issue / replacement / return)  ===================== */
+var PCDIRTY = false, PCAP = 150, PDN = 0;
+function cardMode() { return !!(LSPEC && [9, 10, 13].indexOf(LSPEC.metric) >= 0 && canWrite()); }
+function pcMode() { return LSPEC.metric === 9 ? 'issue' : LSPEC.metric === 13 ? 'ret' : 'rep'; }
+function firmsOf(ws) { return uniq(DRV.filter(function (d) { return d.workshop === ws; }).map(function (d) { return d.firm; })); }
+function driversOf(ws, firm) { return uniq(DRV.filter(function (d) { return d.workshop === ws && (!firm || d.firm.toUpperCase() === String(firm).toUpperCase()); }).map(function (d) { return d.driver; })); }
+function findDriver(ws, firm, drv) { return DRV.filter(function (d) { return d.workshop === ws && d.firm.toUpperCase() === String(firm).toUpperCase() && d.driver.toUpperCase() === String(drv).toUpperCase(); })[0] || null; }
+function optList(list, cur, ph) {
+  var o = '<option value="">' + ph + '</option>', has = false;
+  list.forEach(function (x) { var sel = cur && x.toUpperCase() === String(cur).toUpperCase(); if (sel) has = true; o += '<option value="' + esc(x) + '"' + (sel ? ' selected' : '') + '>' + esc(x) + '</option>'; });
+  if (cur && !has) o += '<option value="' + esc(cur) + '" selected>' + esc(cur) + '</option>';
+  return o;
+}
+function dateBox(label, col, val) {
+  var id = 'pdx' + (++PDN);
+  return '<div class="dbx nodup"><div class="lb"><label>' + label + '</label></div><div class="dr"><input type="text" class="dtx pd" id="' + id + '" data-f="' + col + '" value="' + esc(val) + '" inputmode="numeric" maxlength="10" placeholder="DD.MM.YYYY" autocomplete="off"><span class="calw">&#128197;<input type="date" data-c="' + id + '"></span></div></div>';
+}
+function callLink(m) { return m ? '<a class="tel" href="tel:' + esc(m) + '">' + esc(m) + '</a>' : ''; }
+function pcard(r, gi, mode) {
+  var ws = r[0], dup = isDupFirm(r[12]), prim = mode === 'issue' ? 13 : mode === 'ret' ? 18 : 16;
+  return '<div class="pc' + (r[prim] ? ' done' : '') + (dup ? ' isdup' : '') + '" data-gi="' + gi + '"><div class="ph"><b>PR ' + esc(r[8]) + '</b><span class="chip">' + (r[5] ? esc(r[5]) + ' KVA' : '-') + '</span><span class="muted">PR date ' + esc(r[9]) + ' &middot; ' + esc(ws) + '</span></div>' +
+    '<div class="pm">' + esc([r[1], r[2], r[4]].filter(Boolean).join(' · ')) + '</div>' +
+    '<div class="pm"><b>JE:</b> ' + esc(r[10] || '-') + ' ' + callLink(r[11]) + '</div>' +
+    '<div class="pf"><div class="full"><label>Issued to firm</label><select data-f="12">' + optList(firmsOf(ws), r[12], '— Select firm —') + '</select></div>' +
+    '<div class="nodup"><label>Driver</label><select data-f="14">' + optList(driversOf(ws, r[12]), r[14], '— Select driver —') + '</select></div>' +
+    '<div class="nodup"><label>Driver mobile</label><div class="mob" data-mob data-v="' + esc(r[15]) + '">' + (esc(r[15]) || '<span class="muted">from Driver Master</span>') + '</div></div>' +
+    dateBox('Issue date', 13, r[13]) + dateBox('Replacement date', 16, r[16]) + (mode === 'ret' ? dateBox('Return date', 18, r[18]) : '') +
+    '<div class="full"><label>Remark</label><input type="text" data-f="19" maxlength="300" value="' + esc(r[19]) + '" placeholder="reason if pending / wrong PR..." autocomplete="off"></div></div>' +
+    '<div class="pa"><button class="btn sm" data-sv>Save</button><span class="stx" data-st></span></div></div>';
+}
+function drawCards() {
+  var q = $('lq').value.trim().toLowerCase(), mode = pcMode(), vis = [];
+  LROWS.forEach(function (r, gi) { if (!q || r.join(' ').toLowerCase().indexOf(q) >= 0) vis.push(gi); });
+  $('lcnt').textContent = vis.length + ' records' + (LIST && LIST.total > LROWS.length ? ' (of ' + LIST.total + ' in all)' : '') + (vis.length > PCAP ? ' - showing the first ' + PCAP + ', use search' : '');
+  var el = $('lcards'), h = DRV.filter(function (d) { return !isDupFirm(d.firm); }).length ? '' : '<div class="msg info">Driver Master has no firm / driver yet. Add them in the <b>Drivers</b> tab first.</div>';
+  vis.slice(0, PCAP).forEach(function (gi) { h += pcard(LROWS[gi], gi, mode); });
+  el.innerHTML = h || '<div class="muted">No records.</div>';
+}
+function pcSetMob(card, v) { var m = card.querySelector('[data-mob]'); m.dataset.v = v || ''; m.innerHTML = v ? esc(v) : '<span class="muted">from Driver Master</span>'; }
+function pcChange(card, el) {
+  var r = LROWS[+card.dataset.gi], ws = r[0], f = el.dataset.f, fs = card.querySelector('[data-f="12"]'), ds = card.querySelector('[data-f="14"]');
+  if (f === '12') {
+    var dup = isDupFirm(fs.value); card.classList.toggle('isdup', dup);
+    var list = driversOf(ws, fs.value), cur = ds.value, keep = cur && list.some(function (x) { return x.toUpperCase() === cur.toUpperCase(); });
+    var nd = keep ? cur : (fs.value && list.length === 1 ? list[0] : '');
+    ds.innerHTML = optList(list, nd, '— Select driver —');
+    var x = nd ? findDriver(ws, fs.value, nd) : null; pcSetMob(card, x ? x.mobile : '');
+  } else if (f === '14') {
+    var x2 = ds.value ? findDriver(ws, fs.value, ds.value) : null; pcSetMob(card, x2 ? x2.mobile : '');
+  } else if (f === '13' || f === '16' || f === '18') {
+    var v = normDate(el.value.trim()); el.value = v;
+    if (v && !validD(v)) return pcStat(card, 'Enter the date as DD.MM.YYYY', 'bad');
+  }
+  pcStat(card, 'Unsaved...', ''); clearTimeout(card._t); card._t = setTimeout(function () { pcSave(card); }, 700);
+}
+function pcStat(card, t, k) { var s = card.querySelector('[data-st]'); s.className = 'stx ' + (k || ''); s.textContent = t; }
+function pcSave(card) {
+  if (card._busy) { card._again = true; return; }
+  var gi = +card.dataset.gi, r = LROWS[gi], nr = r.slice(0, 20), btn = card.querySelector('[data-sv]');
+  nr[12] = card.querySelector('[data-f="12"]').value; nr[14] = card.querySelector('[data-f="14"]').value; nr[15] = card.querySelector('[data-mob]').dataset.v || '';
+  var bad = false;
+  [13, 16, 18].forEach(function (c) { var e = card.querySelector('input[data-f="' + c + '"]'); if (!e) return; var v = normDate(e.value.trim()); if (v && !validD(v)) bad = true; nr[c] = v; });
+  if (bad) return pcStat(card, 'Enter the date as DD.MM.YYYY', 'bad');
+  var rm = card.querySelector('input[data-f="19"]'); nr[19] = rm.value.trim();
+  if (isDupFirm(nr[12])) dupFix(nr);
+  var old = r.slice(0, 20);
+  if (nr.join('\u0001') === old.join('\u0001')) return pcStat(card, '✓ Saved', 'ok');
+  var pd = d2i(r[9]), idt = d2i(nr[13]);
+  if (nr[13] && nr[13] !== old[13] && pd && idt < pd && !confirm('Issue date ' + nr[13] + ' is earlier than the PR date ' + r[9] + '. Save anyway?')) return pcStat(card, 'Not saved', 'bad');
+  if (nr[16] && nr[16] !== old[16]) { var lo = idt || pd, rd = d2i(nr[16]); if (lo && rd < lo && !confirm('Replacement date ' + nr[16] + ' is earlier than the ' + (idt ? 'issue date ' + nr[13] : 'PR date ' + r[9]) + '. Save anyway?')) return pcStat(card, 'Not saved', 'bad'); }
+  card._busy = true; btn.disabled = true; pcStat(card, 'Saving...', '');
+  rpc('save_rows', { p_items: [{ k: [r[0], r[8]], o: old, r: fixRow(nr) }] }).then(function (res) {
+    card._busy = false; btn.disabled = false;
+    if (res.bad && res.bad.length) { pcStat(card, (res.notes[0] || 'Not saved').replace(/^Line 1 \([^)]*\):\s*/, ''), 'bad'); return; }
+    var sv = res.rows && res.rows['0'] ? res.rows['0'].slice(0, 20) : fixRow(nr);
+    LROWS[gi] = sv; PCDIRTY = true; cclear();
+    var prim = pcMode() === 'issue' ? 13 : pcMode() === 'ret' ? 18 : 16; card.classList.toggle('done', !!sv[prim]);
+    pcStat(card, '✓ Saved', 'ok');
+    if (card._again) { card._again = false; pcSave(card); }
+  }).catch(function (e) { card._busy = false; btn.disabled = false; pcStat(card, e.message, 'bad'); });
+}
+$('lcards').addEventListener('change', function (e) { var el = e.target, card = el.closest && el.closest('.pc'); if (card && el.dataset.f) pcChange(card, el); });
+$('lcards').addEventListener('input', function (e) {
+  var el = e.target, card = el.closest && el.closest('.pc'); if (!card || !el.dataset.f) return;
+  if (el.classList.contains('pd')) { var f = dotFmt(el.value); if (/^[\d.]*$/.test(el.value) && f !== el.value) el.value = f; if (/^\d{2}\.\d{2}\.\d{4}$/.test(el.value)) pcChange(card, el); else pcStat(card, el.value ? 'Typing...' : '', ''); }
+  else if (el.dataset.f === '19') { pcStat(card, 'Unsaved...', ''); clearTimeout(card._t); card._t = setTimeout(function () { pcSave(card); }, 1200); }
+});
+$('lcards').addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-sv]'); if (!b) return; var card = b.closest('.pc'); clearTimeout(card._t); pcSave(card); });
 
 </script>
 <script>if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(function () {});</script>
