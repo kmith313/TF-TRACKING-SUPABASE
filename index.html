@@ -880,6 +880,26 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
 :is(#sout,.soutp) .k-div .z{color:#000;font-weight:700;font-size:14px}
 :is(#sout,.soutp) .k-div td.l a.n{display:inline;min-width:0;padding:0;background:none;color:inherit;font-size:inherit;font-weight:inherit;border-radius:0;text-decoration:underline dotted;cursor:pointer}
 :is(#sout,.soutp) .k-div td a.n{font-size:14px;font-weight:700}
+
+/* Comparison - look of the comparative PDF */
+.cmpw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.cmpt{border-collapse:collapse;font-size:11px;background:#fff;color:#000;min-width:1500px}
+table.cmpt th,table.cmpt td{border:1px solid #000;padding:3px 4px;text-align:center;white-space:nowrap;font-weight:600}
+table.cmpt thead th{background:#fff2cc;color:#222;font-weight:700;white-space:normal;line-height:1.2}
+table.cmpt thead tr.ca th.ct{text-align:center;font-size:12px}
+table.cmpt th.cp{font-size:10px}
+table.cmpt td.nm,table.cmpt th.nm{white-space:normal;min-width:150px;font-weight:700}
+table.cmpt td.b{font-weight:800}
+table.cmpt tr.d td{background:#fff}
+table.cmpt tr.w.s td{background:#c9daf8;color:#1c3d7a;font-weight:800}
+table.cmpt tr.w.wt td{background:#fff;color:#1c3d7a;font-weight:800;font-size:12px}
+table.cmpt tr.t.z td{background:#ffff00;color:#000;font-weight:800;font-size:12px}
+table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;border:1px solid #c9b46a;background:#fffbe6;border-radius:3px;padding:2px}
+.cmpp table.cmpt{font-size:6.5px;min-width:0;width:100%}
+.cmpp table.cmpt th,.cmpp table.cmpt td{padding:1px 1.5px}
+#pz .cmpp table.cmpt{width:100%;font-size:6.5px}
+#pz .cmpp table.cmpt th,#pz .cmpp table.cmpt td{border:1px solid #000;padding:1px 1.5px;white-space:nowrap}
+#pz .cmpp table.cmpt td.nm,#pz .cmpp table.cmpt th.nm{white-space:normal}
 </style>
 </head>
 <body class="on-home">
@@ -910,6 +930,7 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
     <button data-t="sum" id="tsum" class="on">Summary</button>
     <button data-t="data" id="tdata">Data Sheet</button>
     <button data-t="drv" id="tdrv">Drivers</button>
+    <button data-t="cmp" id="tcmp">Comparison</button>
     <button data-t="adm" id="tadm">Admin</button>
   </nav></div>
   <main>
@@ -970,6 +991,20 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
       </div>
       <div id="vmsg"></div>
       <div class="gwrap"><table class="gt gt2 mt" id="vt"></table></div>
+    </section>
+
+    <!-- COMPARISON (Admin only) -->
+    <section id="t-cmp" class="hide">
+      <div class="card">
+        <div class="bar sbar">
+          <div><label>From</label><div class="dt"><input type="text" class="dtx" id="cf" inputmode="numeric" placeholder="DD.MM.YYYY"><span class="calw">&#128197;<input type="date" data-c="cf"></span></div></div>
+          <div><label>To</label><div class="dt"><input type="text" class="dtx" id="cto" inputmode="numeric" placeholder="DD.MM.YYYY"><span class="calw">&#128197;<input type="date" data-c="cto"></span></div></div>
+          <button class="btn" id="cbtn">Show Comparison</button><button class="btn sec" id="cxl">&#11015; Excel</button><button class="btn sec" id="cpr">Print</button>
+        </div>
+        <details class="dtl"><summary>How it works</summary>Pick <b>From</b> and <b>To</b> (by default this month up to today). The table counts the PRs of these dates capacity wise and division wise, and compares them with the <b>same dates of last year</b>. Type the <b>Install on 01.04.YYYY</b> numbers once in the boxes: Damage % and the increase / decrease columns are worked out for you. Only the Admin sees this tab.</details>
+      </div>
+      <div id="cmsg"></div>
+      <div id="cmpout"></div>
     </section>
 
     <!-- ADMIN -->
@@ -1300,25 +1335,25 @@ document.addEventListener('change', function (e) {
 // by default: this month (1st of the month .. today)
 function initDates() {
   var t = new Date(), td = fmt(t), f = '01.' + p2(t.getMonth() + 1) + '.' + t.getFullYear();
-  $('sd').value = td; $('sf').value = f; $('st').value = td; $('dd').value = td; $('dall').checked = false;
+  $('sd').value = td; $('sf').value = f; $('st').value = td; $('dd').value = td; $('dall').checked = false; $('cf').value = f; $('cto').value = td;
 }
 
 /* ---------- tabs ---------- */
 var CURTAB = 'sum', SSEQ = 0;
 var WSDIV = {}, DRV = [];
 function allowedTabs() {
-  var base = { creator: ['sum', 'adm'], discom: ['sum'], admin: ['sum', 'data', 'drv', 'adm'], je: ['sum', 'data', 'drv'] }[ME.role] || ['sum'];
+  var base = { creator: ['sum', 'adm'], discom: ['sum'], admin: ['sum', 'data', 'drv', 'cmp', 'adm'], je: ['sum', 'data', 'drv'] }[ME.role] || ['sum'];
   if (ME.tabs && ME.role === 'je') base = base.filter(function (t) { return ME.tabs.indexOf(t) >= 0; });
-  else if (ME.tabs && ME.role !== 'je') base = base.filter(function (t) { return t === 'adm' || ME.tabs.indexOf(t) >= 0; });
+  else if (ME.tabs && ME.role !== 'je') base = base.filter(function (t) { return t === 'adm' || t === 'cmp' || ME.tabs.indexOf(t) >= 0; });
   return base.length ? base : ['sum'];
 }
 function showTab(t) {
   CURTAB = t;
   document.querySelectorAll('nav button').forEach(function (x) { x.classList.toggle('on', x.dataset.t === t); });
-  ['sum', 'data', 'drv', 'adm'].forEach(function (k) { $('t-' + k).classList.toggle('hide', k !== t); });
+  ['sum', 'data', 'drv', 'cmp', 'adm'].forEach(function (k) { $('t-' + k).classList.toggle('hide', k !== t); });
 }
 document.querySelectorAll('nav button').forEach(function (b) {
-  b.onclick = function () { var t = b.dataset.t; showTab(t); if (t === 'sum') loadSummary(); else if (t === 'adm') admLoad(); else if (t === 'drv') drvLoad(); else if (!dirtyN()) loadData(); };
+  b.onclick = function () { var t = b.dataset.t; showTab(t); if (t === 'sum') loadSummary(); else if (t === 'adm') admLoad(); else if (t === 'drv') drvLoad(); else if (t === 'cmp') cmpLoad(); else if (!dirtyN()) loadData(); };
 });
 
 /* =====================  SUMMARY  ===================== */
@@ -1327,7 +1362,7 @@ function isoDate(s) { var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || ''); return m
 // database answer -> the same structure the old Apps Script returned (so the old screen code can be used as it is)
 // the fixed order and the look of the Division wise table (as in DIVSION_FORMATING.pdf); [label, 1 = highlighted EDC row]
 var DIVORD = {
-  AZAMGARH: [['E.E. E.D.D.-I Azamgarh'], ['E.E. E.D.D.-II Azamgarh'], ['E.E. E.D.D.-III Azamgarh'], ['EDC-I AZAMGARH', 1], ['E.E. E.D.D. Phoolpur Azamgar'], ['E.E. E.D.D-V Azamgarh'], ['E.E. E.D.D-VI Azamgarh'], ['EDC-II AZAMGARH', 1]],
+  AZAMGARH: [['E.E. E.D.D.-I Azamgarh'], ['E.E. E.D.D.-II Azamgarh'], ['E.E. E.D.D.-III Azamgarh'], ['EDC-I AZAMGARH', 1, 3], ['E.E. E.D.D. Phoolpur Azamgar'], ['E.E. E.D.D-V Azamgarh'], ['E.E. E.D.D-VI Azamgarh'], ['EDC-II AZAMGARH', 1, 3]],
   MAU: [['E.E. E.D.D.-I Mau'], ['E.E. E.D.D.-II Mau'], ['E.E. E.D.D.-III Ghosi Mau']],
   BALLIA: [['E.E. E.D.D.-I Ballia'], ['E.E. E.D.D.-II Ballia'], ['E.E. E.D.D. Banshdih Ballia'], ['E.E. E.D.D-IV Bairiya Ballia']]
 };
@@ -1357,8 +1392,11 @@ function buildSummary(raw, p) {
   var WORD = ['AZAMGARH', 'MAU', 'BALLIA'];
   WS.slice().sort(function (x, y) { var i = WORD.indexOf(x), j = WORD.indexOf(y); return (i < 0 ? 99 : i) - (j < 0 ? 99 : j); }).forEach(function (w) {
     var keys = allDivs.filter(function (d) { return divWs[d] === w; }).sort(function (a, b) { return natural(divLbl[a], divLbl[b]); }), used = {};
+    var prevKs = [];
     (DIVORD[w] || []).forEach(function (f) {       // the fixed divisions always get a row (0 if no PR), in the fixed order
-      var ks = keys.filter(function (d) { return nk(divLbl[d]) === nk(f[0]); });
+      var ks;
+      if (f[2]) { ks = []; prevKs.splice(-f[2]).forEach(function (a) { ks = ks.concat(a); }); }     // EDC row = sub total of the divisions above it
+      else { ks = keys.filter(function (d) { return nk(divLbl[d]) === nk(f[0]); }); prevKs.push(ks); }
       ks.forEach(function (d) { used[d] = 1; assigned[d] = 1; });
       push('d', f[0], ks, w, f[1] ? 'e' : '');
     });
@@ -2303,6 +2341,155 @@ drawData = function () {
     var inp = trs[p].querySelector('input[data-i="' + fk.i + '"]');
     if (inp) { try { inp.focus({ preventScroll: true }); if (fk.s != null) inp.setSelectionRange(fk.s, fk.e); } catch (x) {} }
   }
+};
+
+/* =====================  COMPARISON (Admin only)  =====================
+ * This year's PRs of the chosen dates against the SAME dates of last year, capacity wise, division wise (format of comparative PDF).
+ * Numbers come from compare_fmt(); "Install on 01.04.YYYY" is typed by the Admin in the boxes and kept by set_installed().          */
+var CMP = null, CMPINST = {}, CMPSEQ = 0;
+var CCAPS = [10, 16, 25, 63, 100, 160, 250, 400, 630, 1000];
+var CGROUPS = [
+  { ws: 'AZAMGARH', total: 'AZAMGARH', parts: [
+    { label: 'EDC-I Azh.', divs: ['E.E. E.D.D.-I Azamgarh', 'E.E. E.D.D.-II Azamgarh', 'E.E. E.D.D.-III Azamgarh'] },
+    { label: 'EDC-II Azh.', divs: ['E.E. E.D.D. Phoolpur Azamgar', 'E.E. E.D.D-V Azamgarh', 'E.E. E.D.D-VI Azamgarh'] }] },
+  { ws: 'MAU', total: null, parts: [{ label: 'EDC-MAU', divs: ['E.E. E.D.D.-I Mau', 'E.E. E.D.D.-II Mau', 'E.E. E.D.D.-III Ghosi Mau'] }] },
+  { ws: 'BALLIA', total: null, parts: [{ label: 'EDC-Ballia', divs: ['E.E. E.D.D.-I Ballia', 'E.E. E.D.D.-II Ballia', 'E.E. E.D.D. Banshdih Ballia', 'E.E. E.D.D-IV Bairiya Ballia'] }] }
+];
+function cvec() { return { c: {}, bel: 0, abv: 0, tot: 0 }; }
+function cput(v, cap, n) {
+  if (CCAPS.indexOf(cap) >= 0) v.c[cap] = (v.c[cap] || 0) + n;
+  if (cap > 0 && cap < 100) v.bel += n; else if (cap >= 100) v.abv += n;
+  v.tot += n;
+}
+function cadd(a, b) { CCAPS.forEach(function (k) { a.c[k] = (a.c[k] || 0) + (b.c[k] || 0); }); a.bel += b.bel; a.abv += b.abv; a.tot += b.tot; return a; }
+function cmpFy(d) { return d.getMonth() >= 3 ? d.getFullYear() : d.getFullYear() - 1; }       // the year of the 01.04 before this date
+function cmpInst(key, yr) { var v = CMPINST[key + '|' + yr]; return v == null ? null : v; }
+
+// rows of the table: d = division, s = EDC sub total, w = workshop total, z = zone total
+function cmpBuild(raw, yc, yp) {
+  var idx = { c: {}, p: {} };
+  raw.forEach(function (r) {
+    var s = idx[r[0]]; if (!s) return;
+    var w = s[r[1]] || (s[r[1]] = {}), k = nk(r[2]), o = w[k] || (w[k] = { name: r[2], v: cvec() });
+    cput(o.v, r[3], r[4]);
+  });
+  var rows = [], sl = 0, gtot = [];
+  function mk(t, label, key) { return { t: t, label: label, key: key || '', cur: cvec(), prv: cvec(), ic: 0, ip: 0, hasI: false }; }
+  function addInto(a, b) { cadd(a.cur, b.cur); cadd(a.prv, b.prv); a.ic += b.ic; a.ip += b.ip; }
+  function divRow(ws, label, key) {
+    var r = mk('d', label, key); r.sl = ++sl;
+    var c = (idx.c[ws] || {})[key], p = (idx.p[ws] || {})[key];
+    if (c) cadd(r.cur, c.v); if (p) cadd(r.prv, p.v);
+    var a = cmpInst(key, yc), b = cmpInst(key, yp); r.ic = a || 0; r.ip = b || 0; r.vc = a; r.vp = b;
+    return r;
+  }
+  WSL_SORTED().forEach(function (ws) {
+    var g = CGROUPS.filter(function (x) { return x.ws === ws; })[0] || { ws: ws, total: ws, parts: [] };
+    var used = {}, seen = {}; (idx.c[ws] ? Object.keys(idx.c[ws]) : []).concat(idx.p[ws] ? Object.keys(idx.p[ws]) : []).forEach(function (k) { seen[k] = 1; });
+    var gsum = mk('w', g.total || ws), extras = [];
+    g.parts.forEach(function (pt) { pt.keys = pt.divs.map(function (d) { var k = nk(d); used[k] = 1; return k; }); });
+    Object.keys(seen).forEach(function (k) { if (!used[k]) extras.push(k); });
+    extras.sort();
+    g.parts.forEach(function (pt, pi) {
+      var ps = mk('s', pt.label), last = pi === g.parts.length - 1;
+      pt.divs.forEach(function (d, i) { var r = divRow(ws, d, pt.keys[i]); rows.push(r); addInto(ps, r); });
+      if (last && !g.total) extras.splice(0).forEach(function (k) { var r = divRow(ws, ((idx.c[ws] || {})[k] || (idx.p[ws] || {})[k]).name, k); rows.push(r); addInto(ps, r); });
+      rows.push(ps); addInto(gsum, ps);
+    });
+    if (g.total || !g.parts.length) {
+      extras.splice(0).forEach(function (k) { var r = divRow(ws, ((idx.c[ws] || {})[k] || (idx.p[ws] || {})[k]).name, k); rows.push(r); addInto(gsum, r); });
+      rows.push(gsum);
+    }
+    gtot.push(g.total ? gsum : rows[rows.length - 1]);
+  });
+  var z = mk('z', CMP_ZONE()); gtot.forEach(function (g) { addInto(z, g); });
+  rows.push(z);
+  return rows;
+}
+function WSL_SORTED() { var W = ['AZAMGARH', 'MAU', 'BALLIA']; return WSL.slice().sort(function (x, y) { var i = W.indexOf(x), j = W.indexOf(y); return (i < 0 ? 99 : i) - (j < 0 ? 99 : j); }); }
+function CMP_ZONE() { return WSL.indexOf('AZAMGARH') >= 0 ? 'Azh ZONE' : 'ZONE TOTAL'; }
+
+function cpct(n, d) { return d > 0 ? (n / d * 100).toFixed(2) + '%' : '–'; }
+function cchg(cur, prev) { return prev > 0 ? ((cur - prev) / prev * 100).toFixed(2) + '%' : (cur > 0 ? '–' : '0.00%'); }
+function cmpTitle() { var d = ME && ME.div ? String(ME.div) : ''; return 'ELECTRICITY WORKSHOP DIVISION, ' + (d.replace(/^EWD\s*/i, '') || '').toUpperCase(); }
+
+function cmpHtml(edit) {
+  var C = CMP, NC = 35, h = '', yy = function (y) { return String(y).slice(2); };
+  var f = parseD(C.from), t = parseD(C.to), same = f.getMonth() === t.getMonth() && f.getFullYear() === t.getFullYear();
+  var lc = same ? p2(f.getMonth() + 1) + '/' + yy(f.getFullYear()) : C.from + ' to ' + C.to;
+  var lp = same ? p2(f.getMonth() + 1) + '/' + yy(f.getFullYear() - 1) : fmt(new Date(f.getFullYear() - 1, f.getMonth(), f.getDate())) + ' to ' + fmt(new Date(t.getFullYear() - 1, t.getMonth(), t.getDate()));
+  var sub = same ? 'COMPARISON OF DIVISION WISE PR FOR THE M/O-' + p2(f.getMonth() + 1) + '/' + f.getFullYear() + ' WITH LAST YEAR SAME MONTH' : 'COMPARISON OF DIVISION WISE PR FOR ' + C.from + ' TO ' + C.to + ' WITH THE SAME DATES OF LAST YEAR';
+  var capH = CCAPS.slice(0, 4).map(String).concat(['BELOW 100 KVA'], CCAPS.slice(4).map(String), ['100 AND ABOVE', 'TOTAL PR']);
+  h += '<table class="cmpt"><thead>';
+  h += '<tr class="ca"><th colspan="' + (NC - 4) + '" class="ct">' + esc(cmpTitle()) + '</th><th>MONTH</th><th colspan="3">' + esc(C.from + ' TO ' + C.to) + '</th></tr>';
+  h += '<tr class="ca"><th colspan="' + (NC - 4) + '" class="ct">' + esc(sub) + '</th><th colspan="4"></th></tr>';
+  h += '<tr><th rowspan="2">Sl.No.</th><th rowspan="2" class="nm">Name of<br>Division Circle<br>/Zone</th>' +
+    '<th colspan="13">Damaged Transformers PR of ' + esc(lp) + '</th><th rowspan="2" class="ins">Install on<br>01.04.' + C.yp + '</th><th rowspan="2">Damage %</th>' +
+    '<th colspan="13">Damaged Transformers PR of ' + esc(lc) + '</th><th rowspan="2" class="ins">Install on<br>01.04.' + C.yc + '</th><th rowspan="2">DAMAGE %</th>' +
+    '<th rowspan="2">LESS THAN<br>100KVA<br>INC/DEC<br>DAMAGE %</th><th rowspan="2">100 KVA<br>AND ABOVE<br>INC/DEC<br>DAMAGE %</th><th rowspan="2">TOTAL INC/DEC<br>DAMAGE %</th></tr>';
+  h += '<tr>' + capH.concat(capH).map(function (x) { return '<th class="cp">' + x + '</th>'; }).join('') + '</tr></thead><tbody>';
+  function side(v, inst, edit, key, yr, vi) {
+    var s = '';
+    CCAPS.slice(0, 4).forEach(function (k) { s += '<td>' + (v.c[k] || 0) + '</td>'; });
+    s += '<td class="b">' + v.bel + '</td>';
+    CCAPS.slice(4).forEach(function (k) { s += '<td>' + (v.c[k] || 0) + '</td>'; });
+    s += '<td class="b">' + v.abv + '</td><td class="b">' + v.tot + '</td>';
+    s += '<td class="b">' + (edit ? '<input type="number" min="0" step="1" class="ci" data-k="' + esc(key) + '" data-y="' + yr + '" value="' + (vi == null ? '' : vi) + '">' : (inst > 0 || vi != null ? inst : '')) + '</td>';
+    return s + '<td>' + cpct(v.tot, inst) + '</td>';
+  }
+  CMP.rows.forEach(function (r) {
+    var cls = r.t === 'd' ? 'd' : r.t === 's' ? 'w s' : r.t === 'w' ? 'w wt' : 't z';
+    h += '<tr class="' + cls + '"><td>' + (r.t === 'd' ? r.sl : '') + '</td><td class="nm">' + esc(r.label) + '</td>';
+    var ed = edit && r.t === 'd';
+    h += side(r.prv, r.ip, ed, r.key, C.yp, r.vp) + side(r.cur, r.ic, ed, r.key, C.yc, r.vc);
+    h += '<td>' + cchg(r.cur.bel, r.prv.bel) + '</td><td>' + cchg(r.cur.abv, r.prv.abv) + '</td><td>' + cchg(r.cur.tot, r.prv.tot) + '</td></tr>';
+  });
+  return h + '</tbody></table>';
+}
+function cmpDraw() {
+  if (!CMP) return;
+  $('cmpout').innerHTML = '<div class="card"><div class="wrap cmpw">' + cmpHtml(true) + '</div>' +
+    '<div class="muted" style="font-size:12px;margin-top:8px">Type the <b>Install on 01.04.YYYY</b> numbers in the boxes of each division (they are saved automatically, and Damage % is worked out from them). ' +
+    'Counts are PRs by PR date (wrong / duplicate PRs not counted). Capacities that have no column (for example 5 or 40) are inside BELOW 100 KVA / 100 AND ABOVE and TOTAL PR. An empty – means there is no last-year figure to compare with.</div></div>';
+}
+function cmpLoad() {
+  if (!ME || ME.role !== 'admin') return Promise.resolve();
+  if (!validD($('cf').value.trim()) || !validD($('cto').value.trim())) { msg('cmsg', 'Enter both dates in DD.MM.YYYY format.', 'err'); return Promise.resolve(); }
+  var f = $('cf').value.trim(), t = $('cto').value.trim();
+  if (parseD(f) > parseD(t)) { msg('cmsg', 'The "From" date cannot be later than the "To" date.', 'err'); return Promise.resolve(); }
+  var seq = ++CMPSEQ; msg('cmsg', '<span class="sp" style="border-color:#3b5bdb55;border-top-color:#3b5bdb"></span>Loading...', 'info');
+  return Promise.all([rpc('compare_fmt', { p_from: d2i(f), p_to: d2i(t) }), rpc('installed_json', {})]).then(function (a) {
+    if (seq !== CMPSEQ) return;
+    CMPINST = {}; (a[1] || []).forEach(function (x) { CMPINST[x[0] + '|' + x[1]] = x[2]; });
+    var yc = cmpFy(parseD(f));
+    CMP = { from: f, to: t, yc: yc, yp: yc - 1, raw: a[0] || [] }; CMP.rows = cmpBuild(CMP.raw, CMP.yc, CMP.yp);
+    msg('cmsg', ''); cmpDraw();
+  }).catch(function (e) { if (seq === CMPSEQ) msg('cmsg', esc(e.message), 'err'); });
+}
+$('cbtn').onclick = function () { cmpLoad(); };
+['cf', 'cto'].forEach(function (id) { $(id).addEventListener('keydown', function (e) { if (e.key === 'Enter') cmpLoad(); }); });
+$('cmpout').addEventListener('change', function (e) {
+  var el = e.target; if (!el.matches || !el.matches('input.ci')) return;
+  var k = el.dataset.k, y = +el.dataset.y, tx = el.value.trim(), q = tx === '' ? -1 : Number(tx);
+  if (tx !== '' && (!isFinite(q) || q < 0 || Math.floor(q) !== q)) { msg('cmsg', 'The Install number must be a whole number (0 or more).', 'err'); el.value = CMPINST[k + '|' + y] == null ? '' : CMPINST[k + '|' + y]; return; }
+  msg('cmsg', '');
+  if (q < 0) delete CMPINST[k + '|' + y]; else CMPINST[k + '|' + y] = q;
+  setTimeout(function () {                     // redraw (new Damage % and totals) and keep the cursor where the user went
+    var a = document.activeElement, fk = a && a.matches && a.matches('input.ci') ? [a.dataset.k, a.dataset.y] : null;
+    CMP.rows = cmpBuild(CMP.raw, CMP.yc, CMP.yp); cmpDraw();
+    if (fk) { var n = $('cmpout').querySelector('input.ci[data-k="' + fk[0] + '"][data-y="' + fk[1] + '"]'); if (n) { n.focus(); try { n.select(); } catch (x) {} } }
+  }, 0);
+  rpc('set_installed', { p_key: k, p_yr: y, p_qty: q }).catch(function (er) { msg('cmsg', 'Install number not saved: ' + esc(er.message), 'err'); });
+});
+function cmpPlain() { var d = document.createElement('div'); d.innerHTML = cmpHtml(false); return d; }
+$('cxl').onclick = function () {
+  if (!CMP) return msg('cmsg', 'Show the comparison first.', 'info');
+  var d = cmpPlain(), a = tableToAoa(d.querySelector('table'));
+  xlsxDownload('Comparison_' + fileSafe(CMP.from) + '_to_' + fileSafe(CMP.to) + '.xlsx', [{ name: 'Comparison', rows: a.rows, merges: a.merges, hdr: 0, skipw: 2 }]);
+};
+$('cpr').onclick = function () {
+  if (!CMP) return msg('cmsg', 'Show the comparison first.', 'info');
+  printHtml('Comparison ' + CMP.from + ' to ' + CMP.to, '<div class="ps cmpp noanim">' + cmpHtml(false) + '</div>');
 };
 
 </script>
