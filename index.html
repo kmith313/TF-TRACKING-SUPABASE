@@ -2026,8 +2026,8 @@ $('uesave').onclick = function () {
 
 /* =====================  PENDING CARDS (list of pending issue / replacement / return)  ===================== */
 var PCDIRTY = false, PCAP = 150, PDN = 0;
-function cardMode() { return !!(LSPEC && [9, 10, 13].indexOf(LSPEC.metric) >= 0 && canWrite()); }
-function pcMode() { return LSPEC.metric === 9 ? 'issue' : LSPEC.metric === 13 ? 'ret' : 'rep'; }
+function cardMode() { return !!(LSPEC && canWrite()); }          // every list opens as cards for a user who can edit
+function pcMode() { return LSPEC.metric === 9 ? 'issue' : LSPEC.metric === 10 ? 'rep' : 'all'; }
 function firmsOf(ws) { return uniq(DRV.filter(function (d) { return d.workshop === ws; }).map(function (d) { return d.firm; })); }
 function driversOf(ws, firm) { return uniq(DRV.filter(function (d) { return d.workshop === ws && (!firm || d.firm.toUpperCase() === String(firm).toUpperCase()); }).map(function (d) { return d.driver; })); }
 function findDriver(ws, firm, drv) { return DRV.filter(function (d) { return d.workshop === ws && d.firm.toUpperCase() === String(firm).toUpperCase() && d.driver.toUpperCase() === String(drv).toUpperCase(); })[0] || null; }
@@ -2043,14 +2043,14 @@ function dateBox(label, col, val) {
 }
 function callLink(m) { return m ? '<a class="tel" href="tel:' + esc(m) + '">' + esc(m) + '</a>' : ''; }
 function pcard(r, gi, mode) {
-  var ws = r[0], dup = isDupFirm(r[12]), prim = mode === 'issue' ? 13 : mode === 'ret' ? 18 : 16;
+  var ws = r[0], dup = isDupFirm(r[12]), prim = mode === 'issue' ? 13 : 16;
   return '<div class="pc' + (r[prim] ? ' done' : '') + (dup ? ' isdup' : '') + '" data-gi="' + gi + '"><div class="ph"><b>PR ' + esc(r[8]) + '</b><span class="chip">' + (r[5] ? esc(r[5]) + ' KVA' : '-') + '</span><span class="muted">PR date ' + esc(r[9]) + ' &middot; ' + esc(ws) + '</span></div>' +
     '<div class="pm">' + esc([r[1], r[2], r[4]].filter(Boolean).join(' · ')) + '</div>' +
     '<div class="pm"><b>JE:</b> ' + esc(r[10] || '-') + ' ' + callLink(r[11]) + '</div>' +
     '<div class="pf"><div class="full"><label>Issued to firm</label><select data-f="12">' + optList(firmsOf(ws), r[12], '— Select firm —') + '</select></div>' +
     '<div class="nodup"><label>Driver</label><select data-f="14">' + optList(driversOf(ws, r[12]), r[14], '— Select driver —') + '</select></div>' +
     '<div class="nodup"><label>Driver mobile</label><div class="mob" data-mob data-v="' + esc(r[15]) + '">' + (esc(r[15]) || '<span class="muted">from Driver Master</span>') + '</div></div>' +
-    dateBox('Issue date', 13, r[13]) + dateBox('Replacement date', 16, r[16]) + (mode === 'ret' ? dateBox('Return date', 18, r[18]) : '') +
+    dateBox('Issue date', 13, r[13]) + dateBox('Replacement date', 16, r[16]) + (mode === 'all' ? dateBox('Return date', 18, r[18]) : '') +
     '<div class="full"><label>Remark</label><input type="text" data-f="19" maxlength="300" value="' + esc(r[19]) + '" placeholder="reason if pending / wrong PR..." autocomplete="off"></div></div>' +
     '<div class="pa"><button class="btn sm" data-sv>Save</button><span class="stx" data-st></span></div></div>';
 }
@@ -2094,13 +2094,15 @@ function pcSave(card) {
   var pd = d2i(r[9]), idt = d2i(nr[13]);
   if (nr[13] && nr[13] !== old[13] && pd && idt < pd && !confirm('Issue date ' + nr[13] + ' is earlier than the PR date ' + r[9] + '. Save anyway?')) return pcStat(card, 'Not saved', 'bad');
   if (nr[16] && nr[16] !== old[16]) { var lo = idt || pd, rd = d2i(nr[16]); if (lo && rd < lo && !confirm('Replacement date ' + nr[16] + ' is earlier than the ' + (idt ? 'issue date ' + nr[13] : 'PR date ' + r[9]) + '. Save anyway?')) return pcStat(card, 'Not saved', 'bad'); }
+  var today = d2i(fmt(new Date()));
+  for (var ci = 0; ci < 3; ci++) { var dc = [13, 16, 18][ci]; if (nr[dc] && nr[dc] !== old[dc] && d2i(nr[dc]) > today && !confirm(['Issue', 'Replacement', 'Return'][ci] + ' date ' + nr[dc] + ' is in the future. Save anyway?')) return pcStat(card, 'Not saved', 'bad'); }
   card._busy = true; btn.disabled = true; pcStat(card, 'Saving...', '');
   rpc('save_rows', { p_items: [{ k: [r[0], r[8]], o: old, r: fixRow(nr) }] }).then(function (res) {
     card._busy = false; btn.disabled = false;
     if (res.bad && res.bad.length) { pcStat(card, (res.notes[0] || 'Not saved').replace(/^Line 1 \([^)]*\):\s*/, ''), 'bad'); return; }
     var sv = res.rows && res.rows['0'] ? res.rows['0'].slice(0, 20) : fixRow(nr);
     LROWS[gi] = sv; PCDIRTY = true; cclear();
-    var prim = pcMode() === 'issue' ? 13 : pcMode() === 'ret' ? 18 : 16; card.classList.toggle('done', !!sv[prim]);
+    var prim = pcMode() === 'issue' ? 13 : 16; card.classList.toggle('done', !!sv[prim]);
     pcStat(card, '✓ Saved', 'ok');
     if (card._again) { card._again = false; pcSave(card); }
   }).catch(function (e) { card._busy = false; btn.disabled = false; pcStat(card, e.message, 'bad'); });
