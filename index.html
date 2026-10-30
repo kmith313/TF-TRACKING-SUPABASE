@@ -900,6 +900,12 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
 #pz .cmpp table.cmpt{width:100%;font-size:6.5px}
 #pz .cmpp table.cmpt th,#pz .cmpp table.cmpt td{border:1px solid #000;padding:1px 1.5px;white-space:nowrap}
 #pz .cmpp table.cmpt td.nm,#pz .cmpp table.cmpt th.nm{white-space:normal}
+
+/* Division wise summary: closed until the heading is clicked (only on screen; Print and Excel always have it) */
+#sout .k-div>h3{cursor:pointer;user-select:none}
+#sout .k-div>h3::after{content:' BE  (click to close)';font-size:11px;font-weight:600;color:#6b7aa8;text-transform:none}
+#sout .k-div.col>h3::after{content:' B8  (click to open)'}
+#sout .k-div.col .wrap{display:none}
 </style>
 </head>
 <body class="on-home">
@@ -1422,7 +1428,8 @@ function buildSummary(raw, p) {
     age: WS.map(function (w) { return { ws: w, v: AGE[w] }; })
   };
 }
-var SKEY = '';
+var SKEY = '', DIVOPEN = false;      // the Division wise table stays closed until the user clicks its heading
+$('sout').addEventListener('click', function (e) { var h = e.target.closest && e.target.closest('.k-div > h3'); if (!h) return; DIVOPEN = !DIVOPEN; h.parentNode.classList.toggle('col', !DIVOPEN); });
 function loadSummary(force) {
   var p = { date: $('sd').value.trim(), from: $('sf').value.trim(), to: $('st').value.trim() };
   if (!validD(p.date) || !validD(p.from) || !validD(p.to)) { msg('smsg', 'Enter all three dates in DD.MM.YYYY format.', 'err'); return Promise.resolve(); }
@@ -1506,7 +1513,7 @@ function renderSummary(s, quiet) {
   s.top.rows.forEach(function (r) { h += '<tr><td class="l">' + esc(r.label) + '</td>' + cells11(r.v, S({ ws: r.ws }), r.label) + '</tr>'; });
   if (multi) h += '<tr class="t"><td class="l">TOTAL</td>' + cells11(s.top.total, S({}), 'TOTAL') + '</tr>';
   h += '</tbody></table></div></div>';
-  h += '<div class="card k-div"><h3>Division wise summary</h3><div class="wrap tbl11d"><table>' + head11('DIVISION', s) + '<tbody>';
+  h += '<div class="card k-div' + (DIVOPEN ? '' : ' col') + '"><h3 title="Click to open / close">Division wise summary</h3><div class="wrap tbl11d"><table>' + head11('DIVISION', s) + '<tbody>';
   s.div.rows.forEach(function (r) { h += '<tr class="' + r.t + (r.cls ? ' ' + r.cls : '') + '"><td class="l">' + (r.v[6] > 0 ? LK(esc(r.label), S(r.t === 'o' ? { metric: 6, divs: r.keys } : r.t === 'w' ? { metric: 6, ws: r.ws } : { metric: 6, divs: r.keys, ws: r.ws }), r.label + ' - ' + H11[6]) : esc(r.label)) + '</td>' + cells11(r.v, S(r.t === 'o' ? { divs: r.keys } : r.t === 'w' ? { ws: r.ws } : { divs: r.keys, ws: r.ws }), r.label) + '</tr>'; });
   if (multi) h += '<tr class="t"><td class="l">TOTAL</td>' + cells11(s.div.total, S({}), 'TOTAL') + '</tr>';
   h += '</tbody></table></div></div>';
@@ -1653,7 +1660,7 @@ function newRow() { var c = blank20(); c[0] = oneWs(); c[9] = $('dd').value.trim
 var DUP_AFTER = [13, 14, 15, 16, 18];       // issue date, driver name, driver mobile, replacement date, return date
 function dupFix(c) { if (isDupFirm(c[12])) { c[13] = ''; c[14] = 'JE(D)'; c[15] = ''; c[16] = ''; c[18] = ''; } return c; }
 function rowLocked(r, i) { return !canWrite() || (!r.isNew && i < EDIT_FROM) || (DUP_AFTER.indexOf(i) >= 0 && isDupFirm(r.c[12])); }
-var BLANKS = 8;
+var BLANKS = 20;
 function isBlankNew(r) { return r.isNew && !r.dirty && !r.k; }
 function padBlank() {      // empty rows to type or paste into, like an Excel sheet
   if (!canWrite()) { DROWS = DROWS.filter(function (r) { return !isBlankNew(r); }); return; }
