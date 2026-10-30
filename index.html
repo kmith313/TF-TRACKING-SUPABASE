@@ -843,6 +843,27 @@ a.tel{color:#2b50c8;text-decoration:none;font-size:11.5px}
 .ok{color:#15803d;font-weight:700}.bad{color:#b91c1c;font-weight:700}
 tr.sel td{background:#dbe4ff!important}.gt2 td.rg{background:#cfe0ff!important;outline:1px solid #4c6ef5;outline-offset:-1px}.gt2.drag{user-select:none}.gt2 td.rn,.gt2 th.rn0{cursor:pointer;user-select:none}.gt2 th.rn0{color:#3b5bdb}
 .pc.isdup .nodup{display:none}.pc .nodup.hide{display:none}
+
+/* ---- phones: tables become cards ---- */
+@media(max-width:760px){
+ table.mt,table.mt tbody{display:block;width:100%}
+ table.mt thead{display:none}
+ table.mt tr{display:grid;grid-template-columns:1fr 1fr;gap:6px 8px;position:relative;background:#fff;border:1px solid #dfe5f5;border-left:4px solid #4c6ef5;border-radius:12px;padding:8px;margin:0 0 10px;box-shadow:0 1px 3px rgba(20,30,80,.06)}
+ table.mt tr.dirty{background:#fffbe6;border-left-color:#e8890c}table.mt tr.bad{background:#fdecec;border-left-color:#d6336c}table.mt tr.sel{background:#e7edff}
+ table.mt td,.gt2.mt td.gc{display:block!important;border:0!important;padding:0!important;min-width:0;max-width:none!important;width:auto!important;background:transparent!important;text-align:left!important;white-space:normal}
+ table.mt td::before{content:attr(data-l);display:block;font-size:10px;font-weight:700;color:#6b7390;text-transform:uppercase;letter-spacing:.2px;margin-bottom:2px}
+ table.mt td.ix::before{content:none}
+ table.mt td.rn{grid-column:1/-1;font-weight:800;color:#3b5bdb;padding-right:30px!important}table.mt td.rn::after{content:"  · tap to select"; font-weight:400;font-size:10px;color:#8a93b8}
+ .gt2.mt td.ix:last-child{position:absolute!important;right:6px;top:4px}
+ .gt2.mt input{border:1px solid #d6defa;border-radius:8px;background:#fff;padding:9px 8px;min-width:0;width:100%;font-size:16px}
+ .gt2.mt td.lk input{background:#f1f4fb;color:#5b647f}
+ table.mt td[data-l="PLACE OF DAMAGE"],table.mt td[data-l="SUBSTATION"],table.mt td[data-l="ISSUED TO FIRM"],table.mt td[data-l="REMARK"],table.mt td[data-l="FIRM NAME"],table.mt td[data-l="VEHICLE GPS URL"],table.mt td[data-l="Role"],table.mt td[data-l=""]{grid-column:1/-1}
+ #aut td:last-child{grid-column:1/-1}#aut td:last-child::before,#wlt td:last-child::before{content:none}
+ #aut td:last-child .btn,#wlt td .btn{margin:2px 4px 2px 0}
+ #aut td[data-l="User ID"]{grid-column:1/-1;font-size:15px}
+ .tools{flex-direction:column;align-items:stretch}.tools .tg{flex-wrap:wrap}
+ .wrap{overflow-x:auto}
+}
 header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media(max-width:640px){header h1{flex:1 1 auto;white-space:nowrap}header .u{order:9;flex:1 1 100%;text-align:center}}
 
@@ -919,7 +940,7 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
         <details class="dtl"><summary>How it works</summary>Pick the <b>PR date</b> to see that day's PRs (or tick <b>All dates</b> for the newest 6000). Type in any cell: the row is <b>saved automatically</b> a moment after you stop typing. <b>Delete:</b> click the row number (Shift = a range, the # heading = all) and press <b>Delete selected</b>. <b>Like Excel:</b> arrow keys / Enter move between cells; drag (or Shift+click, Shift+Up/Down) selects a block; <b>Ctrl+C</b> copies it; <b>Ctrl+V</b> pastes a small block at the cell (or one value into all selected cells); <b>Delete</b> clears the selected cells; <b>Ctrl+D</b> fills down, <b>Ctrl+R</b> fills right; <b>Ctrl+Z / Ctrl+Y</b> undo / redo. Locked cells are skipped. <b>Pending issue / replacement / return:</b> tap that number in the Summary to fill firm, driver and dates on cards. <b>New PRs:</b> type in the empty rows at the top, or copy rows from Excel and press <b>Ctrl+V</b> in any cell (up to 300 rows; use the <b>Paste from Excel</b> button for more). A <b>new row</b> is saved by itself once Workshop, Division, Capacity, PR NO and PR DATE are filled (the Save button saves it at once). PR NO, PR DATE and Workshop are compulsory. <b>Workshop, Division, Substation, Feeder, Place, Capacity, Complain no, PR NO and PR DATE</b> of a saved PR are locked; to correct them delete the row and add it again. Choose the firm <b>DUPLICATE/WRONG PR</b> for a wrong or duplicate PR: the issue date, driver name / mobile, replacement and return dates are cleared and locked (only the Remark can be written). <b>Paste from Excel</b> (button) adds many PRs at once: a PR that already exists only gets its empty cells filled.</details>
       </div>
       <div id="dmsg"></div>
-      <div class="gwrap"><table class="gt gt2" id="dt"></table></div>
+      <div class="gwrap"><table class="gt gt2 mt" id="dt"></table></div>
       <button class="btn sec lmore hide" id="dmore"></button>
       <datalist id="wsdl"></datalist><datalist id="frdl"></datalist><datalist id="drdl"></datalist>
     </section>
@@ -935,7 +956,7 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
         <details class="dtl"><summary>How it works</summary>Write each firm, its driver, mobile no., vehicle no. and GPS link once, workshop wise. In the <b>Data Sheet</b>, when you choose the firm / driver, the list comes from here and the driver's mobile no. is filled by itself. Every change is saved as soon as you leave the box. The entry <b>DUPLICATE/WRONG PR</b> (driver JE(D)) is a default entry of every workshop and cannot be changed.</details>
       </div>
       <div id="vmsg"></div>
-      <div class="gwrap"><table class="gt gt2" id="vt"></table></div>
+      <div class="gwrap"><table class="gt gt2 mt" id="vt"></table></div>
     </section>
 
     <!-- ADMIN -->
@@ -944,7 +965,7 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
       <div class="card acard"><h3>Workshops</h3>
         <div class="muted" style="font-size:12px;margin-bottom:6px">Write the names of your own workshops here. Then give each user the workshops he works for.</div>
         <div class="bar"><input type="text" id="wn" placeholder="New workshop name" style="max-width:240px"><span id="wdw" class="hide"><input type="text" id="wd" list="dvl" placeholder="Division name" style="max-width:240px"></span><button class="btn" id="wadd">Add workshop</button></div>
-        <div class="wrap"><table id="wlt"></table></div>
+        <div class="wrap"><table id="wlt" class="mt"></table></div>
       </div>
       <div class="card acard"><h3>Create a new user</h3>
         <div class="bar" style="align-items:flex-end">
@@ -961,7 +982,7 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
       </div>
       <div class="card acard"><h3>Users</h3>
         <div class="bar"><input type="text" id="auq" placeholder="Search user..." style="max-width:260px"></div>
-        <div class="wrap"><table id="aut"></table></div>
+        <div class="wrap"><table id="aut" class="mt"></table></div>
       </div>
     </section>
   </main>
@@ -1494,15 +1515,19 @@ function drawList() {
 }
 var LCOLS = ['PR NO', 'PR DATE', 'WORKSHOP', 'DIVISION', 'SUBSTATION', 'FEEDER', 'PLACE OF DAMAGE', 'CAPACITY', 'COMPLAIN NUMBER', 'JE NAME', 'JE MOBILE', 'ISSUED TO FIRM', 'ISSUE DATE', 'DRIVER NAME', 'DRIVER MOBILE', 'REPLACEMENT DATE', 'RETURN DATE', 'REMARK'];
 function lrow(r) { return [r[8], r[9], r[0], r[1], r[2], r[3], r[4], r[5], r[7], r[10], r[11], r[12], r[13], r[14], r[15], r[16], r[18], r[19]]; }
+function lvisNow() {          // the rows now on screen (a list of cards too)
+  if (typeof cardMode === 'function' && cardMode()) { var q = $('lq').value.trim().toLowerCase(); return LROWS.filter(function (r) { return !q || r.join(' ').toLowerCase().indexOf(q) >= 0; }); }
+  return LVIS;
+}
 $('lxl').onclick = function () {
-  if (!LVIS.length) return;
-  xlsxDownload(fileSafe($('ltitle').textContent) + '.xlsx', [{ name: 'List', rows: [LCOLS].concat(LVIS.map(lrow)), hdr: 1, freeze: true }]);
+  var V = lvisNow(); if (!V.length) return;
+  xlsxDownload(fileSafe($('ltitle').textContent) + '.xlsx', [{ name: 'List', rows: [LCOLS].concat(V.map(lrow)), hdr: 1, freeze: true }]);
 };
 $('lpr').onclick = function () {
-  if (!LVIS.length) return;
+  var V = lvisNow(); if (!V.length) return;
   var pc = [0, 1, 2, 3, 4, 6, 7, 11, 12, 13, 15, 16], h = '<table><thead><tr><th>#</th>' + pc.map(function (c) { return '<th>' + esc(LCOLS[c]) + '</th>'; }).join('') + '</tr></thead><tbody>';
-  LVIS.forEach(function (r, i) { var x = lrow(r); h += '<tr><td>' + (i + 1) + '</td>' + pc.map(function (c) { return '<td>' + esc(x[c]) + '</td>'; }).join('') + '</tr>'; });
-  printHtml($('ltitle').textContent + ' (' + LVIS.length + ' records)', h + '</tbody></table>');
+  V.forEach(function (r, i) { var x = lrow(r); h += '<tr><td>' + (i + 1) + '</td>' + pc.map(function (c) { return '<td>' + esc(x[c]) + '</td>'; }).join('') + '</tr>'; });
+  printHtml($('ltitle').textContent + ' (' + V.length + ' records)', h + '</tbody></table>');
 };
 
 
@@ -1555,6 +1580,10 @@ function oneWs() { return WSL.length === 1 ? WSL[0] : ''; }
 function canWrite() { return !!(ME && ME.edit && (ME.role === 'admin' || ME.role === 'je')); }
 function dstat(t, k) { var s = $('dstat'); s.textContent = t || ''; s.className = 'muted ' + (k || ''); }
 function dirtyN() { var n = 0; DROWS.forEach(function (r) { if (r.dirty) n++; }); return n; }
+function mlabel(t) {            // headings -> data-l of every cell (phones show every row as a card with labels)
+  var hs = Array.prototype.map.call(t.querySelectorAll('thead th'), function (h) { return h.textContent.trim(); });
+  Array.prototype.forEach.call(t.querySelectorAll('tbody tr'), function (tr) { Array.prototype.forEach.call(tr.children, function (td, i) { if (hs[i]) td.setAttribute('data-l', hs[i]); }); });
+}
 function newRow() { var c = blank20(); c[0] = oneWs(); c[9] = $('dd').value.trim(); return { o: null, k: null, c: c, dirty: false, bad: false, ver: 0, isNew: true }; }
 var DUP_AFTER = [13, 14, 15, 16, 18];       // issue date, driver name, driver mobile, replacement date, return date
 function dupFix(c) { if (isDupFirm(c[12])) { c[13] = ''; c[14] = 'JE(D)'; c[15] = ''; c[16] = ''; c[18] = ''; } return c; }
@@ -1563,9 +1592,9 @@ var BLANKS = 8;
 function isBlankNew(r) { return r.isNew && !r.dirty && !r.k; }
 function padBlank() {      // empty rows to type or paste into, like an Excel sheet
   if (!canWrite()) { DROWS = DROWS.filter(function (r) { return !isBlankNew(r); }); return; }
-  var nb = DROWS.filter(isBlankNew).length; if (nb >= BLANKS) return;
+  var want = window.innerWidth < 760 ? 1 : BLANKS, nb = DROWS.filter(isBlankNew).length; if (nb >= want) return;
   var pos = 0; while (pos < DROWS.length && DROWS[pos].isNew) pos++;
-  var add = []; for (var n = nb; n < BLANKS; n++) add.push(newRow());
+  var add = []; for (var n = nb; n < want; n++) add.push(newRow());
   DROWS.splice.apply(DROWS, [pos, 0].concat(add));
 }
 function drawData() {
@@ -1761,18 +1790,18 @@ $('xgo').onclick = function () {
     items.push({ r: m.idx.map(function (j, i) { var v = j >= 0 ? String(src[j] == null ? '' : src[j]).trim() : ''; return DATE_IDX.indexOf(i) >= 0 ? normDate(v) : v; }) }); lines.push(k + 1);
   }
   if (!items.length) return msg('xmsg', 'No rows found.', 'err');
-  var b = $('xgo'), tot = { added: 0, updated: 0, same: 0, skipped: 0 }, notes = [], pos = 0, B = 500;
+  var b = $('xgo'), tot = { added: 0, updated: 0, same: 0, skipped: 0, datefix: 0 }, notes = [], pos = 0, B = 500;
   busy(b, true, 'Saving...');
   (function next() {
     if (pos >= items.length) {
       busy(b, false); cclear();
-      msg('xmsg', '<b>Done.</b> ' + tot.added + ' added, ' + tot.updated + ' updated, ' + tot.same + ' unchanged, ' + tot.skipped + ' skipped.' + (notes.length ? '<br>' + notes.slice(0, 15).map(esc).join('<br>') : ''), tot.skipped ? 'info' : 'ok');
+      msg('xmsg', '<b>Done.</b> ' + tot.added + ' added, ' + tot.updated + ' updated, ' + tot.same + ' unchanged, ' + tot.skipped + ' skipped.' + (tot.datefix ? '<br>' + tot.datefix + ' date(s) were not valid dates: left empty, and the text you wrote is kept in the Remark.' : '') + (notes.length ? '<br>' + notes.slice(0, 15).map(esc).join('<br>') : ''), tot.skipped ? 'info' : 'ok');
       return loadData();
     }
     var part = items.slice(pos, pos + B), base = pos; pos += B;
     msg('xmsg', 'Saving ' + Math.min(pos, items.length) + ' of ' + items.length + '...', 'info');
     rpc('save_rows', { p_items: part }).then(function (res) {
-      ['added', 'updated', 'same', 'skipped'].forEach(function (x) { tot[x] += res[x]; });
+      ['added', 'updated', 'same', 'skipped', 'datefix'].forEach(function (x) { tot[x] += (res[x] || 0); });
       res.notes.forEach(function (n) { notes.push(n.replace(/^Line (\d+)/, function (_, a) { return 'Line ' + lines[base + (+a) - 1]; })); });
       next();
     }).catch(function (e) { busy(b, false); msg('xmsg', 'Stopped after ' + base + ' rows: ' + esc(e.message), 'err'); });
@@ -1818,7 +1847,7 @@ function drvDraw() {
     if (q && (d.workshop + ' ' + d.firm + ' ' + d.driver + ' ' + d.mobile + ' ' + d.vehicle).toLowerCase().indexOf(q) < 0) return;
     n++; h += drvRowHtml(d, i, ed && !isDupFirm(d.firm));
   });
-  $('vt').innerHTML = h + '</tbody>'; $('vcnt').textContent = n + ' entries';
+  $('vt').innerHTML = h + '</tbody>'; mlabel($('vt')); $('vcnt').textContent = n + ' entries';
   $('vadd').classList.toggle('hide', !ed); $('vro').classList.toggle('hide', ed);
 }
 function drvRowHtml(d, i, ed) {
@@ -1925,7 +1954,7 @@ function admWsDraw() {
     h += '<tr><td><b>' + esc(w) + '</b></td>' + (ME.role === 'creator' ? '<td>' + esc(WSDIV[w] || '') + '</td>' : '') + '<td><button class="btn sec sm" data-wr="' + i + '">Rename</button> <button class="btn sec sm" data-wd="' + i + '">Delete</button></td></tr>';
   });
   $('wlt').innerHTML = '<thead><tr><th>Workshop</th>' + (ME.role === 'creator' ? '<th>Division</th>' : '') + '<th></th></tr></thead><tbody>' + (h || '<tr><td colspan="3" class="muted">No workshop yet. Add your first workshop above.</td></tr>') + '</tbody>';
-  $('wlt')._list = list;
+  $('wlt')._list = list; mlabel($('wlt'));
 }
 $('wlt').addEventListener('click', function (e) {
   var b = e.target.closest('button'); if (!b) return; var list = $('wlt')._list;
@@ -1986,7 +2015,7 @@ function admUsersDraw() {
     h += '<tr><td><b>' + esc(u.login_id) + '</b></td><td>' + esc(u.display || '') + '</td><td>' + roleName(u.role) + '</td><td>' + esc(u.org_division || '') + '</td><td>' + esc(u.role === 'je' ? (u.scope || []).join(', ') : (u.role === 'admin' ? 'All of division' : 'All')) + '</td><td>' + (u.role === 'discom' || u.role === 'creator' ? 'View only' : u.can_edit ? 'Can edit' : 'View only') + '</td><td>' + esc(tabs) + '</td><td>' + (u.active ? '<span class="ok">Active</span>' : '<span class="bad">Inactive</span>') + '</td><td style="white-space:nowrap">' +
       (mine ? (u.role !== 'discom' ? '<button class="btn sec sm" data-e="' + i + '">Edit</button> ' : '') + '<button class="btn sec sm" data-r="' + i + '">Reset password</button> <button class="btn sec sm" data-a="' + i + '">' + (u.active ? 'Deactivate' : 'Activate') + '</button> <button class="btn sec sm" data-x="' + i + '">Delete</button>' : '') + '</td></tr>';
   });
-  $('aut').innerHTML = h + '</tbody>';
+  $('aut').innerHTML = h + '</tbody>'; mlabel($('aut'));
 }
 $('auq').oninput = admUsersDraw;
 function admSave(u, patch) {
@@ -2058,7 +2087,7 @@ function drawCards() {
   var q = $('lq').value.trim().toLowerCase(), mode = pcMode(), vis = [];
   LROWS.forEach(function (r, gi) { if (!q || r.join(' ').toLowerCase().indexOf(q) >= 0) vis.push(gi); });
   $('lcnt').textContent = vis.length + ' records' + (LIST && LIST.total > LROWS.length ? ' (of ' + LIST.total + ' in all)' : '') + (vis.length > PCAP ? ' - showing the first ' + PCAP + ', use search' : '');
-  var el = $('lcards'), h = DRV.filter(function (d) { return !isDupFirm(d.firm); }).length ? '' : '<div class="msg info">Driver Master has no firm / driver yet. Add them in the <b>Drivers</b> tab first.</div>';
+  var el = $('lcards'), h = DRV.filter(function (d) { return !isDupFirm(d.firm); }).length ? '' : '<div class="msg info" style="grid-column:1/-1">Driver Master has no firm / driver yet. Add them in the <b>Drivers</b> tab first.</div>';
   vis.slice(0, PCAP).forEach(function (gi) { h += pcard(LROWS[gi], gi, mode); });
   el.innerHTML = h || '<div class="muted">No records.</div>';
 }
@@ -2241,7 +2270,7 @@ var _drawData0 = drawData;
 drawData = function () {
   var a = document.activeElement, fk = null;
   if (a && a.dataset && a.dataset.i !== undefined && $('dt').contains(a)) { var r0 = DROWS[+a.closest('tr').dataset.r]; if (r0) fk = { r: r0, i: a.dataset.i, s: a.selectionStart, e: a.selectionEnd }; }
-  _drawData0();
+  _drawData0(); mlabel($('dt'));
   if (fk) {
     var trs = trList(), p = posOf(fk.r, trs); if (p < 0) return;
     var inp = trs[p].querySelector('input[data-i="' + fk.i + '"]');
