@@ -867,6 +867,19 @@ tr.sel td{background:#dbe4ff!important}.gt2 td.rg{background:#cfe0ff!important;o
 header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media(max-width:640px){header h1{flex:1 1 auto;white-space:nowrap}header .u{order:9;flex:1 1 100%;text-align:center}}
 
+
+/* Division wise summary - look of DIVSION_FORMATING.pdf */
+:is(#sout,.soutp) .k-div th.l{background:#ffff00;color:#000}
+:is(#sout,.soutp) .k-div thead th:not(.l){background:#f9b572;color:#000;border-color:#e8a15c}
+:is(#sout,.soutp) .k-div tr.d td{background:#fff;color:#000}
+:is(#sout,.soutp) .k-div tr.d td.l{font-weight:700;font-size:12px}
+:is(#sout,.soutp) .k-div tr.d.e td,:is(#sout,.soutp) .k-div tr.d.e td.l{background:#ffe599}
+:is(#sout,.soutp) .k-div tr.w td,:is(#sout,.soutp) .k-div tr.w td.l{background:#ffe599;color:#000;font-weight:800;font-size:15px;text-align:center}
+:is(#sout,.soutp) .k-div tr.w.wgrey td,:is(#sout,.soutp) .k-div tr.w.wgrey td.l{background:#efefef}
+:is(#sout,.soutp) .k-div tr.t td,:is(#sout,.soutp) .k-div tr.t td.l{background:#ffff00;color:#000;font-weight:800;font-size:15px;text-align:center;border-top:1px solid #000}
+:is(#sout,.soutp) .k-div .z{color:#000;font-weight:700;font-size:14px}
+:is(#sout,.soutp) .k-div td.l a.n{display:inline;min-width:0;padding:0;background:none;color:inherit;font-size:inherit;font-weight:inherit;border-radius:0;text-decoration:underline dotted;cursor:pointer}
+:is(#sout,.soutp) .k-div td a.n{font-size:14px;font-weight:700}
 </style>
 </head>
 <body class="on-home">
@@ -1312,18 +1325,26 @@ document.querySelectorAll('nav button').forEach(function (b) {
 function dayCount(f, t) { return Math.round((parseD(t) - parseD(f)) / 86400000) + 1; }
 function isoDate(s) { var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || ''); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; }
 // database answer -> the same structure the old Apps Script returned (so the old screen code can be used as it is)
+// the fixed order and the look of the Division wise table (as in DIVSION_FORMATING.pdf); [label, 1 = highlighted EDC row]
+var DIVORD = {
+  AZAMGARH: [['E.E. E.D.D.-I Azamgarh'], ['E.E. E.D.D.-II Azamgarh'], ['E.E. E.D.D.-III Azamgarh'], ['EDC-I AZAMGARH', 1], ['E.E. E.D.D. Phoolpur Azamgar'], ['E.E. E.D.D-V Azamgarh'], ['E.E. E.D.D-VI Azamgarh'], ['EDC-II AZAMGARH', 1]],
+  MAU: [['E.E. E.D.D.-I Mau'], ['E.E. E.D.D.-II Mau'], ['E.E. E.D.D.-III Ghosi Mau']],
+  BALLIA: [['E.E. E.D.D.-I Ballia'], ['E.E. E.D.D.-II Ballia'], ['E.E. E.D.D. Banshdih Ballia'], ['E.E. E.D.D-IV Bairiya Ballia']]
+};
+function nk(t) { return String(t || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); }
 function buildSummary(raw, p) {
   var WS = WSL, nW = WS.length, agg = raw.agg || [], pend = raw.pending || [];
   var capSet = {}; STD_CAPS.forEach(function (k) { capSet[k] = 1; }); agg.forEach(function (r) { capSet[r[2]] = 1; });
   var caps = Object.keys(capSet).map(Number).sort(function (a, b) { return (a || 1e9) - (b || 1e9); });
-  var top = {}, divMap = {}, divCap = {}, divWs = {}, capI = {}, capR = {}, capP = {}, capT = {}, capRP = {};
+  var top = {}, divMap = {}, divCap = {}, divWs = {}, divLbl = {}, capI = {}, capR = {}, capP = {}, capT = {}, capRP = {};
   WS.forEach(function (w) { top[w] = zero(NM); });
   caps.forEach(function (k) { capI[k] = zero(nW); capR[k] = zero(nW); capP[k] = zero(nW); capT[k] = zero(nW); capRP[k] = zero(nW); });
   agg.forEach(function (r) {
-    var w = WS.indexOf(r[0]), dn = r[1], cp = r[2], v = r.slice(3), i;
+    var w = WS.indexOf(r[0]), dn0 = r[1], dn = (w >= 0 ? r[0] : '') + '\u0001' + dn0, cp = r[2], v = r.slice(3), i;
+    divLbl[dn] = dn0;      // a division is kept apart per workshop, so one sitting in two workshops is shown under both
     var dv = divMap[dn] || (divMap[dn] = zero(NM)), dc = divCap[dn] || (divCap[dn] = {});
     for (i = 0; i < NM; i++) { dv[i] += v[i]; if (w >= 0) top[r[0]][i] += v[i]; }
-    if (w >= 0 && !divWs[dn]) divWs[dn] = r[0];
+    if (w >= 0) divWs[dn] = r[0];
     if (v[6]) dc[cp] = (dc[cp] || 0) + v[6];
     if (w >= 0) { capI[cp][w] += v[9]; capR[cp][w] += v[10]; capP[cp][w] += v[6]; capT[cp][w] += v[12]; capRP[cp][w] += v[13]; }
   });
@@ -1332,11 +1353,17 @@ function buildSummary(raw, p) {
   var rowsD = [], rowsC = [], assigned = {};
   var allDivs = Object.keys(divMap).filter(Boolean);
   function live(d) { return divMap[d].some(function (x) { return x; }); }        // a division with no figure at all in this period gets no row of its own (its workshop total still counts it)
-  function push(t, label, keys) { rowsD.push({ t: t, label: label, keys: keys, v: sumV(keys) }); rowsC.push({ t: t, label: label, keys: keys, c: sumC(keys) }); }
-  WS.forEach(function (w) {
-    var keys = allDivs.filter(function (d) { return divWs[d] === w; }).sort(natural);
-    keys.forEach(function (d) { if (live(d)) push('d', d, [d]); assigned[d] = 1; });
-    push('w', w, keys);
+  function push(t, label, keys, wsn, cls) { var nm = keys.map(function (k) { return divLbl[k]; }).filter(function (x, i, a) { return a.indexOf(x) === i; }); rowsD.push({ t: t, cls: cls || '', label: label, keys: nm, ws: wsn, v: sumV(keys) }); rowsC.push({ t: t, label: label, keys: nm, ws: wsn, c: sumC(keys) }); }
+  var WORD = ['AZAMGARH', 'MAU', 'BALLIA'];
+  WS.slice().sort(function (x, y) { var i = WORD.indexOf(x), j = WORD.indexOf(y); return (i < 0 ? 99 : i) - (j < 0 ? 99 : j); }).forEach(function (w) {
+    var keys = allDivs.filter(function (d) { return divWs[d] === w; }).sort(function (a, b) { return natural(divLbl[a], divLbl[b]); }), used = {};
+    (DIVORD[w] || []).forEach(function (f) {       // the fixed divisions always get a row (0 if no PR), in the fixed order
+      var ks = keys.filter(function (d) { return nk(divLbl[d]) === nk(f[0]); });
+      ks.forEach(function (d) { used[d] = 1; assigned[d] = 1; });
+      push('d', f[0], ks, w, f[1] ? 'e' : '');
+    });
+    keys.forEach(function (d) { if (!used[d]) { if (live(d)) push('d', divLbl[d], [d], w); assigned[d] = 1; } });   // any other division found in the data
+    push('w', w, keys, w, w === 'AZAMGARH' ? 'wgrey' : '');
   });
   var others = allDivs.filter(function (k) { return !assigned[k]; });
   if (others.some(live)) push('o', 'OTHER / NOT IN LIST', others);
@@ -1442,7 +1469,7 @@ function renderSummary(s, quiet) {
   if (multi) h += '<tr class="t"><td class="l">TOTAL</td>' + cells11(s.top.total, S({}), 'TOTAL') + '</tr>';
   h += '</tbody></table></div></div>';
   h += '<div class="card k-div"><h3>Division wise summary</h3><div class="wrap tbl11d"><table>' + head11('DIVISION', s) + '<tbody>';
-  s.div.rows.forEach(function (r) { h += '<tr class="' + r.t + '"><td class="l">' + esc(r.label) + '</td>' + cells11(r.v, S({ divs: r.keys }), r.label) + '</tr>'; });
+  s.div.rows.forEach(function (r) { h += '<tr class="' + r.t + (r.cls ? ' ' + r.cls : '') + '"><td class="l">' + (r.v[6] > 0 ? LK(esc(r.label), S(r.t === 'o' ? { metric: 6, divs: r.keys } : r.t === 'w' ? { metric: 6, ws: r.ws } : { metric: 6, divs: r.keys, ws: r.ws }), r.label + ' - ' + H11[6]) : esc(r.label)) + '</td>' + cells11(r.v, S(r.t === 'o' ? { divs: r.keys } : r.t === 'w' ? { ws: r.ws } : { divs: r.keys, ws: r.ws }), r.label) + '</tr>'; });
   if (multi) h += '<tr class="t"><td class="l">TOTAL</td>' + cells11(s.div.total, S({}), 'TOTAL') + '</tr>';
   h += '</tbody></table></div></div>';
   // pending for issue - age wise
