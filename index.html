@@ -841,7 +841,7 @@ a.tel{color:#2b50c8;text-decoration:none;font-size:11.5px}
 .pdtb td.l{font-weight:700}
 .gt2 td.gc{padding:0;min-width:0;height:auto}.gt2 input{border:0;background:transparent;font:inherit;padding:4px 6px;min-width:96px;width:100%;box-sizing:border-box;outline:0;color:inherit}.gt2 input.b{font-weight:700}.gt2 input:focus{outline:2px solid var(--pri);outline-offset:-2px;background:#fff}.gt2 td.lk input{cursor:not-allowed;color:#4b5875}.gt2 tr.bad input{background:#fdeaf1}.gt2 tr.dirty input:not(:focus){background:#fffbe3}.gt2 button.rx{border:0;background:none;color:#b91c1c;cursor:pointer;font-size:13px;padding:2px 6px}.gt2 td.ix,.gt2 th.ix{position:static;left:auto;min-width:34px}.gt2 th.ix{position:sticky;top:0}
 .ok{color:#15803d;font-weight:700}.bad{color:#b91c1c;font-weight:700}
-tr.sel td{background:#dbe4ff!important}.gt2 td.rn,.gt2 th.rn0{cursor:pointer;user-select:none}.gt2 th.rn0{color:#3b5bdb}
+tr.sel td{background:#dbe4ff!important}.gt2 td.rg{background:#cfe0ff!important;outline:1px solid #4c6ef5;outline-offset:-1px}.gt2.drag{user-select:none}.gt2 td.rn,.gt2 th.rn0{cursor:pointer;user-select:none}.gt2 th.rn0{color:#3b5bdb}
 .pc.isdup .nodup{display:none}.pc .nodup.hide{display:none}
 header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media(max-width:640px){header h1{flex:1 1 auto;white-space:nowrap}header .u{order:9;flex:1 1 100%;text-align:center}}
@@ -916,7 +916,7 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
           </div>
         </div>
         <div class="muted" style="font-size:12px"><span id="dcnt"></span> &middot; <span id="dstat" class="muted"></span> <span id="dro" class="hide">&middot; View only: you cannot change data.</span></div>
-        <details class="dtl"><summary>How it works</summary>Pick the <b>PR date</b> to see that day's PRs (or tick <b>All dates</b> for the newest 6000). Type in any cell: the row is <b>saved automatically</b> a moment after you stop typing. <b>Delete:</b> click the row number (Shift = a range, the # heading = all) and press <b>Delete selected</b>. <b>Keys:</b> arrow keys / Enter move between cells. <b>Pending issue / replacement / return:</b> tap that number in the Summary to fill firm, driver and dates on cards. <b>New PRs:</b> type in the empty rows at the top, or copy rows from Excel and press <b>Ctrl+V</b> in any cell (up to 300 rows; use the <b>Paste from Excel</b> button for more). A <b>new row</b> is saved by itself once Workshop, Division, Capacity, PR NO and PR DATE are filled (the Save button saves it at once). PR NO, PR DATE and Workshop are compulsory. <b>Workshop, Division, Substation, Feeder, Place, Capacity, Complain no, PR NO and PR DATE</b> of a saved PR are locked; to correct them delete the row and add it again. Choose the firm <b>DUPLICATE/WRONG PR</b> for a wrong or duplicate PR: the issue date, driver name / mobile, replacement and return dates are cleared and locked (only the Remark can be written). <b>Paste from Excel</b> (button) adds many PRs at once: a PR that already exists only gets its empty cells filled.</details>
+        <details class="dtl"><summary>How it works</summary>Pick the <b>PR date</b> to see that day's PRs (or tick <b>All dates</b> for the newest 6000). Type in any cell: the row is <b>saved automatically</b> a moment after you stop typing. <b>Delete:</b> click the row number (Shift = a range, the # heading = all) and press <b>Delete selected</b>. <b>Like Excel:</b> arrow keys / Enter move between cells; drag (or Shift+click, Shift+Up/Down) selects a block; <b>Ctrl+C</b> copies it; <b>Ctrl+V</b> pastes a small block at the cell (or one value into all selected cells); <b>Delete</b> clears the selected cells; <b>Ctrl+D</b> fills down, <b>Ctrl+R</b> fills right; <b>Ctrl+Z / Ctrl+Y</b> undo / redo. Locked cells are skipped. <b>Pending issue / replacement / return:</b> tap that number in the Summary to fill firm, driver and dates on cards. <b>New PRs:</b> type in the empty rows at the top, or copy rows from Excel and press <b>Ctrl+V</b> in any cell (up to 300 rows; use the <b>Paste from Excel</b> button for more). A <b>new row</b> is saved by itself once Workshop, Division, Capacity, PR NO and PR DATE are filled (the Save button saves it at once). PR NO, PR DATE and Workshop are compulsory. <b>Workshop, Division, Substation, Feeder, Place, Capacity, Complain no, PR NO and PR DATE</b> of a saved PR are locked; to correct them delete the row and add it again. Choose the firm <b>DUPLICATE/WRONG PR</b> for a wrong or duplicate PR: the issue date, driver name / mobile, replacement and return dates are cleared and locked (only the Remark can be written). <b>Paste from Excel</b> (button) adds many PRs at once: a PR that already exists only gets its empty cells filled.</details>
       </div>
       <div id="dmsg"></div>
       <div class="gwrap"><table class="gt gt2" id="dt"></table></div>
@@ -1586,7 +1586,7 @@ function drawData() {
   $('dcnt').textContent = vis.filter(function (ri) { return !isBlankNew(DROWS[ri]); }).length + ' records' + (DTOTAL > DROWS.length ? ' (newest ' + DROWS.length + ' of ' + DTOTAL + ' loaded)' : '');
   ['dpaste', 'dsave'].forEach(function (id) { $(id).classList.toggle('hide', !canWrite()); });
   $('dro').classList.toggle('hide', canWrite());
-  selUpd();
+  selUpd(); applyRg();
 }
 var LASTSEL = -1;
 function selUpd() { var n = DROWS.filter(function (r) { return r.sel && !isBlankNew(r); }).length; $('ddel').classList.toggle('hide', !n || !canWrite()); $('ddel').textContent = 'Delete selected (' + n + ')'; }
@@ -1614,7 +1614,7 @@ $('ddel').onclick = function () {
 function loadData(force) {
   var d = $('dd').value.trim(), all = $('dall').checked;
   if (!all && !validD(d)) { msg('dmsg', 'Enter the PR date in DD.MM.YYYY format.', 'err'); return Promise.resolve(); }
-  var seq = ++DSEQ;
+  var seq = ++DSEQ; RG = null; UNDO = []; REDO = [];
   return flushData().then(function () {
     msg('dmsg', ''); dstat('Loading...'); $('dt').innerHTML = '';
     return rpc('data_json', { p_date: all ? null : d2i(d), p_all: all });
@@ -1694,10 +1694,11 @@ $('dsave').onclick = function () { flushData(true); };
 $('dmore').onclick = function () { DSHOW += 400; drawData(); };
 $('dt').addEventListener('paste', function (e) {       // several rows copied from Excel can be pasted straight into the sheet
   var inp = e.target; if (!inp.dataset || inp.dataset.i === undefined || !canWrite()) return;
-  var t = (e.clipboardData || window.clipboardData).getData('text'); if (!/[\t\n\r]/.test(String(t).replace(/[\r\n]+$/, ''))) return;      // one single value: normal paste
+  var t = (e.clipboardData || window.clipboardData).getData('text'); if (!/[\t\n\r]/.test(String(t).replace(/[\r\n]+$/, ''))) { if (rgMulti() && sheetFill(String(t).trim())) e.preventDefault(); return; }      // one single value: normal paste (into a selected range: fills all of it)
   e.preventDefault();
   var rows, m; try { rows = parseTSV(t); m = mapCols(rows); } catch (er) { return msg('dmsg', esc(er.message), 'err'); }
   var src = rows.slice(m.start); if (!src.length) return;
+  if (m.start === 0 && rows[0].length < 8) { sheetPasteBlock(inp, rows); return; }      // a small block (a column or two): pasted at the cell, like Excel
   if (src.length > 300) return msg('dmsg', 'More than 300 rows: please use the "Paste from Excel" button.', 'err');
   DROWS = DROWS.filter(function (r) { return !isBlankNew(r); });
   var add = src.map(function (s2) {
@@ -1736,7 +1737,7 @@ function mapCols(rows) {
     }
   }
   var hasWs = function (v) { var t = String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); return WSL.some(function (w) { return w.toUpperCase().replace(/[^A-Z0-9]/g, '') === t; }); };
-  var off = (rows[0] && !hasWs(rows[0][0]) && hasWs(rows[0][1])) ? 1 : 0;      // a "#" column in front
+  var off = (rows[0] && !hasWs(rows[0][0]) && (hasWs(rows[0][1]) || (/^#?\d*$/.test(String(rows[0][0]).trim()) && String(rows[0][1] || '').trim() !== '' && !/^\d+$/.test(String(rows[0][1]).trim())))) ? 1 : 0;      // a "#" column in front
   // no heading row: find the PR DATE column (the first date after the PR NO) to know which layout was copied
   var isD = function (v) { v = String(v == null ? '' : v).trim(); return /^\d{1,2}[.\/-]\d{1,2}[.\/-]\d{2,4}$/.test(v) || /^\d{4}-\d{2}-\d{2}/.test(v); };
   var nR = Math.min(rows.length, 40), dc = -1;
@@ -2111,6 +2112,140 @@ $('lcards').addEventListener('input', function (e) {
   else if (el.dataset.f === '19') { pcStat(card, 'Unsaved...', ''); clearTimeout(card._t); card._t = setTimeout(function () { pcSave(card); }, 1200); }
 });
 $('lcards').addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-sv]'); if (!b) return; var card = b.closest('.pc'); clearTimeout(card._t); pcSave(card); });
+
+
+/* =====================  DATA SHEET: Excel-like selection, copy / paste, fill, delete, undo  ===================== */
+var RG = null, UNDO = [], REDO = [], DRAGGING = false, ANCH = null;      // RG = { ar, aq, fr, fq } (anchor / focus: row object + column position)
+function trList() { return Array.prototype.slice.call($('dt').querySelectorAll('tbody tr')); }
+function posOf(r, trs) { for (var p = 0; p < trs.length; p++) if (DROWS[+trs[p].dataset.r] === r) return p; return -1; }
+function cellOf(inp) { var tr = inp.closest('tr'); return { r: DROWS[+tr.dataset.r], q: Array.prototype.indexOf.call(tr.children, inp.closest('td')) - 1 }; }
+function rgBox() {            // -> { p1, p2, q1, q2, trs } of the selection (or null)
+  if (!RG) return null; var trs = trList(), a = posOf(RG.ar, trs), f = posOf(RG.fr, trs); if (a < 0 || f < 0) return null;
+  return { p1: Math.min(a, f), p2: Math.max(a, f), q1: Math.min(RG.aq, RG.fq), q2: Math.max(RG.aq, RG.fq), trs: trs };
+}
+function rgMulti() { var b = rgBox(); return !!b && (b.p1 !== b.p2 || b.q1 !== b.q2); }
+function applyRg() {
+  document.querySelectorAll('#dt td.rg').forEach(function (x) { x.classList.remove('rg'); });
+  var b = rgBox(); if (!b || !(b.p1 !== b.p2 || b.q1 !== b.q2)) return;
+  for (var p = b.p1; p <= b.p2; p++) for (var q = b.q1; q <= b.q2; q++) { var td0 = b.trs[p].children[q + 1]; if (td0) td0.classList.add('rg'); }
+}
+function curCell() {           // the selected range, or the cell that has the cursor
+  var b = rgBox(); if (b) return b;
+  var a = document.activeElement; if (!a || !a.dataset || a.dataset.i === undefined || !$('dt').contains(a)) return null;
+  var trs = trList(), tr = a.closest('tr'), p = trs.indexOf(tr), q = Array.prototype.indexOf.call(tr.children, a.closest('td')) - 1;
+  return { p1: p, p2: p, q1: q, q2: q, trs: trs };
+}
+function fixVal(i, v) { v = String(v == null ? '' : v).replace(/[\r\n\t]+/g, ' ').trim(); if (DATE_IDX.indexOf(i) >= 0) return normDate(v); if (i === 11 || i === 15) return cleanMob(v) || v; return v; }
+// apply a list of [row, columnIndex, value] ; keeps a snapshot for undo
+function applyCells(list, keepFocus) {
+  var snaps = [], seen = [], n = 0, skipped = 0;
+  list.forEach(function (x) {
+    var r = x[0], i = x[1];
+    if (rowLocked(r, i)) { skipped++; return; }
+    var v = fixVal(i, x[2]); if (r.c[i] === v) return;
+    if (seen.indexOf(r) < 0) { seen.push(r); snaps.push({ r: r, before: r.c.slice() }); }
+    r.c[i] = v; n++;
+  });
+  seen.forEach(function (r) { dupFix(r.c); r.ver++; r.dirty = true; r.bad = false; });
+  snaps.forEach(function (s) { s.after = s.r.c.slice(); });
+  if (snaps.length) { UNDO.push(snaps); if (UNDO.length > 100) UNDO.shift(); REDO = []; }
+  return { n: n, skipped: skipped, snaps: snaps };
+}
+function focusCell(c) {       // after the table is redrawn: put the cursor back in the cell
+  if (!c) return; var trs = trList(), p = posOf(c.r, trs); if (p < 0) return;
+  var td0 = trs[p].children[c.q + 1], inp = td0 && td0.querySelector('input'); if (inp) { try { inp.focus({ preventScroll: true }); } catch (x) { inp.focus(); } }
+}
+function activeCell() { var a = document.activeElement; return a && a.dataset && a.dataset.i !== undefined && $('dt').contains(a) ? cellOf(a) : (ANCH || null); }
+function afterEdit(res, msgText) {
+  var rg = RG, fc = activeCell(); drawData(); RG = rg; applyRg(); focusCell(fc);
+  if (res.n) { dstat((msgText || 'Changed') + ' ' + res.n + ' cell(s)' + (res.skipped ? ', ' + res.skipped + ' locked cell(s) skipped' : '') + '. Unsaved changes...'); queueSave(); }
+  else if (res.skipped) dstat(res.skipped + ' locked cell(s) cannot be changed', 'bad');
+}
+function boxCells(b) { var out = []; for (var p = b.p1; p <= b.p2; p++) { var r = DROWS[+b.trs[p].dataset.r]; for (var q = b.q1; q <= b.q2; q++) out.push([r, DCOL[q][0], p, q]); } return out; }
+function sheetFill(v) { var b = rgBox(); if (!b || !canWrite()) return false; afterEdit(applyCells(boxCells(b).map(function (x) { return [x[0], x[1], v]; })), 'Filled'); return true; }
+function sheetPasteBlock(inp, rows) {
+  var b = curCell(); if (!b || !canWrite()) return;
+  var trs = b.trs, list = [], over = 0;
+  rows.forEach(function (line, k) {
+    var p = b.p1 + k; if (p >= trs.length) { over++; return; }
+    var r = DROWS[+trs[p].dataset.r];
+    line.forEach(function (v, j) { var q = b.q1 + j; if (q < DCOL.length) list.push([r, DCOL[q][0], v]); });
+  });
+  var res = applyCells(list); afterEdit(res, 'Pasted');
+  if (over) msg('dmsg', over + ' row(s) did not fit below. Scroll the sheet or paste fewer rows.', 'err'); else msg('dmsg', '');
+}
+function sheetUndo(redo) {
+  var from = redo ? REDO : UNDO, to = redo ? UNDO : REDO, snaps = from.pop(); if (!snaps) return;
+  snaps.forEach(function (s) { if (DROWS.indexOf(s.r) < 0) return; s.r.c = (redo ? s.after : s.before).slice(); s.r.ver++; s.r.dirty = true; s.r.bad = false; });
+  to.push(snaps); var rg = RG, fc = activeCell(); drawData(); RG = rg; applyRg(); focusCell(fc); dstat((redo ? 'Redone' : 'Undone') + '. Unsaved changes...'); queueSave();
+}
+/* mouse: drag over cells selects a block */
+$('dt').addEventListener('mousedown', function (e) {
+  var inp = e.target.closest('td.gc input'); if (!inp) { if (!e.target.closest('.rn,.rn0,.rx')) { RG = null; applyRg(); } return; }
+  var c = cellOf(inp);
+  if (e.shiftKey && ANCH) { RG = { ar: ANCH.r, aq: ANCH.q, fr: c.r, fq: c.q }; applyRg(); e.preventDefault(); return; }
+  ANCH = c; RG = null; applyRg(); DRAGGING = true;
+});
+$('dt').addEventListener('mouseover', function (e) {
+  if (!DRAGGING || !(e.buttons & 1)) return; var inp = e.target.closest && e.target.closest('td.gc'); if (!inp) return;
+  var input = inp.querySelector('input'); if (!input || !ANCH) return; var c = cellOf(input);
+  if (c.r === ANCH.r && c.q === ANCH.q && !RG) return;
+  RG = { ar: ANCH.r, aq: ANCH.q, fr: c.r, fq: c.q }; $('dt').classList.add('drag'); applyRg();
+  try { window.getSelection().removeAllRanges(); } catch (x) {}
+});
+document.addEventListener('mouseup', function () { DRAGGING = false; $('dt').classList.remove('drag'); });
+/* keyboard */
+$('dt').addEventListener('keydown', function (e) {
+  var inp = e.target; if (!inp.dataset || inp.dataset.i === undefined) return;
+  var k = e.key, ctrl = e.ctrlKey || e.metaKey, b;
+  if (ctrl && !e.shiftKey && (k === 'z' || k === 'Z')) { e.preventDefault(); sheetUndo(false); return; }
+  if (ctrl && (k === 'y' || k === 'Y' || (e.shiftKey && (k === 'z' || k === 'Z')))) { e.preventDefault(); sheetUndo(true); return; }
+  if (!canWrite()) return;
+  if (ctrl && (k === 'd' || k === 'D')) {          // fill down
+    e.preventDefault(); b = curCell(); if (!b) return; var list = [];
+    if (b.p1 === b.p2) { if (b.p1 > 0) { var src = DROWS[+b.trs[b.p1 - 1].dataset.r]; for (var q = b.q1; q <= b.q2; q++) list.push([DROWS[+b.trs[b.p1].dataset.r], DCOL[q][0], src.c[DCOL[q][0]]]); } }
+    else for (var q2 = b.q1; q2 <= b.q2; q2++) { var top = DROWS[+b.trs[b.p1].dataset.r].c[DCOL[q2][0]]; for (var p = b.p1 + 1; p <= b.p2; p++) list.push([DROWS[+b.trs[p].dataset.r], DCOL[q2][0], top]); }
+    afterEdit(applyCells(list), 'Filled down'); return;
+  }
+  if (ctrl && (k === 'r' || k === 'R')) {          // fill right
+    e.preventDefault(); b = curCell(); if (!b || b.q1 === b.q2) return; var l2 = [];
+    for (var p3 = b.p1; p3 <= b.p2; p3++) { var rr = DROWS[+b.trs[p3].dataset.r], lv = rr.c[DCOL[b.q1][0]]; for (var q3 = b.q1 + 1; q3 <= b.q2; q3++) l2.push([rr, DCOL[q3][0], lv]); }
+    afterEdit(applyCells(l2), 'Filled right'); return;
+  }
+  if ((k === 'Delete' || k === 'Backspace') && rgMulti()) { e.preventDefault(); b = rgBox(); afterEdit(applyCells(boxCells(b).map(function (x) { return [x[0], x[1], '']; })), 'Cleared'); return; }
+  if (e.shiftKey && (k === 'ArrowDown' || k === 'ArrowUp')) {      // extend the selection by rows
+    e.preventDefault(); var c = cellOf(inp), trs = trList(), cur = RG || { ar: c.r, aq: c.q, fr: c.r, fq: c.q }; ANCH = ANCH || c;
+    var fp = posOf(cur.fr, trs) + (k === 'ArrowDown' ? 1 : -1); if (fp < 0 || fp >= trs.length) return;
+    RG = { ar: cur.ar, aq: cur.aq, fr: DROWS[+trs[fp].dataset.r], fq: cur.fq }; applyRg(); return;
+  }
+  if (k === 'Escape') { RG = null; applyRg(); }
+});
+$('dt').addEventListener('copy', function (e) {
+  var b = rgBox(); if (!b || !(b.p1 !== b.p2 || b.q1 !== b.q2)) return;
+  var lines = []; for (var p = b.p1; p <= b.p2; p++) { var r = DROWS[+b.trs[p].dataset.r], row = []; for (var q = b.q1; q <= b.q2; q++) row.push(r.c[DCOL[q][0]]); lines.push(row.join('\t')); }
+  e.clipboardData.setData('text/plain', lines.join('\n')); e.preventDefault(); dstat('Copied ' + (b.p2 - b.p1 + 1) + ' row(s)');
+});
+$('dt').addEventListener('focusin', function (e) { var inp = e.target; if (inp.dataset && inp.dataset.i !== undefined && !DRAGGING && !RG) ANCH = cellOf(inp); });
+$('dt').addEventListener('change', function (e) {          // a typed cell is also one undo step
+  var inp = e.target; if (!inp.dataset || inp.dataset.i === undefined) return;
+  var tr = inp.closest('tr'), r = DROWS[+tr.dataset.r], i = +inp.dataset.i, old = inp._v0;
+  if (old !== undefined && old !== r.c[i]) { var b4 = r.c.slice(); b4[i] = old; UNDO.push([{ r: r, before: b4, after: r.c.slice() }]); if (UNDO.length > 100) UNDO.shift(); REDO = []; }
+  inp._v0 = r.c[i];
+});
+$('dt').addEventListener('focusin', function (e) { var inp = e.target; if (inp.dataset && inp.dataset.i !== undefined) { var r = DROWS[+inp.closest('tr').dataset.r]; if (r) inp._v0 = r.c[+inp.dataset.i]; } });
+
+/* the table is redrawn after every save: keep the cursor in the same cell */
+var _drawData0 = drawData;
+drawData = function () {
+  var a = document.activeElement, fk = null;
+  if (a && a.dataset && a.dataset.i !== undefined && $('dt').contains(a)) { var r0 = DROWS[+a.closest('tr').dataset.r]; if (r0) fk = { r: r0, i: a.dataset.i, s: a.selectionStart, e: a.selectionEnd }; }
+  _drawData0();
+  if (fk) {
+    var trs = trList(), p = posOf(fk.r, trs); if (p < 0) return;
+    var inp = trs[p].querySelector('input[data-i="' + fk.i + '"]');
+    if (inp) { try { inp.focus({ preventScroll: true }); if (fk.s != null) inp.setSelectionRange(fk.s, fk.e); } catch (x) {} }
+  }
+};
 
 </script>
 <script>if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(function () {});</script>
