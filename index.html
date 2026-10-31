@@ -884,10 +884,10 @@ header .u{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowr
 /* Comparison - look of the comparative PDF */
 .cmpw{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table.cmpt{border-collapse:collapse;font-size:11px;background:#fff;color:#000;min-width:1500px}
-table.cmpt th,table.cmpt td{border:1px solid #000;padding:3px 4px;text-align:center;white-space:nowrap;font-weight:600}
+table.cmpt th,table.cmpt td{border:1px solid #000;padding:9px 4px;text-align:center;white-space:nowrap;font-weight:600}
 table.cmpt thead th{background:#fff2cc;color:#222;font-weight:700;white-space:normal;line-height:1.2}
 table.cmpt thead tr.ca th.ct{text-align:center;font-size:12px}
-table.cmpt th.cp{font-size:10px}
+table.cmpt th.cp{font-size:10px;white-space:normal;line-height:1.25;min-width:46px;padding:6px 3px}
 table.cmpt td.nm,table.cmpt th.nm{white-space:normal;min-width:150px;font-weight:700}
 table.cmpt td.b{font-weight:800}
 table.cmpt tr.d td{background:#fff}
@@ -902,7 +902,7 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
 #pz .cmpp table.cmpt thead th{white-space:normal;font-size:7.5px;padding:1px 2px}
 #pz .cmpp table.cmpt thead th{background:#fff2cc!important;color:#000}
 #pz .cmpp table.cmpt thead tr.ca th{font-size:9px;padding:2px}
-#pz .cmpp table.cmpt tbody td{height:7.6mm}
+#pz .cmpp table.cmpt tbody td{height:8.2mm}
 #pz .cmpp table.cmpt tr.w.wt td,#pz .cmpp table.cmpt tr.t.z td{font-size:8.5px}
 #pz .cmpp table.cmpt td.nm,#pz .cmpp table.cmpt th.nm{white-space:normal;min-width:36mm}
 
@@ -1085,8 +1085,12 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
  #sout a[data-sh],#sout th[data-sh]{font-size:0!important}
  #sout a[data-sh]::after,#sout th[data-sh]::after{content:attr(data-sh);font-size:5.6px;font-weight:800;line-height:1.1;word-break:normal;overflow-wrap:normal;letter-spacing:-.1px}
 }
+.skpi{display:flex;gap:12px;margin-bottom:14px}
+.skpi>div{flex:1;border-radius:12px;padding:12px 16px}
+.skpi b{display:block;font-size:11.5px;font-weight:700}.skpi i{display:block;font-style:normal;font-size:30px;font-weight:800;line-height:1.1;letter-spacing:-.5px}.skpi u{display:block;text-decoration:none;font-size:11px;font-weight:700}
+.skpi .a1{background:#f2e8d9;color:#2a2118}.skpi .a2{background:#e4f3e6;color:#15803d}.skpi .a3{background:#e3ebfb;color:#1d4ed8}.skpi .a4{background:#fde6d3;color:#c2410c}.skpi .a5{background:#fbefc4;color:#a16207}.skpi .a6{background:#ece4fa;color:#6d28d9}
 /* =====================  DESKTOP LOOK (width over 900px): warm minimal, left menu, Summary on one page  ===================== */
-.ptitle{display:none}#skpi{display:none}
+.ptitle{display:none}.skpi{display:none}
 @media(min-width:901px){
  body{background:#faf6ef!important;padding-left:230px;color:#2a2118}
  .top{position:fixed!important;left:0;top:0;bottom:0;width:230px;background:#fffdf8;border-right:1px solid #e3d8c8;z-index:55;padding:22px 16px;box-sizing:border-box;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto 1fr auto auto;gap:0 8px}
@@ -1118,10 +1122,7 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
  #sgr{background:#c2410c!important;color:#fff!important;font-size:0!important;width:46px;display:inline-flex;align-items:center;justify-content:center}#sgr svg{width:22px;height:22px}
  #t-sum .dtl{display:none}
  /* number strip */
- #skpi{display:flex;gap:12px;margin-bottom:14px}
- #skpi>div{flex:1;border-radius:12px;padding:12px 16px}
- #skpi b{display:block;font-size:11.5px;font-weight:700}#skpi i{display:block;font-style:normal;font-size:30px;font-weight:800;line-height:1.1;letter-spacing:-.5px}#skpi u{display:block;text-decoration:none;font-size:11px;font-weight:700}
- #skpi .a1{background:#f2e8d9;color:#2a2118}#skpi .a2{background:#e4f3e6;color:#15803d}#skpi .a3{background:#e3ebfb;color:#1d4ed8}#skpi .a4{background:#fde6d3;color:#c2410c}#skpi .a5{background:#fbefc4;color:#a16207}#skpi .a6{background:#ece4fa;color:#6d28d9}
+ .skpi{display:flex}
  /* the four tables on one page */
  #sout{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;align-items:start}
  #sout .card{margin:0!important;background:#fffdf8;border:1px solid #e3d8c8!important;border-top:1px solid #e3d8c8!important;border-radius:12px!important;padding:14px 16px!important}
@@ -1150,6 +1151,36 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
  body.sbhide #sbtog{left:10px;top:14px}body.sbhide #sbtog svg{transform:rotate(180deg)}
  body.sbhide main{padding-left:56px!important}
 }
+/* Summary print = the same look as the screen (Division wise always printed, on its own page) */
+.ps.soutp .skpi{display:flex;grid-column:1/-1;gap:8px;margin:0}.ps.soutp .skpi>div{padding:6px 10px;border-radius:8px}.ps.soutp .skpi i{font-size:20px}.ps.soutp .skpi b,.ps.soutp .skpi u{font-size:9px}
+.skpi>div{flex:1}
+.skpi b{display:block;font-size:11.5px;font-weight:700}.skpi i{display:block;font-style:normal;font-size:30px;font-weight:800;line-height:1.1;letter-spacing:-.5px}.skpi u{display:block;text-decoration:none;font-size:11px;font-weight:700}
+.skpi .a1{background:#f2e8d9;color:#2a2118}.skpi .a2{background:#e4f3e6;color:#15803d}.skpi .a3{background:#e3ebfb;color:#1d4ed8}.skpi .a4{background:#fde6d3;color:#c2410c}.skpi .a5{background:#fbefc4;color:#a16207}.skpi .a6{background:#ece4fa;color:#6d28d9}
+ .soutp{display:grid;grid-template-columns:1.1fr .9fr;gap:8px;align-items:start}
+ .soutp .card{margin:0!important;background:#fffdf8;border:1px solid #e3d8c8!important;border-top:1px solid #e3d8c8!important;border-radius:12px!important;padding:14px 16px!important}
+ .soutp .card h3{font-size:13px!important;letter-spacing:1.2px!important;color:#9a3412!important;margin:0 0 10px!important}
+ .soutp .card h3::before{display:none}
+ .soutp .card h3 .muted{color:#4f4234!important;font-weight:700!important;font-size:12px!important}
+ .soutp .k-ws,.soutp .k-cap{grid-column:1/-1}
+ .soutp .k-pd{grid-column:1;order:2}.soutp .k-div{grid-column:2;order:3}.soutp .k-div:not(.col){grid-column:1/-1}.soutp .k-cap{order:4}
+ .soutp .k-div.col{padding:0!important}.soutp .k-div>h3{margin:0!important;padding:14px 16px!important}
+ :is(.soutp .k-ws,.soutp .k-pd,.soutp .k-cap) table{width:100%;border-collapse:collapse}
+ :is(.soutp .k-ws,.soutp .k-pd,.soutp .k-cap) th{background:#f2e8d9;color:#2a2118!important;font-weight:800;border:1px solid #e3d8c8!important}
+ :is(.soutp .k-ws,.soutp .k-pd,.soutp .k-cap) th.g1{background:#fbd9b5!important;color:#2a2118!important}
+ :is(.soutp .k-ws,.soutp .k-pd,.soutp .k-cap) th.g2{background:#cdeedd!important;color:#14532d!important}
+ :is(.soutp .k-ws,.soutp .k-pd,.soutp .k-cap) td{text-align:center;font-size:13px;font-weight:800;border:1px solid #e3d8c8!important;color:#2a2118}
+ :is(.soutp .k-ws,.soutp .k-pd,.soutp .k-cap) td.l{text-align:left;background:#fffdf8}
+ :is(.soutp .k-ws,.soutp .k-pd,.soutp .k-cap) tr.t td{background:#f6ead8!important}
+ .soutp .z{color:#8a7c69!important;font-weight:700!important}
+ .soutp .tbl11d{overflow-x:auto}
+.soutp .card h3{font-size:10px!important;margin:0 0 5px!important}.soutp .card{padding:8px 10px!important;border-radius:8px!important;break-inside:avoid}
+.soutp th{font-size:7.5px!important;padding:2px 3px!important}.soutp td{font-size:9.5px!important;padding:2px 3px!important}
+.soutp .k-div{grid-column:1/-1!important;order:5!important;break-before:page;padding:8px 10px!important}.soutp .k-div>h3::after{content:''!important}.soutp .k-div.col .wrap{display:block!important}
+.soutp .k-div th{font-size:8px!important}.soutp .k-div td{font-size:10px!important}
+.soutp .capfull{display:block!important}
+body.printing{padding-left:0!important;padding-bottom:0!important;background:#fff!important}
+body.printing #sbtog{display:none!important}
+.ps.soutp{width:100%;box-sizing:border-box}
 </style>
 </head>
 <body class="on-home">
@@ -1197,7 +1228,7 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
         </div>
         <details class="dtl"><summary>How it works</summary>By default the summary shows this month: <b>From</b> = 1st of the month, <b>To</b> = today. Pick another <b>Date</b> and the TODAY columns show that day, while the TILL columns show the 1st of that month up to that date (From / To can still be changed). Tap any number to see its records. The last answer is kept for 5 minutes; tap <b>Show Summary</b> to get fresh figures at once.</details>
       </div>
-      <div id="skpi"></div>
+      <div id="skpi" class="skpi"></div>
       <div id="smsg"></div>
       <div id="sout"></div>
     </section>
@@ -1252,6 +1283,7 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
         <div class="bar sbar">
           <div><label>From</label><div class="dt"><input type="text" class="dtx" id="cf" inputmode="numeric" placeholder="DD.MM.YYYY"><span class="calw">&#128197;<input type="date" data-c="cf"></span></div></div>
           <div><label>To</label><div class="dt"><input type="text" class="dtx" id="cto" inputmode="numeric" placeholder="DD.MM.YYYY"><span class="calw">&#128197;<input type="date" data-c="cto"></span></div></div>
+          <div><label>Workshop</label><select id="cws"><option value="">All workshops</option></select></div>
           <button class="btn" id="cbtn">Show Comparison</button><button class="btn sec" id="cxl">&#11015; Excel</button><button class="btn sec" id="cpr">Print</button>
         </div>
         <details class="dtl"><summary>How it works</summary>Pick <b>From</b> and <b>To</b> (by default this month up to today). The table counts the PRs of these dates capacity wise and division wise, and compares them with the <b>same dates of last year</b>. Type the <b>Install on 01.04.YYYY</b> numbers once in the boxes: Damage % and the increase / decrease columns are worked out for you. Only the Admin sees this tab.</details>
@@ -1601,8 +1633,8 @@ function initDates() {
 var CURTAB = 'sum', SSEQ = 0;
 var WSDIV = {}, DRV = [];
 function allowedTabs() {
-  var base = { creator: ['sum', 'adm'], discom: ['sum'], admin: ['sum', 'data', 'drv', 'cmp', 'adm'], je: ['sum', 'data', 'drv'] }[ME.role] || ['sum'];
-  if (ME.tabs && ME.role === 'je') base = base.filter(function (t) { return ME.tabs.indexOf(t) >= 0; });
+  var base = { creator: ['sum', 'adm'], discom: ['sum', 'cmp'], admin: ['sum', 'data', 'drv', 'cmp', 'adm'], je: ['sum', 'data', 'drv', 'cmp'] }[ME.role] || ['sum'];
+  if (ME.tabs && ME.role === 'je') base = base.filter(function (t) { return t === 'cmp' || ME.tabs.indexOf(t) >= 0; });
   else if (ME.tabs && ME.role !== 'je') base = base.filter(function (t) { return t === 'adm' || t === 'cmp' || ME.tabs.indexOf(t) >= 0; });
   return base.length ? base : ['sum'];
 }
@@ -1844,7 +1876,7 @@ $('sxl').onclick = function () {
 };
 $('spr').onclick = function () {
   if (!SUM) return msg('smsg', 'Show the summary first.', 'info');
-  printHtml('Transformer Summary - ' + SUM.date + '  (From ' + SUM.from + ' to ' + SUM.to + ')', '<div class="ps soutp noanim">' + $('sout').innerHTML + '</div>');
+  printHtml('Transformer Summary - ' + SUM.date + '  (From ' + SUM.from + ' to ' + SUM.to + ')', '<div class="ps soutp noanim"><div class="skpi">' + $('skpi').innerHTML + '</div>' + $('sout').innerHTML + '</div>');
 };
 
 /* =====================  LIST (opened by a click on a number)  ===================== */
@@ -2655,10 +2687,10 @@ drawData = function () {
   }
 };
 
-/* =====================  COMPARISON (Admin only)  =====================
+/* =====================  COMPARISON (every login can see it; only the Admin types the Install numbers)  =====================
  * This year's PRs of the chosen dates against the SAME dates of last year, capacity wise, division wise (format of comparative PDF).
- * Numbers come from compare_fmt(); "Install on 01.04.YYYY" is typed by the Admin in the boxes and kept by set_installed().          */
-var CMP = null, CMPINST = {}, CMPSEQ = 0;
+ * Numbers come from compare_all() (step 22: counts of the whole organisation, no PR details); "Install on 01.04.YYYY" is typed by the Admin and kept by set_installed().          */
+var CMP = null, CMPINST = {}, CMPSEQ = 0, CWS = [], CSEL = null;
 var CCAPS = [10, 16, 25, 63, 100, 160, 250, 400, 630, 1000];
 var CGROUPS = [
   { ws: 'AZAMGARH', total: 'AZAMGARH', parts: [
@@ -2695,7 +2727,7 @@ function cmpBuild(raw, yc, yp) {
     var a = cmpInst(key, yc), b = cmpInst(key, yp); r.ic = a || 0; r.ip = b || 0; r.vc = a; r.vp = b;
     return r;
   }
-  WSL_SORTED().forEach(function (ws) {
+  CMPW().forEach(function (ws) {
     var g = CGROUPS.filter(function (x) { return x.ws === ws; })[0] || { ws: ws, total: ws, parts: [] };
     var used = {}, seen = {}; (idx.c[ws] ? Object.keys(idx.c[ws]) : []).concat(idx.p[ws] ? Object.keys(idx.p[ws]) : []).forEach(function (k) { seen[k] = 1; });
     var gsum = mk('w', g.total || ws), extras = [];
@@ -2718,8 +2750,9 @@ function cmpBuild(raw, yc, yp) {
   rows.push(z);
   return rows;
 }
+function CMPW() { var W = ['AZAMGARH', 'MAU', 'BALLIA'], l = (CSEL ? [CSEL] : CWS).slice(); return l.sort(function (x, y) { var i = W.indexOf(x), j = W.indexOf(y); return (i < 0 ? 99 : i) - (j < 0 ? 99 : j); }); }
 function WSL_SORTED() { var W = ['AZAMGARH', 'MAU', 'BALLIA']; return WSL.slice().sort(function (x, y) { var i = W.indexOf(x), j = W.indexOf(y); return (i < 0 ? 99 : i) - (j < 0 ? 99 : j); }); }
-function CMP_ZONE() { return WSL.indexOf('AZAMGARH') >= 0 ? 'Azh ZONE' : 'ZONE TOTAL'; }
+function CMP_ZONE() { return CSEL ? CSEL + ' TOTAL' : (CWS.indexOf('AZAMGARH') >= 0 ? 'Azh ZONE' : 'ZONE TOTAL'); }
 
 function cpct(n, d) { return d > 0 ? (n / d * 100).toFixed(2) + '%' : '–'; }
 function cchg(cur, prev) { return prev > 0 ? ((cur - prev) / prev * 100).toFixed(2) + '%' : (cur > 0 ? '–' : '0.00%'); }
@@ -2731,7 +2764,7 @@ function cmpHtml(edit) {
   var lc = same ? p2(f.getMonth() + 1) + '/' + yy(f.getFullYear()) : C.from + ' to ' + C.to;
   var lp = same ? p2(f.getMonth() + 1) + '/' + yy(f.getFullYear() - 1) : fmt(new Date(f.getFullYear() - 1, f.getMonth(), f.getDate())) + ' to ' + fmt(new Date(t.getFullYear() - 1, t.getMonth(), t.getDate()));
   var sub = same ? 'COMPARISON OF DIVISION WISE PR FOR THE M/O-' + p2(f.getMonth() + 1) + '/' + f.getFullYear() + ' WITH LAST YEAR SAME MONTH' : 'COMPARISON OF DIVISION WISE PR FOR ' + C.from + ' TO ' + C.to + ' WITH THE SAME DATES OF LAST YEAR';
-  var capH = CCAPS.slice(0, 4).map(String).concat(['BELOW 100 KVA'], CCAPS.slice(4).map(String), ['100 AND ABOVE', 'TOTAL PR']);
+  var capH = CCAPS.slice(0, 4).map(String).concat(['BELOW<br>100 KVA'], CCAPS.slice(4).map(String), ['100 AND<br>ABOVE', 'TOTAL PR']);
   h += '<table class="cmpt"><thead>';
   h += '<tr class="ca"><th colspan="' + (NC - 4) + '" class="ct">' + esc(cmpTitle()) + '</th><th>MONTH</th><th colspan="3">' + esc(C.from + ' TO ' + C.to) + '</th></tr>';
   h += '<tr class="ca"><th colspan="' + (NC - 4) + '" class="ct">' + esc(sub) + '</th><th colspan="4"></th></tr>';
@@ -2760,24 +2793,36 @@ function cmpHtml(edit) {
 }
 function cmpDraw() {
   if (!CMP) return;
-  $('cmpout').innerHTML = '<div class="card"><div class="wrap cmpw">' + cmpHtml(true) + '</div>' +
-    '<div class="muted" style="font-size:12px;margin-top:8px">Type the <b>Install on 01.04.YYYY</b> numbers in the boxes of each division (they are saved automatically, and Damage % is worked out from them). ' +
+  var isAd = ME && ME.role === 'admin';
+  $('cmpout').innerHTML = '<div class="card"><div class="wrap cmpw">' + cmpHtml(isAd) + '</div>' +
+    '<div class="muted" style="font-size:12px;margin-top:8px">' + (isAd ? 'Type the <b>Install on 01.04.YYYY</b> numbers in the boxes of each division (they are saved automatically, and Damage % is worked out from them). ' : 'The <b>Install on 01.04.YYYY</b> numbers are typed by the Admin. ') +
     'Counts are PRs by PR date (wrong / duplicate PRs not counted). Capacities that have no column (for example 5 or 40) are inside BELOW 100 KVA / 100 AND ABOVE and TOTAL PR. An empty – means there is no last-year figure to compare with.</div></div>';
 }
+function cmpFill(raw) {                      // the workshop filter: every workshop found in the numbers
+  var raws = {}; raw.forEach(function (r) { raws[r[1]] = 1; });
+  CWS = Object.keys(raws); if (!CWS.length) CWS = WSL.slice();
+  var W = ['AZAMGARH', 'MAU', 'BALLIA']; CWS.sort(function (x, y) { var i = W.indexOf(x), j = W.indexOf(y); return (i < 0 ? 99 : i) - (j < 0 ? 99 : j); });
+  var sel = $('cws'); sel.innerHTML = '<option value="">All workshops</option>' + CWS.map(function (w) { return '<option value="' + esc(w) + '">' + esc(w) + '</option>'; }).join('');
+  if (CSEL === null) CSEL = (ME && ME.role === 'je' && WSL.length === 1 && CWS.indexOf(WSL[0]) >= 0) ? WSL[0] : '';     // a JE starts with his own workshop
+  if (CSEL && CWS.indexOf(CSEL) < 0) CSEL = '';
+  sel.value = CSEL;
+}
 function cmpLoad() {
-  if (!ME || ME.role !== 'admin') return Promise.resolve();
+  if (!ME || ['admin', 'je', 'discom'].indexOf(ME.role) < 0) return Promise.resolve();
   if (!validD($('cf').value.trim()) || !validD($('cto').value.trim())) { msg('cmsg', 'Enter both dates in DD.MM.YYYY format.', 'err'); return Promise.resolve(); }
   var f = $('cf').value.trim(), t = $('cto').value.trim();
   if (parseD(f) > parseD(t)) { msg('cmsg', 'The "From" date cannot be later than the "To" date.', 'err'); return Promise.resolve(); }
   var seq = ++CMPSEQ; msg('cmsg', '<span class="sp" style="border-color:#3b5bdb55;border-top-color:#3b5bdb"></span>Loading...', 'info');
-  return Promise.all([rpc('compare_fmt', { p_from: d2i(f), p_to: d2i(t) }), rpc('installed_json', {})]).then(function (a) {
+  return Promise.all([rpc('compare_all', { p_from: d2i(f), p_to: d2i(t) }), rpc('installed_all_json', {})]).then(function (a) {
     if (seq !== CMPSEQ) return;
     CMPINST = {}; (a[1] || []).forEach(function (x) { CMPINST[x[0] + '|' + x[1]] = x[2]; });
     var yc = cmpFy(parseD(f));
+    cmpFill(a[0] || []);
     CMP = { from: f, to: t, yc: yc, yp: yc - 1, raw: a[0] || [] }; CMP.rows = cmpBuild(CMP.raw, CMP.yc, CMP.yp);
     msg('cmsg', ''); cmpDraw();
   }).catch(function (e) { if (seq === CMPSEQ) msg('cmsg', esc(e.message), 'err'); });
 }
+$('cws').onchange = function () { CSEL = $('cws').value; if (CMP) { CMP.rows = cmpBuild(CMP.raw, CMP.yc, CMP.yp); cmpDraw(); } };
 $('cbtn').onclick = function () { cmpLoad(); };
 ['cf', 'cto'].forEach(function (id) { $(id).addEventListener('keydown', function (e) { if (e.key === 'Enter') cmpLoad(); }); });
 $('cmpout').addEventListener('change', function (e) {
