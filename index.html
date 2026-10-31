@@ -957,6 +957,17 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
 .gnote{font-size:11.5px;font-weight:600;color:#6b7694;line-height:1.5;margin-top:14px;padding:0 6px}
 .gbar i.gdn{background:linear-gradient(90deg,#43c68f,#2aa876)}
 @media(max-width:900px){.ghero{flex-wrap:wrap;padding:18px}.ghero h2{font-size:19px}.gdone{margin-left:0;width:100%;justify-content:space-between}}
+/* Dashboard compact: whole page fits one laptop screen (easy to screenshot for WhatsApp) */
+@media(min-width:901px){
+.gdash{padding:50px 22px 16px;max-width:1120px;border-radius:22px}.gdash .gx{top:10px;right:14px}
+.ghero{padding:12px 20px;margin-bottom:10px;border-radius:20px}.ghero h2{font-size:21px}.ghero .gicon-b{width:42px;height:42px;padding:10px 0 9px;border-radius:13px}.ghero .gicon-b i{width:6px}
+.gdone b{font-size:10.5px}.gdone span{font-size:11px;margin-top:2px}.gr-h em{font-size:16px}
+.gkpi{gap:10px;margin-bottom:10px}.gk{padding:10px 14px;border-radius:16px}.gkl{font-size:12.5px}.gkn{font-size:30px;margin-top:0}.gks{font-size:11px;margin-top:0}
+.gk .gkl{padding-right:34px}.gki{width:28px;height:28px;border-radius:9px;right:10px;top:10px}.gki svg{width:16px;height:16px}
+.gcard{padding:12px 18px;border-radius:20px;margin-bottom:10px}.gct{font-size:14.5px;margin-bottom:2px}.gst{margin-top:6px}.gst.big .gbar{height:18px;border-radius:7px}.gsl{font-size:12.5px}
+.gws{gap:10px}.gwh{margin-bottom:0;gap:10px}.gwh .gwt{font-size:16px}.gwn b{font-size:19px}.gr-w em{font-size:11px}
+.gnote{margin-top:8px;font-size:10.5px;line-height:1.35}
+}
 /* Division wise summary: closed until the heading is clicked (only on screen; Print and Excel always have it) */
 #sout .k-div>h3{cursor:pointer;user-select:none}
 #sout .k-div>h3::after{content:' \25BE  (click to close)';font-size:11px;font-weight:600;color:#6b7aa8;text-transform:none}
@@ -2595,7 +2606,7 @@ function dashHtml(raw, from, to) {
   var when = f.getMonth() === t.getMonth() && f.getFullYear() === t.getFullYear() ? MN[f.getMonth()] + ' ' + f.getFullYear() + ' &middot; ' : '';
   var done = dpc(T.rt, T.t);
   h += '<div class="ghero"><span class="gicon-b"><i></i><i></i><i></i></span><div class="ght"><h2>Transformer Pendency Dashboard</h2><div class="gsub">' + when + esc(from) + ' to ' + esc(to) + ' &middot; ' + esc(wl.join(' &middot; ').replace(/&middot;/g, '·')) + '</div></div>' +
-       '<div class="gdone"><div><b>PRs fully done</b><span>replaced and the old<br>transformer returned</span></div>' + dRing(done, 100, '<em>' + dfl(done) + '%</em>', 'gr-h') + '</div></div>';
+       '<div class="gdone"><div><b>PRs fully done</b><span>replaced and the old<br>transformer returned</span></div>' + dRing(done, 68, '<em>' + dfl(done) + '%</em>', 'gr-h') + '</div></div>';
   if (!T.t) return h + '<div class="msg info">No PR was raised between ' + esc(from) + ' and ' + esc(to) + '.</div>';
   var K = [['k1', 'Total PR', T.t, 'raised in this period'], ['k2', 'Issued', T.i, dpt(T.i, T.t) + ' of Total PR'], ['k3', 'Pending to Issue', T.pi, dpt(T.pi, T.t) + ' of Total PR'],
            ['k4', 'Replacement Pending', T.pr, dpt(T.pr, T.t) + ' of Total PR'], ['k5', 'TX Return Pending', T.pt, dpt(T.pt, T.t) + ' of Total PR']];
@@ -2605,7 +2616,7 @@ function dashHtml(raw, from, to) {
   h += '<div class="gcard"><div class="gct">How far have the ' + T.t + ' PRs travelled <span class="glg"><span><i class="gdn"></i>Done</span><span><i class="po"></i>Pending to issue</span><span><i class="py"></i>Replacement pending</span><span><i class="pp"></i>Return pending</span><span><i class="gnr"></i>Not reached yet</span></span></div>' + dStages(T, true) + '</div>';
   h += '<div class="gws">' + wl.map(function (w) {
     var v = by[w], p = dpc(v.rt, v.t);
-    return '<div class="gcard gw"><div class="gwh">' + dRing(p, 64, '<em>' + dfl(p) + '%</em>', 'gr-w') + '<div><div class="gwt"><span>' + esc(w) + '</span></div><div class="gwn">Total PR <b>' + v.t + '</b></div></div></div>' + (v.t ? dStages(v, false) : '<div class="gsub" style="margin-top:10px">No PR in this period.</div>') + '</div>';
+    return '<div class="gcard gw"><div class="gwh">' + dRing(p, 52, '<em>' + dfl(p) + '%</em>', 'gr-w') + '<div><div class="gwt"><span>' + esc(w) + '</span></div><div class="gwn">Total PR <b>' + v.t + '</b></div></div></div>' + (v.t ? dStages(v, false) : '<div class="gsub" style="margin-top:10px">No PR in this period.</div>') + '</div>';
   }).join('') + '</div>';
   h += '<div class="gnote">Each PR is counted at the stage it has reached by ' + esc(to) + '. These are the PRs raised between ' + esc(from) + ' and ' + esc(to) + ', so the numbers can differ from the Total Issue / Total Replacement columns of the Summary, which count the work done in the period.</div>';
   return h;
