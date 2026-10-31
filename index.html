@@ -905,6 +905,63 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
 #pz .cmpp table.cmpt tbody td{height:7.6mm}
 #pz .cmpp table.cmpt tr.w.wt td,#pz .cmpp table.cmpt tr.t.z td{font-size:8.5px}
 #pz .cmpp table.cmpt td.nm,#pz .cmpp table.cmpt th.nm{white-space:normal;min-width:36mm}
+
+/* Graph dashboard */
+.gico{display:inline-flex;align-items:center;gap:6px}
+.gdash{position:relative;width:100%;max-width:1180px;background:#f1f4fb;border-radius:28px;padding:28px 30px 30px;box-shadow:0 30px 80px rgba(10,20,50,.35);box-sizing:border-box}
+.gdash .gx{position:absolute;right:20px;top:18px}
+.ghead{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-right:110px}
+.ghead h2{margin:0;font-size:25px;font-weight:800;letter-spacing:-.3px;color:#17203d;line-height:1.15}
+.gsub{font-size:13px;font-weight:600;color:#5b6786;margin-top:3px}
+.gicon-b{width:50px;height:50px;flex-shrink:0;border-radius:16px;background:linear-gradient(135deg,#4c6ef5,#12a0a0);display:flex;align-items:flex-end;justify-content:center;gap:5px;padding:12px 0 11px;box-sizing:border-box;box-shadow:0 8px 18px rgba(76,110,245,.35)}
+.gicon-b i{width:7px;border-radius:2px;background:#fff}.gicon-b i:nth-child(1){height:14px}.gicon-b i:nth-child(2){height:26px}.gicon-b i:nth-child(3){height:19px}
+.gkpi{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.gk{border-radius:22px;padding:16px 20px;position:relative;overflow:hidden}
+.gk::after{content:"";position:absolute;right:-26px;top:-26px;width:84px;height:84px;border-radius:50%;background:currentColor;opacity:.08}
+.gkl{font-size:13.5px;font-weight:700}.gkn{font-size:40px;font-weight:800;line-height:1.1;margin-top:4px;letter-spacing:-1px}.gks{font-size:11.5px;font-weight:600;margin-top:3px;opacity:.8}
+.gk.k1{background:linear-gradient(145deg,#e8f0ff,#d9e7ff);color:#0b4f8a}.gk.k2{background:linear-gradient(145deg,#e4f8ee,#d3f1e2);color:#0a6b40}
+.gk.k3{background:linear-gradient(145deg,#fff0e0,#ffe4c9);color:#a84f00}.gk.k4{background:linear-gradient(145deg,#fff6d6,#ffecaa);color:#8a5f00}.gk.k5{background:linear-gradient(145deg,#efe7ff,#e2d5ff);color:#5d34a4}
+.gcard{background:#fff;border-radius:26px;padding:20px 24px;box-shadow:0 10px 30px rgba(40,60,130,.08);margin-bottom:16px}
+.gct{display:flex;align-items:center;flex-wrap:wrap;gap:10px 18px;font-size:16px;font-weight:800;color:#17203d;margin-bottom:12px}
+.glg{margin-left:auto;display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;font-weight:600;color:#3b4663}
+.glg span{display:flex;align-items:center;gap:6px}.glg i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.gdn{background:#2aa876}.po{background:#f59f3a}.py{background:#e3b50b}.pp{background:#8a5bd6}
+.gst{display:grid;grid-template-columns:78px minmax(0,1fr) auto;align-items:center;gap:12px;margin-top:10px}
+.gst.big{grid-template-columns:90px minmax(0,1fr) 270px}
+.gsl{font-size:13px;font-weight:800;color:#17203d}
+.gbar{display:flex;gap:2px;height:14px;border-radius:7px;overflow:hidden;background:#dfe3ec}.gst.big .gbar{height:24px;border-radius:9px}
+.gbar i{display:block}.gpn{min-width:4px}
+.gsn{font-size:12px;font-weight:600;color:#3b4663;white-space:nowrap}.gsn b{font-size:14px;color:#17203d}.gsn b.po{color:#a84f00;background:none}.gsn b.py{color:#8a5f00;background:none}.gsn b.pp{color:#5d34a4;background:none}
+.gsn em{font-style:normal;color:#6b7694;margin-left:8px;font-size:11.5px}
+.gws{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px}.gws .gcard{margin-bottom:0}
+.gwt{display:flex;justify-content:space-between;align-items:baseline;font-size:17px;font-weight:800;color:#17203d}
+.gwn{font-size:12.5px;font-weight:600;color:#5b6786}.gwn b{font-size:24px;color:#0b4f8a;margin-left:4px}
+.gw .gst{grid-template-columns:66px minmax(0,1fr)}.gw .gsn{grid-column:1 / -1;margin-top:-4px}
+@media(max-width:900px){.gkpi{grid-template-columns:repeat(2,minmax(0,1fr))}.gst.big{grid-template-columns:78px minmax(0,1fr)}.gst.big .gsn{grid-column:1 / -1;margin-top:-4px}.gkn{font-size:32px}.ghead h2{font-size:19px}.gdash{border-radius:0;padding:60px 14px 20px;min-height:100%}.gdash .gx{top:12px}.ghead{padding-right:0}}
+
+/* Graph dashboard - hero, rings, icons (design of the canvas) */
+.gdash{padding-top:62px}.gdash .gx{top:16px}
+.ghero{position:relative;overflow:hidden;border-radius:26px;padding:22px 26px;background:linear-gradient(115deg,#1b2a78 0%,#2f4fd1 55%,#12a0a0 100%);color:#fff;display:flex;align-items:center;gap:16px;margin-bottom:16px;box-shadow:0 14px 34px rgba(47,79,209,.28)}
+.ghero::before{content:"";position:absolute;right:-60px;top:-90px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.07)}
+.ghero .gicon-b{background:rgba(255,255,255,.18);box-shadow:none;position:relative}
+.ghero .ght{position:relative;min-width:0}.ghero h2{margin:0;font-size:26px;font-weight:800;letter-spacing:-.4px;line-height:1.15;color:#fff}
+.ghero .gsub{color:#cfdcff;font-weight:600}
+.gdone{position:relative;margin-left:auto;display:flex;align-items:center;gap:14px;flex-shrink:0}
+.gdone b{display:block;font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase;color:#cfdcff}.gdone span{display:block;font-size:12px;font-weight:600;color:#e6eeff;margin-top:4px;line-height:1.35;text-align:left}.gdone>div:first-child{text-align:right}
+.gring{position:relative;border-radius:50%;flex-shrink:0}.gring span{position:absolute;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center}.gring em{font-style:normal;font-weight:800;color:#17203d}
+.gr-h{--rc:#7af0c0;--rb:rgba(255,255,255,.22)}.gr-h span{background:#26409f}.gr-h em{color:#fff;font-size:20px}.gr-w em{font-size:12.5px}
+.gk{box-shadow:0 8px 22px rgba(40,60,130,.08)}.gk::after{display:none}.gk .gkl{padding-right:42px}
+.gki{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;color:inherit}
+.gwh{display:flex;align-items:center;gap:14px;margin-bottom:4px}.gwh .gwt{font-size:18px}.gwh .gwn{margin-top:3px}
+.gnr{background:#dfe3ec;border:1px solid #cdd3e2}
+.gnote{font-size:11.5px;font-weight:600;color:#6b7694;line-height:1.5;margin-top:14px;padding:0 6px}
+.gbar i.gdn{background:linear-gradient(90deg,#43c68f,#2aa876)}
+@media(max-width:900px){.ghero{flex-wrap:wrap;padding:18px}.ghero h2{font-size:19px}.gdone{margin-left:0;width:100%;justify-content:space-between}}
+/* Division wise summary: closed until the heading is clicked (only on screen; Print and Excel always have it) */
+#sout .k-div>h3{cursor:pointer;user-select:none}
+#sout .k-div>h3::after{content:' \25BE  (click to close)';font-size:11px;font-weight:600;color:#6b7aa8;text-transform:none}
+#sout .k-div.col>h3::after{content:' \25B8  (click to open)'}
+#sout .k-div.col .wrap{display:none}
 </style>
 </head>
 <body class="on-home">
@@ -946,7 +1003,7 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
           <div><label>Date</label><div class="dt"><input type="text" class="dtx" id="sd" inputmode="numeric" placeholder="DD.MM.YYYY"><span class="calw">&#128197;<input type="date" data-c="sd"></span></div></div>
           <div><label>From</label><div class="dt"><input type="text" class="dtx" id="sf" inputmode="numeric" placeholder="DD.MM.YYYY"><span class="calw">&#128197;<input type="date" data-c="sf"></span></div></div>
           <div><label>To</label><div class="dt"><input type="text" class="dtx" id="st" inputmode="numeric" placeholder="DD.MM.YYYY"><span class="calw">&#128197;<input type="date" data-c="st"></span></div></div>
-          <button class="btn" id="sbtn">Show Summary</button><button class="btn sec" id="sxl">&#11015; Excel</button><button class="btn sec" id="spr">Print</button>
+          <button class="btn" id="sbtn">Show Summary</button><button class="btn sec" id="sxl">&#11015; Excel</button><button class="btn sec" id="spr">Print</button><button class="btn sec gico" id="sgr" title="Graph dashboard" aria-label="Graph dashboard"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg> Graph</button>
         </div>
         <details class="dtl"><summary>How it works</summary>By default the summary shows this month: <b>From</b> = 1st of the month, <b>To</b> = today. Pick another <b>Date</b> and the TODAY columns show that day, while the TILL columns show the 1st of that month up to that date (From / To can still be changed). Tap any number to see its records. The last answer is kept for 5 minutes; tap <b>Show Summary</b> to get fresh figures at once.</details>
       </div>
@@ -1049,6 +1106,12 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
   <textarea id="xta" rows="12" style="width:100%;font:12px ui-monospace,Consolas,monospace" placeholder="Paste here (Ctrl+V)"></textarea>
   <div id="xmsg"></div>
   <div class="bar" style="margin-top:8px"><button class="btn" id="xgo">Save these rows</button></div>
+</div></div>
+
+<!-- GRAPH DASHBOARD -->
+<div id="gov" class="ov hide"><div class="gdash">
+  <button class="btn sec gx" id="gclose">Close &#10005;</button>
+  <div id="gbody"></div>
 </div></div>
 
 <!-- LIST MODAL -->
@@ -2497,6 +2560,71 @@ $('cpr').onclick = function () {
   if (!CMP) return msg('cmsg', 'Show the comparison first.', 'info');
   printHtml('Comparison ' + CMP.from + ' to ' + CMP.to, '<div class="ps cmpp noanim">' + cmpHtml(false) + '</div>');
 };
+
+/* =====================  GRAPH DASHBOARD (opened from the Summary)  =====================
+ * Follows the PRs RAISED between From and To and shows how far they have travelled (issued, replaced, returned) by the To date.
+ * Numbers come from dashboard_json() (step 17): one small answer (a few numbers per workshop); the same 5 minute saved-answer rule as the Summary. */
+var DASHSEQ = 0;
+var DSVG = {
+  k1: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/>', k2: '<path d="M5 12l5 5 9-10"/>', k3: '<circle cx="12" cy="12" r="8"/><path d="M12 8v5l3 2"/>',
+  k4: '<path d="M4 8h13l-3-3"/><path d="M20 16H7l3 3"/>', k5: '<path d="M9 7L5 11l4 4"/><path d="M5 11h9a5 5 0 0 1 0 10h-3"/>'
+};
+function dvec(a) { return a ? { t: a[1], i: a[2], r: a[3], rt: a[4], pi: a[5], pr: a[6], pt: a[7] } : { t: 0, i: 0, r: 0, rt: 0, pi: 0, pr: 0, pt: 0 }; }
+function dpc(n, t) { return t ? (n / t * 100) : 0; }
+function dfl(p) { return (Math.floor(p * 10 + 1e-9) / 10).toFixed(1); }          // never rounds 99.97 up to 100
+function dpt(n, t) { if (!t) return '0%'; var f = dfl(dpc(n, t)); return (n > 0 && +f === 0 ? '<0.1' : f) + '%'; }
+function dBar(done, pend, rest, cls) {
+  return '<div class="gbar"><i class="gdn" style="flex:' + done + ' 1 0"></i>' + (pend ? '<i class="gpn ' + cls + '" style="flex:' + pend + ' 1 0"></i>' : '') + (rest > 0 ? '<i style="flex:' + rest + ' 1 0"></i>' : '') + '</div>';
+}
+function dStages(v, big) {
+  var st = [['Issued', v.i, v.pi, 0, 'po'], ['Replaced', v.r, v.pr, v.t - v.r - v.pr, 'py'], ['Returned', v.rt, v.pt, v.t - v.rt - v.pt, 'pp']];
+  return st.map(function (x) {
+    return '<div class="gst' + (big ? ' big' : '') + '"><span class="gsl">' + x[0] + '</span>' + dBar(x[1], x[2], x[3], x[4]) +
+      '<span class="gsn"><b>' + x[1] + '</b> done &middot; <b class="' + x[4] + '">' + x[2] + '</b> pending</span></div>';
+  }).join('');
+}
+function dRing(pct, size, inner, cls) {
+  var s = size, w = Math.round(size * 0.14); pct = Math.min(100, pct);
+  return '<div class="gring ' + (cls || '') + '" style="width:' + s + 'px;height:' + s + 'px;background:conic-gradient(var(--rc,#2aa876) 0% ' + pct.toFixed(1) + '%,var(--rb,#e3e7f1) ' + pct.toFixed(1) + '% 100%)"><span style="inset:' + w + 'px">' + inner + '</span></div>';
+}
+function dashHtml(raw, from, to) {
+  var by = {}; (raw || []).forEach(function (a) { by[a[0]] = dvec(a); });
+  var wl = WSL_SORTED(), T = dvec(null), h = '';
+  wl.forEach(function (w) { var v = by[w] || dvec(null); by[w] = v; for (var k in T) T[k] += v[k]; });
+  var f = parseD(from), t = parseD(to), MN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var when = f.getMonth() === t.getMonth() && f.getFullYear() === t.getFullYear() ? MN[f.getMonth()] + ' ' + f.getFullYear() + ' &middot; ' : '';
+  var done = dpc(T.rt, T.t);
+  h += '<div class="ghero"><span class="gicon-b"><i></i><i></i><i></i></span><div class="ght"><h2>Transformer Pendency Dashboard</h2><div class="gsub">' + when + esc(from) + ' to ' + esc(to) + ' &middot; ' + esc(wl.join(' &middot; ').replace(/&middot;/g, '·')) + '</div></div>' +
+       '<div class="gdone"><div><b>PRs fully done</b><span>replaced and the old<br>transformer returned</span></div>' + dRing(done, 100, '<em>' + dfl(done) + '%</em>', 'gr-h') + '</div></div>';
+  if (!T.t) return h + '<div class="msg info">No PR was raised between ' + esc(from) + ' and ' + esc(to) + '.</div>';
+  var K = [['k1', 'Total PR', T.t, 'raised in this period'], ['k2', 'Issued', T.i, dpt(T.i, T.t) + ' of Total PR'], ['k3', 'Pending to Issue', T.pi, dpt(T.pi, T.t) + ' of Total PR'],
+           ['k4', 'Replacement Pending', T.pr, dpt(T.pr, T.t) + ' of Total PR'], ['k5', 'TX Return Pending', T.pt, dpt(T.pt, T.t) + ' of Total PR']];
+  h += '<div class="gkpi">' + K.map(function (k) {
+    return '<div class="gk ' + k[0] + '"><span class="gki"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + DSVG[k[0]] + '</svg></span><div class="gkl">' + k[1] + '</div><div class="gkn">' + k[2] + '</div><div class="gks">' + esc(k[3]) + '</div></div>';
+  }).join('') + '</div>';
+  h += '<div class="gcard"><div class="gct">How far have the ' + T.t + ' PRs travelled <span class="glg"><span><i class="gdn"></i>Done</span><span><i class="po"></i>Pending to issue</span><span><i class="py"></i>Replacement pending</span><span><i class="pp"></i>Return pending</span><span><i class="gnr"></i>Not reached yet</span></span></div>' + dStages(T, true) + '</div>';
+  h += '<div class="gws">' + wl.map(function (w) {
+    var v = by[w], p = dpc(v.rt, v.t);
+    return '<div class="gcard gw"><div class="gwh">' + dRing(p, 64, '<em>' + dfl(p) + '%</em>', 'gr-w') + '<div><div class="gwt"><span>' + esc(w) + '</span></div><div class="gwn">Total PR <b>' + v.t + '</b></div></div></div>' + (v.t ? dStages(v, false) : '<div class="gsub" style="margin-top:10px">No PR in this period.</div>') + '</div>';
+  }).join('') + '</div>';
+  h += '<div class="gnote">Each PR is counted at the stage it has reached by ' + esc(to) + '. These are the PRs raised between ' + esc(from) + ' and ' + esc(to) + ', so the numbers can differ from the Total Issue / Total Replacement columns of the Summary, which count the work done in the period.</div>';
+  return h;
+}
+function openDash() {
+  var f = $('sf').value.trim(), t = $('st').value.trim();
+  if (!validD(f) || !validD(t)) return msg('smsg', 'Enter the From and To dates first.', 'err');
+  if (parseD(f) > parseD(t)) return msg('smsg', 'The "From" date cannot be later than the "To" date.', 'err');
+  var key = 'dash|' + f + '|' + t, c = cget(key), seq = ++DASHSEQ;
+  $('gov').classList.remove('hide');
+  if (c && Date.now() - c.t < TTL) { $('gbody').innerHTML = dashHtml(c.v, f, t); return; }
+  $('gbody').innerHTML = '<div class="msg info"><span class="sp" style="border-color:#3b5bdb55;border-top-color:#3b5bdb"></span>Loading...</div>';
+  rpc('dashboard_json', { p_from: d2i(f), p_to: d2i(t) }).then(function (r) {
+    cset(key, r); if (seq === DASHSEQ) $('gbody').innerHTML = dashHtml(r, f, t);
+  }).catch(function (e) { if (seq === DASHSEQ) $('gbody').innerHTML = '<div class="msg err">' + esc(e.message) + '</div>'; });
+}
+$('sgr').onclick = openDash;
+$('gclose').onclick = function () { $('gov').classList.add('hide'); DASHSEQ++; };
+$('gov').addEventListener('click', function (e) { if (e.target === $('gov')) { $('gov').classList.add('hide'); DASHSEQ++; } });
 
 </script>
 <script>if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(function () {});</script>
