@@ -904,7 +904,39 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
 #pz .cmpp table.cmpt thead tr.ca th{font-size:9px;padding:2px}
 #pz .cmpp table.cmpt tbody td{height:8.2mm}
 #pz .cmpp table.cmpt tr.w.wt td,#pz .cmpp table.cmpt tr.t.z td{font-size:8.5px}
-#pz .cmpp table.cmpt td.nm,#pz .cmpp table.cmpt th.nm{white-space:normal;min-width:36mm}
+#pz .cmpp table.cmpt td.nm,#pz .cmpp table.cmpt th.nm{white-space:normal;min-width:26mm}
+#pz .cmpp .cmph{display:none!important}
+.cmph{display:none}
+/* desktop: the table fills the width and the height of the screen, bigger letters */
+@media(min-width:901px){
+ .cmpw{max-height:calc(100vh - 190px)!important}
+ table.cmpt{width:100%;min-width:1400px;font-size:clamp(10px,.6vw,15px)}
+ table.cmpt th,table.cmpt td{padding:.8em .12em}
+ table.cmpt th.cp{font-size:.95em;padding:.5em .2em;min-width:0}
+ table.cmpt thead tr.ca th.ct{font-size:1.1em}
+ table.cmpt tr.w.wt td,table.cmpt tr.t.z td{font-size:1.06em}
+ table.cmpt td.nm,table.cmpt th.nm{min-width:8em}
+ table.cmpt input.ci{width:5.6em}
+}
+/* phone: names stay on the left while the numbers slide; heading is written above the table */
+@media(max-width:700px){
+ #t-cmp .sbar{grid-template-columns:repeat(6,1fr)!important}
+ #t-cmp .sbar>div,#t-cmp .sbar>.btn{grid-column:span 2!important}
+ #t-cmp .sbar .btn{white-space:nowrap;padding:9px 2px!important}
+ .cmph{display:block;padding:2px 2px 8px;color:#2a2118}
+ .cmph b{display:block;font-size:12px;letter-spacing:.2px}.cmph span{display:block;font-size:10px;font-weight:700;color:#6b5a44;margin-top:2px}
+ .cmpw{max-height:none!important;overflow-x:auto}
+ table.cmpt{font-size:9.5px;min-width:1250px}
+ table.cmpt tr.ca{display:none}
+ table.cmpt th,table.cmpt td{padding:7px 3px}
+ table.cmpt th.cp{font-size:8px;min-width:30px;padding:4px 2px}
+ table.cmpt td.nm,table.cmpt th.nm{min-width:78px;max-width:78px;font-size:9px;position:sticky;left:0;z-index:2;background:#fff}
+ table.cmpt thead th.nm{background:#fff2cc}
+ table.cmpt tr.w.s td.nm{background:#c9daf8}table.cmpt tr.t.z td.nm{background:#ffff00}
+ table.cmpt tr.w.wt td{font-size:9.5px}table.cmpt tr.t.z td{font-size:9.5px}
+ table.cmpt input.ci{width:46px}
+ table.cmpt thead th{font-size:8px}
+}
 
 /* Graph dashboard */
 .gico{display:inline-flex;align-items:center;gap:6px}
@@ -1082,8 +1114,19 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
  #gbody .gh2{gap:6px}#gbody .gh2 .gring{width:46px!important;height:46px!important}#gbody .gh2 .gring span{inset:6px!important}#gbody .gr-h em{font-size:9px!important}#gbody .grb>span{font-size:7.5px}
  #gbody .gwh{align-items:flex-start!important}#gbody .gwr{margin-left:0!important;gap:6px}#gbody .gwr .gring{width:40px!important;height:40px!important}#gbody .gwr .gring span{inset:5px!important}#gbody .gr-w em{font-size:7.5px!important}
  /* short table headings on phones (only what is shown; Excel and Print keep the full words) */
- #sout a[data-sh],#sout th[data-sh]{font-size:0!important}
- #sout a[data-sh]::after,#sout th[data-sh]::after{content:attr(data-sh);font-size:5.6px;font-weight:800;line-height:1.1;word-break:normal;overflow-wrap:normal;letter-spacing:-.1px}
+ #sout a[data-sh],#sout th[data-sh],#sout td.l[data-sh]{font-size:0!important}
+ #sout a[data-sh]::after,#sout th[data-sh]::after,#sout td.l[data-sh]::after{content:attr(data-sh);font-size:6.4px;font-weight:800;line-height:1.1;word-break:normal;overflow-wrap:normal;letter-spacing:-.1px}
+ #sout .k-div td.l[data-sh],#sout .k-div td.l a[data-sh]{font-size:0!important}
+ #sout .k-div td.l[data-sh]::after,#sout .k-div td.l a[data-sh]::after{font-size:7.6px!important;font-weight:800;line-height:1.15;color:#2a2118}
+ #sout .k-ws th span.muted,#sout .k-div th span.muted,#sout .k-ws th br,#sout .k-div th br{display:none!important}
+ #sout .k-div td,#sout .k-div tr td.l{font-size:8px!important;font-weight:700!important}
+ #sout .k-div .z{color:#8a7c69!important;font-weight:700!important;font-size:8px!important}
+ #sout .k-div tr.w td,#sout .k-div tr.t td,#sout .k-div tr.d td a.n{font-size:8px!important}
+ #sout .k-div th.l{font-size:7px!important}
+ #sout .k-div th.l,#sout .k-ws th.l{background:#f2e8d9!important;color:#2a2118!important}
+ #sout .k-div thead th:not(.l){background:#f2e8d9!important;color:#2a2118!important;border-color:#e3d8c8!important}
+ #sout .k-div tr.d.e td{background:#fff1d6!important}
+ #sout .k-div tr.w td{background:#f6e6cf!important}#sout .k-div tr.t td{background:#efdcc0!important;border-top:1px solid #c9b79d!important}
 }
 .skpi{display:flex;gap:12px;margin-bottom:14px}
 .skpi>div{flex:1;border-radius:12px;padding:12px 16px}
@@ -1829,14 +1872,25 @@ function renderKpi(s) {
 }
 
 /* phone: short headings (display only; the real text stays for Excel and Print) */
-var SHORTH = { 'LAST MONTH PENDENCY': 'PENDENCY BEFORE DATE', 'TOTAL PENDING FOR ISSUE': 'PENDING ISSUE', 'TOTAL PENDING FOR REPLACEMENT': 'PENDING REPLACEMENT',
-  "ISSUE AGAINST TODAY'S PR": 'Iss. vs today PR', "REPLACEMENT AGAINST TODAY'S PR": 'Repl. vs today PR', 'TODAY REPLACEMENT': 'TODAY REPLACE' };
+var SHORTH = { 'LAST MONTH PENDENCY': 'PEND.', 'TOTAL PENDING FOR ISSUE': 'PEND. ISSUE', 'TOTAL PENDING FOR REPLACEMENT': 'PEND. REPL.',
+  "ISSUE AGAINST TODAY'S PR": 'Iss. vs today PR', "REPLACEMENT AGAINST TODAY'S PR": 'Repl. vs today PR', 'TODAY REPLACEMENT': 'TODAY REPL.' };
 function shortHeads() {
   [].forEach.call($('sout').querySelectorAll('.k-ws th,.k-div th'), function (th) {
     var a = th.querySelector('a'), node = a || (th.children.length ? null : th); if (!node) return;
     var t = node.textContent.replace(/\s+/g, ' ').trim().toUpperCase().replace(/\u2019/g, "'");
     if (SHORTH[t]) node.setAttribute('data-sh', SHORTH[t]);
   });
+  [].forEach.call($('sout').querySelectorAll('.k-div td.l'), function (td) {          // short division names for phones: EDD-I AZH, EDD-III GHOSI MAU
+    var a = td.querySelector('a'), node = a || td, t = node.textContent.replace(/\s+/g, ' ').trim(), sh = shortDiv(t);
+    if (sh && sh !== t) node.setAttribute('data-sh', sh);
+  });
+}
+function shortDiv(t) {
+  var m = /^(?:E\.?E\.?\s*)?(E\.?D\.?[DC])\.?\s*-?\s*([IVX]*)\s*(.*)$/i.exec(t); if (!m) return '';
+  var typ = m[1].replace(/\./g, '').toUpperCase(), rn = m[2].toUpperCase(), rest = m[3].trim(), city = '', place = '';
+  var cs = { AZAMGARH: 'AZH', AZAMGAR: 'AZH', MAU: 'MAU', BALLIA: 'BALLIA' };
+  rest.split(/\s+/).forEach(function (w) { var u = w.toUpperCase(); if (cs[u]) city = cs[u]; else if (w) place += (place ? ' ' : '') + u; });
+  return typ + (rn ? '-' + rn : '') + (place ? ' ' + place : '') + (city ? ' ' + city : '');
 }
 
 /* phone: the long capacity table is also drawn as two short tables (the full one stays for Excel and Print; CSS shows one or the other) */
@@ -2290,6 +2344,74 @@ $('vt').addEventListener('change', function (e) {
     d.id = r.data[0].id; msg('vmsg', '<span class="ok">Saved</span>', 'info'); cclear();
   });
 });
+
+/* Driver Master: paste from Excel (several cells at once). The paste starts in the cell you clicked; rows go down, columns go right.
+ * Rows below the last row of the list become new drivers. Every row is checked like a typed entry, and saved one after the other. */
+var DKEYS = ['workshop', 'firm', 'driver', 'mobile', 'vehicle', 'gps'];
+function parseClip(tx) {
+  var rows = [], row = [], cur = '', q = false, i, ch;
+  tx = String(tx).replace(/\r\n?/g, '\n');
+  for (i = 0; i < tx.length; i++) {
+    ch = tx[i];
+    if (q) { if (ch === '"') { if (tx[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += ch; }
+    else if (ch === '"' && cur === '') q = true;
+    else if (ch === '\t') { row.push(cur); cur = ''; }
+    else if (ch === '\n') { row.push(cur); rows.push(row); row = []; cur = ''; }
+    else cur += ch;
+  }
+  if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
+  return rows.filter(function (r) { return r.some(function (c) { return String(c).trim() !== ''; }); });
+}
+function drvPaste(inp, tx) {
+  var rows = parseClip(tx); if (!rows.length) return;
+  var c0 = DKEYS.indexOf(inp.dataset.k), trs = [].slice.call($('vt').querySelectorAll('tbody tr')), start = trs.indexOf(inp.closest('tr')), sel = $('vws').value;
+  var touched = [], skipped = 0;
+  rows.forEach(function (cells, j) {
+    var tr = j === 0 ? trs[start] : null, d;          // only the first pasted row goes into the clicked row; the others are always NEW drivers (nothing saved is overwritten)
+    if (tr) d = DRV[+tr.dataset.i];
+    else { d = { id: null, firm: '', workshop: sel || oneWs() || '', driver: '', mobile: '', gps: '', vehicle: '' }; DRV.unshift(d); }
+    if (d.id && isDupFirm(d.firm)) { skipped++; return; }
+    var nw = {}; DKEYS.forEach(function (k) { nw[k] = d[k]; });
+    cells.forEach(function (v, c) {
+      var k = DKEYS[c0 + c]; if (!k) return;
+      if (k === 'workshop' && d.id) return;                          // the workshop of a saved driver cannot be changed
+      v = String(v).trim(); if (k === 'workshop') v = v.toUpperCase(); if (k === 'mobile') v = digits10(v);
+      nw[k] = v;
+    });
+    touched.push({ d: d, nw: nw, n: j + 1 });
+  });
+  var ok = 0, bad = [], chain = Promise.resolve();
+  touched.forEach(function (t) {
+    chain = chain.then(function () {
+      var d = t.d, up = t.nw, why = '';
+      if (!up.firm || !up.driver || !up.workshop) why = 'Firm, Workshop and Driver name are needed';
+      else if (WSL.indexOf(up.workshop) < 0) why = 'workshop ' + up.workshop + ' is not yours';
+      else if (isDupFirm(up.firm)) why = 'DUPLICATE/WRONG PR is a default entry';
+      else if (up.mobile && up.mobile.length !== 10) why = 'Mobile No. must be 10 digits';
+      if (why) { bad.push('row ' + t.n + ': ' + why); DKEYS.forEach(function (k) { d[k] = up[k]; }); return; }
+      var same = d.id && DKEYS.every(function (k) { return String(d[k] || '') === String(up[k] || ''); });
+      if (same) return;
+      return (d.id ? SB.from('drivers').update(up).eq('id', d.id).select('id') : SB.from('drivers').insert(up).select('id')).then(function (r) {
+        if (r.error) { bad.push('row ' + t.n + ': ' + (/duplicate|unique/i.test(r.error.message) ? 'this firm + driver is already in the list' : friendly(r.error))); return; }
+        if (!r.data || !r.data.length) { bad.push('row ' + t.n + ': not saved (no permission)'); return; }
+        DKEYS.forEach(function (k) { d[k] = up[k]; }); d.id = r.data[0].id; ok++;
+      });
+    });
+  });
+  msg('vmsg', 'Pasting ' + touched.length + ' rows...', 'info');
+  chain.then(function () {
+    DRV = DRV.filter(function (d) { return d.id || (d.firm || d.driver); });      // a pasted row that failed stays visible, empty new rows go
+    cclear(); drvDraw();
+    msg('vmsg', '<span class="ok">' + ok + ' saved</span>' + (bad.length ? ' &middot; <b>' + bad.length + ' not saved:</b> ' + esc(bad.slice(0, 6).join('; ')) + (bad.length > 6 ? ' ...' : '') : '') + (skipped ? ' &middot; ' + skipped + ' skipped' : ''), bad.length ? 'err' : 'info');
+  });
+}
+$('vt').addEventListener('paste', function (e) {
+  var inp = e.target; if (!inp.dataset || !inp.dataset.k || inp.readOnly) return;
+  var tx = (e.clipboardData || window.clipboardData).getData('text'); if (!tx) return;
+  if (tx.indexOf('\t') < 0 && tx.replace(/\n$/, '').indexOf('\n') < 0) return;          // one value: the normal paste into the cell
+  e.preventDefault(); drvPaste(inp, tx);
+});
+
 $('vt').addEventListener('click', function (e) {
   var b = e.target.closest('.rx'); if (!b) return;
   var i = +b.closest('tr').dataset.i, d = DRV[i];
@@ -2765,6 +2887,7 @@ function cmpHtml(edit) {
   var lp = same ? p2(f.getMonth() + 1) + '/' + yy(f.getFullYear() - 1) : fmt(new Date(f.getFullYear() - 1, f.getMonth(), f.getDate())) + ' to ' + fmt(new Date(t.getFullYear() - 1, t.getMonth(), t.getDate()));
   var sub = same ? 'COMPARISON OF DIVISION WISE PR FOR THE M/O-' + p2(f.getMonth() + 1) + '/' + f.getFullYear() + ' WITH LAST YEAR SAME MONTH' : 'COMPARISON OF DIVISION WISE PR FOR ' + C.from + ' TO ' + C.to + ' WITH THE SAME DATES OF LAST YEAR';
   var capH = CCAPS.slice(0, 4).map(String).concat(['BELOW<br>100 KVA'], CCAPS.slice(4).map(String), ['100 AND<br>ABOVE', 'TOTAL PR']);
+  if (!edit || edit) h = '<div class="cmph"><b>' + esc(cmpTitle()) + '</b><span>' + esc(sub) + '</span><span>' + esc(C.from + ' TO ' + C.to) + '</span></div>' + h;
   h += '<table class="cmpt"><thead>';
   h += '<tr class="ca"><th colspan="' + (NC - 4) + '" class="ct">' + esc(cmpTitle()) + '</th><th>MONTH</th><th colspan="3">' + esc(C.from + ' TO ' + C.to) + '</th></tr>';
   h += '<tr class="ca"><th colspan="' + (NC - 4) + '" class="ct">' + esc(sub) + '</th><th colspan="4"></th></tr>';
@@ -2784,7 +2907,7 @@ function cmpHtml(edit) {
   }
   CMP.rows.forEach(function (r) {
     var cls = r.t === 'd' ? 'd' : r.t === 's' ? 'w s' : r.t === 'w' ? 'w wt' : 't z';
-    h += '<tr class="' + cls + '"><td>' + (r.t === 'd' ? r.sl : '') + '</td><td class="nm">' + esc(r.label) + '</td>';
+    h += '<tr class="' + cls + '"><td>' + (r.t === 'd' ? r.sl : '') + '</td><td class="nm">' + esc(r.t === 'd' ? (shortDiv(r.label) || r.label) : r.label) + '</td>';
     var ed = edit && r.t === 'd';
     h += side(r.prv, r.ip, ed, r.key, C.yp, r.vp) + side(r.cur, r.ic, ed, r.key, C.yc, r.vc);
     h += '<td>' + cchg(r.cur.bel, r.prv.bel) + '</td><td>' + cchg(r.cur.abv, r.prv.abv) + '</td><td>' + cchg(r.cur.tot, r.prv.tot) + '</td></tr>';
@@ -2847,6 +2970,11 @@ $('cxl').onclick = function () {
 $('cpr').onclick = function () {
   if (!CMP) return msg('cmsg', 'Show the comparison first.', 'info');
   printHtml('Comparison ' + CMP.from + ' to ' + CMP.to, '<div class="ps cmpp noanim">' + cmpHtml(false) + '</div>');
+  // fit the whole table on ONE landscape page, whatever the screen width of the device is (a phone used to cut the right side)
+  var el = $('pz').querySelector('.cmpp'), tb = el.querySelector('table'), ph = el.querySelector('.cmph'); if (ph) ph.style.display = 'none';
+  el.style.width = '1040px'; tb.style.width = 'auto'; tb.style.zoom = 1;
+  var w = tb.getBoundingClientRect().width || 1040, z = Math.min(1040 / w, 1.7);
+  tb.style.zoom = z; var hh = el.getBoundingClientRect().height; if (hh > 690) tb.style.zoom = z * 690 / hh;
 };
 
 /* =====================  GRAPH DASHBOARD (opened from the Summary)  =====================
