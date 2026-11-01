@@ -906,6 +906,18 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
 #pz .cmpp table.cmpt tr.w.wt td,#pz .cmpp table.cmpt tr.t.z td{font-size:8.5px}
 #pz .cmpp table.cmpt td.nm,#pz .cmpp table.cmpt th.nm{white-space:normal;min-width:26mm}
 #pz .cmpp .cmph{display:none!important}
+#pz .cmpp{width:277mm!important;max-width:none!important;margin:0 auto!important;overflow:visible!important}
+#pz .cmpp table.cmpt{width:277mm!important;min-width:0!important;max-width:none!important;table-layout:fixed!important;font-size:7pt!important}
+#pz .cmpp table.cmpt tr.ca{display:table-row!important}
+#pz .cmpp table.cmpt th,#pz .cmpp table.cmpt td{font-size:7pt!important;padding:0 .4mm!important;position:static!important;max-width:none!important;min-width:0!important;overflow:hidden}
+#pz .cmpp table.cmpt thead th{font-size:5.6pt!important;line-height:1.1!important;padding:.4mm .3mm!important}
+#pz .cmpp table.cmpt thead tr.ca th{font-size:8pt!important}
+#pz .cmpp table.cmpt thead tr.ca th:not(.ct){font-size:6pt!important}
+#pz .cmpp table.cmpt td{font-size:6.8pt!important}
+#pz .cmpp table.cmpt tbody td{height:7mm!important}
+#pz .cmpp table.cmpt td.nm,#pz .cmpp table.cmpt th.nm{white-space:normal!important;font-size:6.6pt!important}
+#pz .cmpp table.cmpt tr.w.wt td,#pz .cmpp table.cmpt tr.t.z td{font-size:7.4pt!important}
+#pz .cmpp table.cmpt tr.w.s td.nm,#pz .cmpp table.cmpt tr.t.z td.nm{background:inherit!important}
 .cmph{display:none}
 /* desktop: the table fills the width and the height of the screen, bigger letters */
 @media(min-width:901px){
@@ -1872,7 +1884,7 @@ function renderKpi(s) {
 }
 
 /* phone: short headings (display only; the real text stays for Excel and Print) */
-var SHORTH = { 'LAST MONTH PENDENCY': 'PEND.', 'TOTAL PENDING FOR ISSUE': 'PEND. ISSUE', 'TOTAL PENDING FOR REPLACEMENT': 'PEND. REPL.',
+var SHORTH = { 'LAST MONTH PENDENCY': 'PEND. LAST MONTH', 'TOTAL PENDING FOR ISSUE': 'PEND. ISSUE', 'TOTAL PENDING FOR REPLACEMENT': 'PEND. REPL.',
   "ISSUE AGAINST TODAY'S PR": 'Iss. vs today PR', "REPLACEMENT AGAINST TODAY'S PR": 'Repl. vs today PR', 'TODAY REPLACEMENT': 'TODAY REPL.' };
 function shortHeads() {
   [].forEach.call($('sout').querySelectorAll('.k-ws th,.k-div th'), function (th) {
@@ -2970,11 +2982,11 @@ $('cxl').onclick = function () {
 $('cpr').onclick = function () {
   if (!CMP) return msg('cmsg', 'Show the comparison first.', 'info');
   printHtml('Comparison ' + CMP.from + ' to ' + CMP.to, '<div class="ps cmpp noanim">' + cmpHtml(false) + '</div>');
-  // fit the whole table on ONE landscape page, whatever the screen width of the device is (a phone used to cut the right side)
-  var el = $('pz').querySelector('.cmpp'), tb = el.querySelector('table'), ph = el.querySelector('.cmph'); if (ph) ph.style.display = 'none';
-  el.style.width = '1040px'; tb.style.width = 'auto'; tb.style.zoom = 1;
-  var w = tb.getBoundingClientRect().width || 1040, z = Math.min(1040 / w, 1.7);
-  tb.style.zoom = z; var hh = el.getBoundingClientRect().height; if (hh > 690) tb.style.zoom = z * 690 / hh;
+  // the table is laid out in millimetres (not screen pixels), so it fills one landscape A4 page on any device
+  var tb = $('pz').querySelector('.cmpp table'), cg = '<colgroup><col style="width:7mm"><col style="width:30mm">', side = '';
+  for (var q = 0; q < 13; q++) side += '<col style="width:6.2mm">'; side += '<col style="width:9mm"><col style="width:8.5mm">';
+  cg += side + side + '<col style="width:12mm"><col style="width:12mm"><col style="width:12mm"></colgroup>';
+  tb.insertAdjacentHTML('afterbegin', cg);
 };
 
 /* =====================  GRAPH DASHBOARD (opened from the Summary)  =====================
