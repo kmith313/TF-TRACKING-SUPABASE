@@ -1396,7 +1396,7 @@ html.hs-t nav button.on{background:var(--nibg)!important;color:var(--niink)!impo
 }
 @media(max-width:900px){
  html.hs-t nav{background:var(--sdbg)!important;border-color:var(--cdbd)!important}
- html.hs-t nav button.on{background:transparent!important;color:var(--h3)!important}
+ html.hs-t nav button.on{background:transparent!important;color:var(--navon)!important}
 }
 @media(min-width:901px){
  html.hs-top body{padding-left:0!important;padding-top:72px}
@@ -1455,7 +1455,12 @@ html.hs-t nav button.on{background:var(--nibg)!important;color:var(--niink)!impo
  html.hs-rail body{padding-left:84px}
  html.hs-rail .top{width:84px!important;padding:16px 8px!important;overflow:hidden}
  html.hs-rail header h1{font-size:0!important;justify-content:center}
- html.hs-rail header .u,html.hs-rail .top #bhs,html.hs-rail .top #bpw,html.hs-rail .top #bout{display:none!important}
+ html.hs-rail header .u{display:none!important}
+ html.hs-rail .top{display:flex!important;flex-direction:column}
+ html.hs-rail header{display:contents!important}
+ html.hs-rail header h1{order:0}
+ html.hs-rail nav{order:1;flex:1}
+ html.hs-rail .top #bhs,html.hs-rail .top #bpw,html.hs-rail .top #bout{order:2;display:block!important;width:100%!important;margin:3px 0 0!important;padding:5px 2px!important;font-size:9.5px!important;line-height:1.15;text-align:center;white-space:normal;word-break:break-word}
  html.hs-rail nav button{font-size:0!important;justify-content:center;padding:12px 0!important}
  html.hs-rail nav button::before{margin:0}
  html.hs-rail #sbtog{display:none!important}
@@ -1506,6 +1511,74 @@ html.hs-t nav button.on{background:var(--nibg)!important;color:var(--niink)!impo
  #t-data.clean .gt td:focus-within{outline:2px solid #1e7145;outline-offset:-2px}
  #t-data.clean .gt td a{color:#0b4f9e!important}
  #t-data.clean .gt tr.bad td,#t-data.clean .gt td.bad{background:#fde7e7!important}
+}
+
+/* ---- Data Sheet inside the colour looks: readable cells and toolbar ---- */
+@media screen{
+ html.hs-t .gwrap{background:var(--cdbg)!important;border:var(--cdbw) solid var(--cdbd)!important;border-radius:var(--cdrad)!important}
+ html.hs-t .gt{background:transparent!important}
+ html.hs-t .gt th{background:var(--thbg)!important;color:var(--think)!important;border-color:var(--grid)!important}
+ html.hs-t .gt td{background:transparent!important;color:var(--tdink)!important;border-color:var(--grid)!important}
+ html.hs-t .gt tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--ink) 4%,transparent)!important}
+ html.hs-t .gt td input,html.hs-t .gt td select,html.hs-t .gt td textarea{background:transparent!important;color:var(--tdink)!important;border:0!important}
+ html.hs-t .gt td input::placeholder{color:var(--tdink)!important;opacity:.4}
+ html.hs-t .gt td input[readonly]{opacity:.8}
+ html.hs-t .gt td:first-child{background:var(--thbg)!important;color:var(--think)!important}
+ html.hs-t #t-data #dcard,html.hs-t #t-data #dcard *{color:var(--ink)}
+ html.hs-t #t-data #dcard .btn:not(.sec){color:var(--niink)}
+ html.hs-t #t-data .ib{background:var(--nibg)!important;color:var(--niink)!important}
+ html.hs-t #t-data select option{color:#111;background:#fff}
+}
+/* clean look must stay dark-on-white in every colour look */
+@media screen{
+ #t-data.clean #dcard,#t-data.clean #dcard *{color:#111!important}
+ #t-data.clean #dcard .btn,#t-data.clean #dcard .ib{background:#e6e6e6!important;color:#111!important;border:1px solid #b4b4b4!important;border-radius:2px!important}
+ #t-data.clean #dcard input,#t-data.clean #dcard select{background:#fff!important;color:#111!important;border:1px solid #b4b4b4!important;border-radius:2px!important}
+ #t-data.clean #dcard #dsave{background:#1e7145!important;color:#fff!important}
+ #t-data.clean .gt td input::placeholder{color:#999!important;opacity:1}
+ html.hs-t #t-data.clean .gt th{background:#e6e6e6!important;color:#000!important}
+ html.hs-t #t-data.clean .gt td{background:#fff!important;color:#000!important;border-color:#d0d0d0!important}
+ html.hs-t #t-data.clean .gt tbody tr:nth-child(even) td{background:#fff!important}
+ html.hs-t #t-data.clean .gt td:first-child{background:#e6e6e6!important;color:#333!important}
+ html.hs-t #t-data.clean .gt td input,html.hs-t #t-data.clean .gt td select{color:#000!important}
+ html.hs-t #t-data.clean .gt td input::placeholder{color:#8a8a8a!important;opacity:1}
+}
+
+/* ---- phone cards (Data Sheet / Drivers / Admin lists) in the colour looks ---- */
+@media screen and (max-width:760px){
+ html.hs-t table.mt tr{background:var(--cdbg)!important;border:1px solid var(--cdbd)!important;border-left:4px solid var(--navon)!important;border-radius:var(--cdrad)!important;box-shadow:var(--cdsh)!important}
+ html.hs-t table.mt tr.dirty{background:color-mix(in srgb,#f59e0b 22%,var(--cdbg))!important}
+ html.hs-t table.mt tr.bad{background:color-mix(in srgb,#ef4444 24%,var(--cdbg))!important}
+ html.hs-t table.mt tr.sel{background:color-mix(in srgb,var(--navon) 22%,var(--cdbg))!important}
+ html.hs-t table.mt td::before{color:var(--ink)!important;opacity:.7}
+ html.hs-t table.mt td.rn{color:var(--navon)!important}html.hs-t table.mt td.rn::after{color:var(--ink)!important;opacity:.55}
+ html.hs-t .gt2.mt input,html.hs-t .gt2.mt select,html.hs-t .gt2.mt textarea{background:color-mix(in srgb,var(--ink) 8%,transparent)!important;color:var(--ink)!important;border:1px solid var(--cdbd)!important}
+ html.hs-t .gt2.mt td.lk input{background:color-mix(in srgb,var(--ink) 14%,transparent)!important;color:var(--ink)!important;opacity:.85}
+ html.hs-t .gt2.mt input::placeholder{color:var(--ink)!important;opacity:.4}
+ html.hs-t table.mt td{color:var(--ink)!important}
+ html.hs-t #t-data.clean table.mt tr{background:#fff!important;border:1px solid #c6c6c6!important;border-left:4px solid #1e7145!important;border-radius:0!important;box-shadow:none!important}
+ html.hs-t #t-data.clean table.mt td,html.hs-t #t-data.clean table.mt td::before{color:#111!important}
+ html.hs-t #t-data.clean .gt2.mt input{background:#fff!important;color:#000!important;border:1px solid #b4b4b4!important;border-radius:2px!important}
+}
+/* ---- nicer transitions between tabs ---- */
+@media screen and (prefers-reduced-motion:no-preference){
+ @keyframes hsTab2{0%{opacity:0;transform:translateY(16px) scale(.985);filter:blur(5px)}60%{filter:blur(0)}100%{opacity:1;transform:none;filter:none}}
+ body:not(.printing) main>section:not(.hide){animation:hsTab2 .5s cubic-bezier(.22,.8,.24,1) both}
+ @keyframes hsRow{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+ #t-data .gt tbody tr:nth-child(-n+14),#t-drv .gt tbody tr:nth-child(-n+14){animation:hsRow .4s ease both}
+ #t-data .gt tbody tr:nth-child(2),#t-drv .gt tbody tr:nth-child(2){animation-delay:.03s}
+ #t-data .gt tbody tr:nth-child(3),#t-drv .gt tbody tr:nth-child(3){animation-delay:.06s}
+ #t-data .gt tbody tr:nth-child(4),#t-drv .gt tbody tr:nth-child(4){animation-delay:.09s}
+ #t-data .gt tbody tr:nth-child(5),#t-drv .gt tbody tr:nth-child(5){animation-delay:.12s}
+ #t-data .gt tbody tr:nth-child(n+6),#t-drv .gt tbody tr:nth-child(n+6){animation-delay:.16s}
+ nav button{position:relative}
+ nav button.on{animation:hsPop .35s ease both}
+}
+
+/* admin tick-boxes (workshops / tabs) readable in the colour looks */
+@media screen{
+ html.hs-t .wchk label,html.hs-t .wchk span{background:color-mix(in srgb,var(--ink) 12%,transparent)!important;color:var(--ink)!important;border:1px solid var(--cdbd)!important;opacity:1!important}
+ html.hs-t .wchk label *{color:var(--ink)!important}
 }
 </style>
 </head>
@@ -3327,7 +3400,7 @@ $('sgr').onclick = openDash;
 $('gclose').onclick = function () { $('gov').classList.add('hide'); DASHSEQ++; };
 $('gov').addEventListener('click', function (e) { if (e.target === $('gov')) { $('gov').classList.add('hide'); DASHSEQ++; } });
 
-var HS_DESIGNS = [{"n": "Cream Editorial", "no": "01", "top": false, "dark": false, "v": {"bg": "#f7f1e6", "bgimg": "none", "ink": "#2b2118", "sdbg": "#fbf7ef", "sdink": "#2b2118", "nibg": "#ffffff", "niink": "#2b2118", "nirad": "10px", "cdbg": "#fffdf8", "cdbd": "#eadfca", "cdbw": "1px", "cdrad": "14px", "cdsh": "0 6px 18px rgba(80,55,20,.10)", "cdblur": "none", "cdink": "#2b2118", "thbg": "#f1e6d2", "think": "#4a3724", "g1": "#f7d9bf", "g2": "#d6e8d3", "tdink": "#2b2118", "tot": "#efe2c8", "h3": "#9a3412", "hf": "Georgia,\"Times New Roman\",serif", "krad": "14px", "anim": "fade", "k1bg": "#fffdf8", "k1im": "none", "k1ink": "#2b2118", "k1bd": "#eadfca", "k1bw": "1px", "k2bg": "#fffdf8", "k2im": "none", "k2ink": "#15803d", "k2bd": "#eadfca", "k2bw": "1px", "k3bg": "#fffdf8", "k3im": "none", "k3ink": "#1d4ed8", "k3bd": "#eadfca", "k3bw": "1px", "k4bg": "#fffdf8", "k4im": "none", "k4ink": "#c2410c", "k4bd": "#eadfca", "k4bw": "1px", "k5bg": "#fffdf8", "k5im": "none", "k5ink": "#a16207", "k5bd": "#eadfca", "k5bw": "1px", "k6bg": "#fffdf8", "k6im": "none", "k6ink": "#7e22ce", "k6bd": "#eadfca", "k6bw": "1px"}}, {"n": "Midnight Glass", "no": "02", "top": false, "dark": true, "v": {"bg": "#070b24", "bgimg": "radial-gradient(900px 500px at 15% 0%,rgba(79,70,229,.35),transparent 60%),radial-gradient(800px 500px at 100% 100%,rgba(236,72,153,.22),transparent 60%)", "ink": "#e8ecff", "sdbg": "rgba(10,14,40,.92)", "sdink": "#e8ecff", "nibg": "rgba(255,255,255,.16)", "niink": "#ffffff", "nirad": "14px", "cdbg": "rgba(255,255,255,.06)", "cdbd": "rgba(255,255,255,.15)", "cdbw": "1px", "cdrad": "16px", "cdsh": "0 8px 24px rgba(0,0,0,.3)", "cdblur": "blur(14px)", "cdink": "#e8ecff", "thbg": "rgba(255,255,255,.09)", "think": "#d3dcff", "g1": "rgba(251,146,60,.28)", "g2": "rgba(52,211,153,.25)", "tdink": "#e8ecff", "tot": "rgba(255,255,255,.15)", "h3": "#a5b4fc", "hf": "inherit", "krad": "16px", "anim": "glow", "k1bg": "rgba(96,165,250,.2)", "k1im": "none", "k1ink": "#bfdbfe", "k1bd": "transparent", "k1bw": "0px", "k2bg": "rgba(52,211,153,.2)", "k2im": "none", "k2ink": "#a7f3d0", "k2bd": "transparent", "k2bw": "0px", "k3bg": "rgba(129,140,248,.22)", "k3im": "none", "k3ink": "#c7d2fe", "k3bd": "transparent", "k3bw": "0px", "k4bg": "rgba(251,146,60,.24)", "k4im": "none", "k4ink": "#fed7aa", "k4bd": "transparent", "k4bw": "0px", "k5bg": "rgba(250,204,21,.2)", "k5im": "none", "k5ink": "#fde68a", "k5bd": "transparent", "k5bw": "0px", "k6bg": "rgba(192,132,252,.24)", "k6im": "none", "k6ink": "#e9d5ff", "k6bd": "transparent", "k6bw": "0px"}}, {"n": "Mint Fresh", "no": "03", "top": true, "dark": false, "v": {"bg": "#e8f2ec", "bgimg": "none", "ink": "#12332a", "sdbg": "#ffffff", "sdink": "#12332a", "nibg": "#0f3d2e", "niink": "#ffffff", "nirad": "99px", "cdbg": "#ffffff", "cdbd": "#d5e6dc", "cdbw": "1px", "cdrad": "20px", "cdsh": "0 8px 22px rgba(15,61,46,.08)", "cdblur": "none", "cdink": "#12332a", "thbg": "#e3f1e8", "think": "#12503c", "g1": "#ffd9bd", "g2": "#cdeedb", "tdink": "#12332a", "tot": "#d3ead9", "h3": "#0f6b4f", "hf": "inherit", "krad": "20px", "anim": "pop", "k1bg": "#0f3d2e", "k1im": "none", "k1ink": "#ffffff", "k1bd": "transparent", "k1bw": "0px", "k2bg": "#d4f3e2", "k2im": "none", "k2ink": "#0f5a3f", "k2bd": "transparent", "k2bw": "0px", "k3bg": "#e4dcfb", "k3im": "none", "k3ink": "#4c2fa3", "k3bd": "transparent", "k3bw": "0px", "k4bg": "#ffe3cf", "k4im": "none", "k4ink": "#b4470f", "k4bd": "transparent", "k4bw": "0px", "k5bg": "#fff0b8", "k5im": "none", "k5ink": "#8a6100", "k5bd": "transparent", "k5bw": "0px", "k6bg": "#fbd9e7", "k6im": "none", "k6ink": "#a61e5a", "k6bd": "transparent", "k6bw": "0px"}}, {"n": "Orange & Black", "no": "04", "top": true, "dark": false, "v": {"bg": "#f2efe8", "bgimg": "none", "ink": "#111111", "sdbg": "#111111", "sdink": "#ffffff", "nibg": "#ff5a1f", "niink": "#111111", "nirad": "0px", "cdbg": "#ffffff", "cdbd": "#111111", "cdbw": "2px", "cdrad": "0px", "cdsh": "none", "cdblur": "none", "cdink": "#111111", "thbg": "#111111", "think": "#ffffff", "g1": "#ff5a1f", "g2": "#555555", "tdink": "#111111", "tot": "#ffd9c9", "h3": "#111111", "hf": "\"Courier New\",ui-monospace,monospace", "krad": "0px", "anim": "snap", "k1bg": "#ffffff", "k1im": "none", "k1ink": "#111111", "k1bd": "#111111", "k1bw": "2px", "k2bg": "#ffffff", "k2im": "none", "k2ink": "#111111", "k2bd": "#111111", "k2bw": "2px", "k3bg": "#ffffff", "k3im": "none", "k3ink": "#111111", "k3bd": "#111111", "k3bw": "2px", "k4bg": "#ffffff", "k4im": "none", "k4ink": "#111111", "k4bd": "#111111", "k4bw": "2px", "k5bg": "#ff5a1f", "k5im": "none", "k5ink": "#111111", "k5bd": "#111111", "k5bw": "2px", "k6bg": "#ffffff", "k6im": "none", "k6ink": "#111111", "k6bd": "#111111", "k6bw": "2px"}}, {"n": "One-Page Aurora", "no": "05", "top": false, "dark": true, "v": {"bg": "#080c26", "bgimg": "radial-gradient(900px 600px at 10% 0%,rgba(45,212,191,.22),transparent 60%),radial-gradient(900px 600px at 90% 100%,rgba(168,85,247,.28),transparent 60%)", "ink": "#e6ebff", "sdbg": "rgba(9,13,38,.95)", "sdink": "#e6ebff", "nibg": "rgba(125,211,252,.22)", "niink": "#e0f7ff", "nirad": "14px", "cdbg": "rgba(255,255,255,.05)", "cdbd": "rgba(255,255,255,.14)", "cdbw": "1px", "cdrad": "18px", "cdsh": "0 10px 30px rgba(0,0,0,.35)", "cdblur": "blur(16px)", "cdink": "#e6ebff", "thbg": "rgba(255,255,255,.08)", "think": "#cfd8ff", "g1": "rgba(251,146,60,.26)", "g2": "rgba(45,212,191,.24)", "tdink": "#e6ebff", "tot": "rgba(255,255,255,.14)", "h3": "#93c5fd", "hf": "inherit", "krad": "18px", "anim": "aurora", "rail": "1", "k1bg": "rgba(96,165,250,.22)", "k1im": "none", "k1ink": "#bfdbfe", "k1bd": "rgba(255,255,255,.14)", "k1bw": "1px", "k2bg": "rgba(45,212,191,.2)", "k2im": "none", "k2ink": "#99f6e4", "k2bd": "rgba(255,255,255,.14)", "k2bw": "1px", "k3bg": "rgba(129,140,248,.22)", "k3im": "none", "k3ink": "#c7d2fe", "k3bd": "rgba(255,255,255,.14)", "k3bw": "1px", "k4bg": "rgba(251,146,60,.22)", "k4im": "none", "k4ink": "#fed7aa", "k4bd": "rgba(255,255,255,.14)", "k4bw": "1px", "k5bg": "rgba(250,204,21,.2)", "k5im": "none", "k5ink": "#fde68a", "k5bd": "rgba(255,255,255,.14)", "k5bw": "1px", "k6bg": "rgba(192,132,252,.24)", "k6im": "none", "k6ink": "#e9d5ff", "k6bd": "rgba(255,255,255,.14)", "k6bw": "1px"}}];
+var HS_DESIGNS = [{"n": "Cream Editorial", "no": "01", "top": false, "dark": false, "v": {"bg": "#f7f1e6", "bgimg": "none", "ink": "#2b2118", "sdbg": "#fbf7ef", "sdink": "#2b2118", "nibg": "#ffffff", "niink": "#2b2118", "nirad": "10px", "cdbg": "#fffdf8", "cdbd": "#eadfca", "cdbw": "1px", "cdrad": "14px", "cdsh": "0 6px 18px rgba(80,55,20,.10)", "cdblur": "none", "cdink": "#2b2118", "thbg": "#f1e6d2", "think": "#4a3724", "g1": "#f7d9bf", "g2": "#d6e8d3", "tdink": "#2b2118", "tot": "#efe2c8", "h3": "#9a3412", "hf": "Georgia,\"Times New Roman\",serif", "krad": "14px", "anim": "fade", "k1bg": "#fffdf8", "k1im": "none", "k1ink": "#2b2118", "k1bd": "#eadfca", "k1bw": "1px", "k2bg": "#fffdf8", "k2im": "none", "k2ink": "#15803d", "k2bd": "#eadfca", "k2bw": "1px", "k3bg": "#fffdf8", "k3im": "none", "k3ink": "#1d4ed8", "k3bd": "#eadfca", "k3bw": "1px", "k4bg": "#fffdf8", "k4im": "none", "k4ink": "#c2410c", "k4bd": "#eadfca", "k4bw": "1px", "k5bg": "#fffdf8", "k5im": "none", "k5ink": "#a16207", "k5bd": "#eadfca", "k5bw": "1px", "k6bg": "#fffdf8", "k6im": "none", "k6ink": "#7e22ce", "k6bd": "#eadfca", "k6bw": "1px", "navon": "#c2410c"}}, {"n": "Midnight Glass", "no": "02", "top": false, "dark": true, "v": {"bg": "#070b24", "bgimg": "radial-gradient(900px 500px at 15% 0%,rgba(79,70,229,.35),transparent 60%),radial-gradient(800px 500px at 100% 100%,rgba(236,72,153,.22),transparent 60%)", "ink": "#e8ecff", "sdbg": "rgba(10,14,40,.92)", "sdink": "#e8ecff", "nibg": "rgba(255,255,255,.16)", "niink": "#ffffff", "nirad": "14px", "cdbg": "rgba(255,255,255,.06)", "cdbd": "rgba(255,255,255,.15)", "cdbw": "1px", "cdrad": "16px", "cdsh": "0 8px 24px rgba(0,0,0,.3)", "cdblur": "blur(14px)", "cdink": "#e8ecff", "thbg": "rgba(255,255,255,.09)", "think": "#d3dcff", "g1": "rgba(251,146,60,.28)", "g2": "rgba(52,211,153,.25)", "tdink": "#e8ecff", "tot": "rgba(255,255,255,.15)", "h3": "#a5b4fc", "hf": "inherit", "krad": "16px", "anim": "glow", "k1bg": "rgba(96,165,250,.2)", "k1im": "none", "k1ink": "#bfdbfe", "k1bd": "transparent", "k1bw": "0px", "k2bg": "rgba(52,211,153,.2)", "k2im": "none", "k2ink": "#a7f3d0", "k2bd": "transparent", "k2bw": "0px", "k3bg": "rgba(129,140,248,.22)", "k3im": "none", "k3ink": "#c7d2fe", "k3bd": "transparent", "k3bw": "0px", "k4bg": "rgba(251,146,60,.24)", "k4im": "none", "k4ink": "#fed7aa", "k4bd": "transparent", "k4bw": "0px", "k5bg": "rgba(250,204,21,.2)", "k5im": "none", "k5ink": "#fde68a", "k5bd": "transparent", "k5bw": "0px", "k6bg": "rgba(192,132,252,.24)", "k6im": "none", "k6ink": "#e9d5ff", "k6bd": "transparent", "k6bw": "0px", "navon": "#a5b4fc"}}, {"n": "Mint Fresh", "no": "03", "top": true, "dark": false, "v": {"bg": "#e8f2ec", "bgimg": "none", "ink": "#12332a", "sdbg": "#ffffff", "sdink": "#12332a", "nibg": "#0f3d2e", "niink": "#ffffff", "nirad": "99px", "cdbg": "#ffffff", "cdbd": "#d5e6dc", "cdbw": "1px", "cdrad": "20px", "cdsh": "0 8px 22px rgba(15,61,46,.08)", "cdblur": "none", "cdink": "#12332a", "thbg": "#e3f1e8", "think": "#12503c", "g1": "#ffd9bd", "g2": "#cdeedb", "tdink": "#12332a", "tot": "#d3ead9", "h3": "#0f6b4f", "hf": "inherit", "krad": "20px", "anim": "pop", "k1bg": "#0f3d2e", "k1im": "none", "k1ink": "#ffffff", "k1bd": "transparent", "k1bw": "0px", "k2bg": "#d4f3e2", "k2im": "none", "k2ink": "#0f5a3f", "k2bd": "transparent", "k2bw": "0px", "k3bg": "#e4dcfb", "k3im": "none", "k3ink": "#4c2fa3", "k3bd": "transparent", "k3bw": "0px", "k4bg": "#ffe3cf", "k4im": "none", "k4ink": "#b4470f", "k4bd": "transparent", "k4bw": "0px", "k5bg": "#fff0b8", "k5im": "none", "k5ink": "#8a6100", "k5bd": "transparent", "k5bw": "0px", "k6bg": "#fbd9e7", "k6im": "none", "k6ink": "#a61e5a", "k6bd": "transparent", "k6bw": "0px", "navon": "#0f3d2e"}}, {"n": "Orange & Black", "no": "04", "top": true, "dark": false, "v": {"bg": "#f2efe8", "bgimg": "none", "ink": "#111111", "sdbg": "#111111", "sdink": "#ffffff", "nibg": "#ff5a1f", "niink": "#111111", "nirad": "0px", "cdbg": "#ffffff", "cdbd": "#111111", "cdbw": "2px", "cdrad": "0px", "cdsh": "none", "cdblur": "none", "cdink": "#111111", "thbg": "#111111", "think": "#ffffff", "g1": "#ff5a1f", "g2": "#555555", "tdink": "#111111", "tot": "#ffd9c9", "h3": "#111111", "hf": "\"Courier New\",ui-monospace,monospace", "krad": "0px", "anim": "snap", "k1bg": "#ffffff", "k1im": "none", "k1ink": "#111111", "k1bd": "#111111", "k1bw": "2px", "k2bg": "#ffffff", "k2im": "none", "k2ink": "#111111", "k2bd": "#111111", "k2bw": "2px", "k3bg": "#ffffff", "k3im": "none", "k3ink": "#111111", "k3bd": "#111111", "k3bw": "2px", "k4bg": "#ffffff", "k4im": "none", "k4ink": "#111111", "k4bd": "#111111", "k4bw": "2px", "k5bg": "#ff5a1f", "k5im": "none", "k5ink": "#111111", "k5bd": "#111111", "k5bw": "2px", "k6bg": "#ffffff", "k6im": "none", "k6ink": "#111111", "k6bd": "#111111", "k6bw": "2px", "navon": "#ff5a1f"}}, {"n": "One-Page Aurora", "no": "05", "top": false, "dark": true, "v": {"bg": "#080c26", "bgimg": "radial-gradient(900px 600px at 10% 0%,rgba(45,212,191,.22),transparent 60%),radial-gradient(900px 600px at 90% 100%,rgba(168,85,247,.28),transparent 60%)", "ink": "#e6ebff", "sdbg": "rgba(9,13,38,.95)", "sdink": "#e6ebff", "nibg": "rgba(125,211,252,.22)", "niink": "#e0f7ff", "nirad": "14px", "cdbg": "rgba(255,255,255,.05)", "cdbd": "rgba(255,255,255,.14)", "cdbw": "1px", "cdrad": "18px", "cdsh": "0 10px 30px rgba(0,0,0,.35)", "cdblur": "blur(16px)", "cdink": "#e6ebff", "thbg": "rgba(255,255,255,.08)", "think": "#cfd8ff", "g1": "rgba(251,146,60,.26)", "g2": "rgba(45,212,191,.24)", "tdink": "#e6ebff", "tot": "rgba(255,255,255,.14)", "h3": "#93c5fd", "hf": "inherit", "krad": "18px", "anim": "aurora", "rail": "1", "k1bg": "rgba(96,165,250,.22)", "k1im": "none", "k1ink": "#bfdbfe", "k1bd": "rgba(255,255,255,.14)", "k1bw": "1px", "k2bg": "rgba(45,212,191,.2)", "k2im": "none", "k2ink": "#99f6e4", "k2bd": "rgba(255,255,255,.14)", "k2bw": "1px", "k3bg": "rgba(129,140,248,.22)", "k3im": "none", "k3ink": "#c7d2fe", "k3bd": "rgba(255,255,255,.14)", "k3bw": "1px", "k4bg": "rgba(251,146,60,.22)", "k4im": "none", "k4ink": "#fed7aa", "k4bd": "rgba(255,255,255,.14)", "k4bw": "1px", "k5bg": "rgba(250,204,21,.2)", "k5im": "none", "k5ink": "#fde68a", "k5bd": "rgba(255,255,255,.14)", "k5bw": "1px", "k6bg": "rgba(192,132,252,.24)", "k6im": "none", "k6ink": "#e9d5ff", "k6bd": "rgba(255,255,255,.14)", "k6bw": "1px", "navon": "#7dd3fc"}}];
 
 /* =====================  CHOOSE HOME SCREEN  =====================
  * Every person picks a look for himself (kept in this phone / computer). It only changes colours and the position of the menu / panels;
