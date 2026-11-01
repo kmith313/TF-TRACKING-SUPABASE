@@ -2492,11 +2492,11 @@ function parseClip(tx) {
 function drvPaste(inp, tx) {
   var rows = parseClip(tx); if (!rows.length) return;
   var c0 = DKEYS.indexOf(inp.dataset.k), trs = [].slice.call($('vt').querySelectorAll('tbody tr')), start = trs.indexOf(inp.closest('tr')), sel = $('vws').value;
-  var touched = [], skipped = 0;
+  var touched = [], skipped = 0, base = +trs[start].dataset.i;
   rows.forEach(function (cells, j) {
     var tr = j === 0 ? trs[start] : null, d;          // only the first pasted row goes into the clicked row; the others are always NEW drivers (nothing saved is overwritten)
     if (tr) d = DRV[+tr.dataset.i];
-    else { d = { id: null, firm: '', workshop: sel || oneWs() || '', driver: '', mobile: '', gps: '', vehicle: '' }; DRV.unshift(d); }
+    else { d = { id: null, firm: '', workshop: sel || oneWs() || '', driver: '', mobile: '', gps: '', vehicle: '' }; DRV.splice(base + j, 0, d); }          // the new rows stay in the pasted order, right below the first pasted row
     if (d.id && isDupFirm(d.firm)) { skipped++; return; }
     var nw = {}; DKEYS.forEach(function (k) { nw[k] = d[k]; });
     cells.forEach(function (v, c) {
