@@ -1236,6 +1236,40 @@ table.cmpt input.ci{width:70px;text-align:center;font:inherit;font-weight:800;bo
 body.printing{padding-left:0!important;padding-bottom:0!important;background:#fff!important}
 body.printing #sbtog{display:none!important}
 .ps.soutp{width:100%;box-sizing:border-box}
+
+/* =====================  EXCEL LOOK for the Summary tables (screen): black grid, light blue headings, plain centred numbers  ===================== */
+#sout .card table{background:#fff!important;border-collapse:collapse!important}
+#sout .card table th,#sout .card table td,#sout .card table td.l,#sout .card table th.l{border:1.3px solid #1b1b1b!important;text-align:center!important;color:#000!important;background:#fff!important}
+#sout .card table thead th,#sout .card table th.l,#sout .card table th.g1,#sout .card table th.g2,#sout .card table th.pe{background:#e4e9fb!important;color:#111!important;font-weight:700!important}
+#sout .card table th a,#sout .card table th a:hover{text-decoration:none!important;color:inherit!important}
+#sout .card table td .z,#sout .card table td.z,#sout .card table .z{color:#000!important;font-weight:500!important}
+#sout .card table td{font-weight:500!important}
+#sout .card table td.l,#sout .card table tr.t td,#sout .card table tr.w td,#sout .card table td.sub{font-weight:800!important}
+#sout .card table td a.n{color:#000!important;font-weight:inherit!important;text-decoration:none!important}
+#sout .card table td.pe a.n:not(.z),#sout .card table td a.n.hot{color:#b91c1c!important;font-weight:800!important}
+#sout .card table tr.d.e td,#sout .card table tr.w td{background:#f4f6fd!important}
+@media(min-width:901px){#sout .k-cap{order:2!important}#sout .k-pd{order:3!important}#sout .k-div{order:4!important}}
+@media(min-width:701px){
+ #sout .card table th{font-size:11px!important;padding:2px 5px!important;line-height:1.12!important}
+ #sout .card table td{font-size:14px!important;padding:1px 5px!important;line-height:1.2!important}
+ #sout .card table td.l{font-size:13px!important}
+ #sout .card{padding:8px 12px!important}
+ #sout .card h3{margin:0 0 5px!important;font-size:12px!important}
+ #sout{gap:8px!important}
+ #sout .k-cap table th{font-size:10px!important;padding:2px 1px!important}
+ #sout .k-cap table td{font-size:13px!important;padding:1px 1px!important}
+ #sout .k-cap table td.l,#sout .k-cap table th.l{width:auto!important;padding:1px 6px!important}
+ .skpi{gap:8px;margin-bottom:8px}.skpi>div{padding:6px 14px}.skpi i{font-size:22px}.skpi u{font-size:10px}.skpi b{font-size:11px}
+}
+@media(max-width:700px){
+ #sout .card table td{font-size:11.5px!important;padding:2px 1px!important;line-height:1.15!important}
+ #sout .card table td.l{font-size:8.6px!important;letter-spacing:-.2px;word-break:normal;white-space:nowrap}
+ #sout .card table td.l[data-sh]{white-space:normal}
+ #sout td.l,#sout th.l{width:17%!important}
+ #sout .card{padding:8px 8px!important;margin-bottom:8px!important}
+ #sout .card h3{margin:0 0 4px!important}
+ #sout a[data-sh]::after,#sout th[data-sh]::after{font-size:7.2px!important;color:#111}
+}
 </style>
 </head>
 <body class="on-home">
@@ -1867,8 +1901,16 @@ function renderSummary(s, quiet) {
   if (multi) { var all = tot[0] + tot[1] + tot[2] + tot[3]; h += '<tr class="t"><td class="l">TOTAL</td>' + tot.map(function (v, i) { var g = ageRange(s, i); return '<td>' + N(v, S({ metric: 9, prdFrom: g[0], prdTo: g[1] }), 'Pending for issue - ' + AGEH[i].toLowerCase()) + '</td>'; }).join('') + '<td>' + N(all, S({ metric: 9 }), 'Pending for issue') + '</td></tr>'; }
   h += '</tbody></table></div></div>';
   h += capAll(s);
-  var o = $('sout'); o.classList.toggle('noanim', !!quiet); o.innerHTML = h; splitCap(); shortHeads(); renderKpi(s);
+  var o = $('sout'); o.classList.toggle('noanim', !!quiet); o.innerHTML = h; splitCap(); shortHeads(); renderKpi(s); fitSummary();
 }
+/* laptop/desktop: shrink the Summary a little (never below 78%) so that it fits on one screen */
+function fitSummary() {
+  var o = $('sout'); o.style.zoom = '';
+  if (window.innerWidth < 901 || !o.offsetParent) return;
+  var avail = window.innerHeight - o.getBoundingClientRect().top - 10, h = o.scrollHeight;
+  if (h > avail && h > 0) o.style.zoom = Math.max(.78, avail / h).toFixed(3);
+}
+window.addEventListener('resize', function () { if (SUM) fitSummary(); });
 
 
 
@@ -1885,7 +1927,7 @@ function renderKpi(s) {
 
 /* phone: short headings (display only; the real text stays for Excel and Print) */
 var SHORTH = { 'LAST MONTH PENDENCY': 'PEND. LAST MONTH', 'TOTAL PENDING FOR ISSUE': 'PEND. ISSUE', 'TOTAL PENDING FOR REPLACEMENT': 'PEND. REPL.',
-  "ISSUE AGAINST TODAY'S PR": 'Iss. vs today PR', "REPLACEMENT AGAINST TODAY'S PR": 'Repl. vs today PR', 'TODAY REPLACEMENT': 'TODAY REPL.' };
+  "ISSUE AGAINST TODAY'S PR": 'Iss. vs today PR', "REPLACEMENT AGAINST TODAY'S PR": 'Repl. vs today PR', 'TODAY REPLACEMENT': 'TODAY REPL.', 'TOTAL REPLACEMENT': 'TOTAL REPL.' };
 function shortHeads() {
   [].forEach.call($('sout').querySelectorAll('.k-ws th,.k-div th'), function (th) {
     var a = th.querySelector('a'), node = a || (th.children.length ? null : th); if (!node) return;
