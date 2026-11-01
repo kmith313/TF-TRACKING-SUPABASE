@@ -1237,39 +1237,119 @@ body.printing{padding-left:0!important;padding-bottom:0!important;background:#ff
 body.printing #sbtog{display:none!important}
 .ps.soutp{width:100%;box-sizing:border-box}
 
-/* =====================  EXCEL LOOK for the Summary tables (screen): black grid, light blue headings, plain centred numbers  ===================== */
-#sout .card table{background:#fff!important;border-collapse:collapse!important}
-#sout .card table th,#sout .card table td,#sout .card table td.l,#sout .card table th.l{border:1.3px solid #1b1b1b!important;text-align:center!important;color:#000!important;background:#fff!important}
-#sout .card table thead th,#sout .card table th.l,#sout .card table th.g1,#sout .card table th.g2,#sout .card table th.pe{background:#e4e9fb!important;color:#111!important;font-weight:700!important}
-#sout .card table th a,#sout .card table th a:hover{text-decoration:none!important;color:inherit!important}
-#sout .card table td .z,#sout .card table td.z,#sout .card table .z{color:#000!important;font-weight:500!important}
-#sout .card table td{font-weight:500!important}
-#sout .card table td.l,#sout .card table tr.t td,#sout .card table tr.w td,#sout .card table td.sub{font-weight:800!important}
-#sout .card table td a.n{color:#000!important;font-weight:inherit!important;text-decoration:none!important}
-#sout .card table td.pe a.n:not(.z),#sout .card table td a.n.hot{color:#b91c1c!important;font-weight:800!important}
-#sout .card table tr.d.e td,#sout .card table tr.w td{background:#f4f6fd!important}
-@media(min-width:901px){#sout .k-cap{order:2!important}#sout .k-pd{order:3!important}#sout .k-div{order:4!important}}
-@media(min-width:701px){
- #sout .card table th{font-size:11px!important;padding:2px 5px!important;line-height:1.12!important}
- #sout .card table td{font-size:14px!important;padding:1px 5px!important;line-height:1.2!important}
- #sout .card table td.l{font-size:13px!important}
- #sout .card{padding:8px 12px!important}
- #sout .card h3{margin:0 0 5px!important;font-size:12px!important}
- #sout{gap:8px!important}
- #sout .k-cap table th{font-size:10px!important;padding:2px 1px!important}
- #sout .k-cap table td{font-size:13px!important;padding:1px 1px!important}
- #sout .k-cap table td.l,#sout .k-cap table th.l{width:auto!important;padding:1px 6px!important}
- .skpi{gap:8px;margin-bottom:8px}.skpi>div{padding:6px 14px}.skpi i{font-size:22px}.skpi u{font-size:10px}.skpi b{font-size:11px}
+/* black grid lines only (everything else as before) */
+#sout .card table th,#sout .card table td{border:1.2px solid #1b1b1b!important}
+
+/* =====================  CHOOSE HOME SCREEN: window and the looks  ===================== */
+#hsm{display:none;position:fixed;inset:0;z-index:300;background:rgba(20,16,10,.5);align-items:center;justify-content:center;padding:14px}
+.hsbox{background:#fffdf8;color:#2a2118;border-radius:16px;max-width:620px;width:100%;max-height:90vh;overflow:auto;padding:16px 16px 12px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.hsh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:17px}
+.hsh button{border:0;background:#f2e8d9;border-radius:50%;width:32px;height:32px;font-size:20px;cursor:pointer;color:#6b4a2b}
+.hsg{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.hso{text-align:left;border:2px solid #e3d8c8;background:#fff;border-radius:12px;padding:10px;cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;gap:4px}
+.hso.on{border-color:#c2410c;background:#fff6ee}
+.hso b{font-size:14px}.hso small{font-size:11px;color:#6b5a44;line-height:1.3}
+.hsw{display:flex;height:34px;border-radius:8px;overflow:hidden;border:1px solid #e3d8c8}.hsw i{flex:1}
+.hsn{font-size:11px;color:#6b5a44;margin-top:10px}
+#bhs{white-space:nowrap}
+.k-ring{display:none}.soutp .k-ring{display:none!important}
+@media(min-width:901px){
+ .top #bhs{grid-column:1/-1;grid-row:5;margin-bottom:8px}
+ .top #bpw,.top #bout{grid-row:6}
+}
+@media(max-width:700px){header #bhs{font-size:11px;padding:5px 9px}}
+@media print{html.hs-d{filter:none!important}}
+
+@media screen{
+/* ---- Dark ---- */
+html.hs-d{filter:invert(1) hue-rotate(180deg);background:#fff}
+html.hs-d img,html.hs-d video,html.hs-d canvas,html.hs-d .gring{filter:invert(1) hue-rotate(180deg)}
+
+/* ---- Excel Clean ---- */
+html.hs-x body{background:#f4f5f7!important;font-family:Calibri,Carlito,'Segoe UI',Arial,sans-serif}
+html.hs-x #sout .card table th,html.hs-x #sout .card table td,html.hs-x #sout .card table td.l,html.hs-x #sout .card table th.l{border:1.3px solid #1b1b1b!important;text-align:center!important;color:#000!important;background:#fff!important}
+html.hs-x #sout .card table thead th,html.hs-x #sout .card table th.l,html.hs-x #sout .card table th.g1,html.hs-x #sout .card table th.g2,html.hs-x #sout .card table th.pe{background:#e4e9fb!important;color:#111!important}
+html.hs-x #sout .card table th a{text-decoration:none!important;color:inherit!important}
+html.hs-x #sout .card table .z{color:#000!important;font-weight:500!important}
+html.hs-x #sout .card table td{font-weight:500!important}
+html.hs-x #sout .card table td.l,html.hs-x #sout .card table tr.t td,html.hs-x #sout .card table tr.w td{font-weight:800!important}
+html.hs-x #sout .card table td a.n{color:#000!important;text-decoration:none!important}
+html.hs-x #sout .card table tr.t td{background:#f4f6fd!important}
+html.hs-x #sout .card h3{color:#1d4ed8!important}
+html.hs-x .skpi>div{background:#e4e9fb!important;color:#111!important}
+
+/* ---- Indigo (+ rings panel) ---- */
+html.hs-b body{background:#eef1fb!important}
+html.hs-b #sout .card h3{color:#1f2a7a!important}
+html.hs-b #sout .card table thead th,html.hs-b #sout .card table th.l{background:#dbe4ff!important;color:#17224d!important}
+html.hs-b #sout .card table th.g1{background:#ffe3c2!important}html.hs-b #sout .card table th.g2{background:#cdeedd!important}
+html.hs-b .btn:not(.sec):not(.g){background:#3b5bdb!important}
+html.hs-b .k-ring .krr{display:flex;gap:18px;justify-content:center;padding:6px 0}
+html.hs-b .k-ring .grb>span{color:#17224d;font-size:11px}
+html.hs-b .k-ring .gr-hr{--rc:#3b5bdb}html.hs-b .k-ring .gr-r{--rc:#f59e0b}
+html.hs-b .k-ring .krn{font-size:11px;text-align:center;color:#4a5578}
+@media(min-width:901px){
+ html.hs-b body{padding-left:230px}
+ html.hs-b .top{background:#1a2260!important;border-right:0!important}
+ html.hs-b header h1,html.hs-b nav button{color:#e8ecff!important}
+ html.hs-b header h1::before{border-color:#fff!important;color:#fff!important}
+ html.hs-b nav button:hover{background:rgba(255,255,255,.1)!important}
+ html.hs-b nav button.on{background:rgba(255,255,255,.18)!important;color:#fff!important}
+ html.hs-b header .u,html.hs-b header .btn.g{background:rgba(255,255,255,.12)!important;color:#fff!important}
+ html.hs-b .k-ring{display:block}
+ html.hs-b #sout{grid-template-columns:minmax(0,1fr) 270px!important}
+ html.hs-b #sout .wrap{overflow-x:auto!important}
+ html.hs-b #sout .card{min-width:0}
+ html.hs-b #sout .k-ws,html.hs-b #sout .k-cap{grid-column:1!important}
+ html.hs-b #sout .k-ring{grid-column:2;order:1}
+ html.hs-b #sout .k-ws{order:0}
+ html.hs-b #sout .k-cap{order:2!important}
+ html.hs-b #sout .k-pd{grid-column:2!important;order:3!important}
+ html.hs-b #sout .k-div,html.hs-b #sout .k-div:not(.col){grid-column:2!important;order:4!important}
+}
+@media(max-width:900px){
+ html.hs-b header{background:#1a2260!important}html.hs-b header h1,html.hs-b header .u{color:#fff!important}
 }
 @media(max-width:700px){
- #sout .card table td{font-size:11.5px!important;padding:2px 1px!important;line-height:1.15!important}
- #sout .card table td.l{font-size:8.6px!important;letter-spacing:-.2px;word-break:normal;white-space:nowrap}
- #sout .card table td.l[data-sh]{white-space:normal}
- #sout td.l,#sout th.l{width:17%!important}
- #sout .card{padding:8px 8px!important;margin-bottom:8px!important}
- #sout .card h3{margin:0 0 4px!important}
- #sout a[data-sh]::after,#sout th[data-sh]::after{font-size:7.2px!important;color:#111}
+ html.hs-b header{background:#1a2260!important;border-bottom:0!important}html.hs-b header h1{color:#fff!important}html.hs-b header h1::before{border-color:#fff!important;color:#fff!important}
+ html.hs-b header .u{background:rgba(255,255,255,.14)!important;color:#fff!important}
+ html.hs-b nav button.on{color:#1a2260!important}
 }
+
+/* ---- Teal + top menu ---- */
+html.hs-c body{background:#eef6f4!important}
+html.hs-c #sout .card h3{color:#0f766e!important}
+html.hs-c #sout .card table thead th,html.hs-c #sout .card table th.l{background:#d9f0ec!important;color:#0b3d38!important}
+html.hs-c #sout .card table th.g1{background:#ffe3c2!important}html.hs-c #sout .card table th.g2{background:#cdeedd!important}
+html.hs-c .btn:not(.sec):not(.g){background:#0f766e!important}
+@media(min-width:901px){
+ html.hs-c body{padding-left:0!important;padding-top:72px}
+ html.hs-c #sbtog{display:none!important}
+ html.hs-c .top{left:0!important;right:0!important;bottom:auto!important;width:auto!important;height:64px;background:linear-gradient(90deg,#0b7f73,#0f9d8a)!important;border:0!important;display:flex!important;align-items:center;gap:14px;padding:0 24px!important}
+ html.hs-c header{display:contents}
+ html.hs-c header h1{order:0;color:#fff!important;font-size:18px;grid-row:auto}
+ html.hs-c header h1::before{width:34px;height:34px;border-color:#fff!important;color:#fff!important}
+ html.hs-c nav{order:1;flex-direction:row!important;margin:0 0 0 14px!important;grid-row:auto}
+ html.hs-c nav button{color:#e6fffb!important;padding:8px 14px!important}
+ html.hs-c nav button:hover{background:rgba(255,255,255,.14)!important}
+ html.hs-c nav button.on{background:#fff!important;color:#0f766e!important}
+ html.hs-c header .u{order:2;margin:0 0 0 auto!important;grid-row:auto;align-self:center!important;background:rgba(255,255,255,.18)!important;color:#fff!important;padding:7px 12px!important}
+ html.hs-c .top #bhs,html.hs-c .top #bpw,html.hs-c .top #bout{order:3;grid-row:auto;width:auto!important;margin:0!important;padding:8px 12px!important;background:rgba(255,255,255,.18)!important;color:#fff!important}
+ html.hs-c main{padding-left:24px;padding-right:24px}
+ html.hs-c #t-sum{display:grid;grid-template-columns:220px 1fr;gap:12px 16px;align-items:start}
+ html.hs-c #t-sum>.card{grid-column:1/-1}
+ html.hs-c #skpi{display:flex!important;flex-direction:column;grid-column:1;grid-row:2/5;margin:0}
+ html.hs-c #skpi>div{border-left:5px solid #0f766e;flex:none}
+ html.hs-c #smsg,html.hs-c #sout{grid-column:2}
+}
+@media(max-width:700px){
+ html.hs-c header{background:#0f9d8a!important;border-bottom:0!important}html.hs-c header h1{color:#fff!important}html.hs-c header h1::before{border-color:#fff!important;color:#fff!important}
+ html.hs-c header .u{background:rgba(255,255,255,.2)!important;color:#fff!important}
+ html.hs-c nav button.on{color:#0f766e!important}
+}
+
+}
+body.printing{padding-top:0!important}
 </style>
 </head>
 <body class="on-home">
@@ -1294,6 +1374,7 @@ body.printing #sbtog{display:none!important}
   <div class="top"><header>
     <h1><img class="hemb" src="emblem.png" alt=""> TF-Tracker</h1>
     <span class="u" id="who"></span>
+    <button class="btn g" id="bhs" type="button">Home screen</button>
     <button class="btn g" id="bpw">Password</button>
     <button class="btn g" id="bout">Logout</button>
   </header>
@@ -1901,16 +1982,8 @@ function renderSummary(s, quiet) {
   if (multi) { var all = tot[0] + tot[1] + tot[2] + tot[3]; h += '<tr class="t"><td class="l">TOTAL</td>' + tot.map(function (v, i) { var g = ageRange(s, i); return '<td>' + N(v, S({ metric: 9, prdFrom: g[0], prdTo: g[1] }), 'Pending for issue - ' + AGEH[i].toLowerCase()) + '</td>'; }).join('') + '<td>' + N(all, S({ metric: 9 }), 'Pending for issue') + '</td></tr>'; }
   h += '</tbody></table></div></div>';
   h += capAll(s);
-  var o = $('sout'); o.classList.toggle('noanim', !!quiet); o.innerHTML = h; splitCap(); shortHeads(); renderKpi(s); fitSummary();
+  var o = $('sout'); o.classList.toggle('noanim', !!quiet); o.innerHTML = h; splitCap(); shortHeads(); renderKpi(s); if (typeof renderRingCard === 'function') renderRingCard(s);
 }
-/* laptop/desktop: shrink the Summary a little (never below 78%) so that it fits on one screen */
-function fitSummary() {
-  var o = $('sout'); o.style.zoom = '';
-  if (window.innerWidth < 901 || !o.offsetParent) return;
-  var avail = window.innerHeight - o.getBoundingClientRect().top - 10, h = o.scrollHeight;
-  if (h > avail && h > 0) o.style.zoom = Math.max(.78, avail / h).toFixed(3);
-}
-window.addEventListener('resize', function () { if (SUM) fitSummary(); });
 
 
 
@@ -1927,7 +2000,7 @@ function renderKpi(s) {
 
 /* phone: short headings (display only; the real text stays for Excel and Print) */
 var SHORTH = { 'LAST MONTH PENDENCY': 'PEND. LAST MONTH', 'TOTAL PENDING FOR ISSUE': 'PEND. ISSUE', 'TOTAL PENDING FOR REPLACEMENT': 'PEND. REPL.',
-  "ISSUE AGAINST TODAY'S PR": 'Iss. vs today PR', "REPLACEMENT AGAINST TODAY'S PR": 'Repl. vs today PR', 'TODAY REPLACEMENT': 'TODAY REPL.', 'TOTAL REPLACEMENT': 'TOTAL REPL.' };
+  "ISSUE AGAINST TODAY'S PR": 'Iss. vs today PR', "REPLACEMENT AGAINST TODAY'S PR": 'Repl. vs today PR', 'TODAY REPLACEMENT': 'TODAY REPL.' };
 function shortHeads() {
   [].forEach.call($('sout').querySelectorAll('.k-ws th,.k-div th'), function (th) {
     var a = th.querySelector('a'), node = a || (th.children.length ? null : th); if (!node) return;
@@ -3096,6 +3169,51 @@ function openDash() {
 $('sgr').onclick = openDash;
 $('gclose').onclick = function () { $('gov').classList.add('hide'); DASHSEQ++; };
 $('gov').addEventListener('click', function (e) { if (e.target === $('gov')) { $('gov').classList.add('hide'); DASHSEQ++; } });
+
+/* =====================  CHOOSE HOME SCREEN  =====================
+ * Every person picks a look for himself (kept in this phone / computer). It only changes colours and the position of the menu / panels;
+ * the numbers, Print and Excel are the same in every look.                                                                              */
+var HS_LIST = [
+  { k: '', n: 'Warm', d: 'Soft cream colours, menu on the left. (Standard)', c: ['#faf6ef', '#c2410c', '#f2e8d9'] },
+  { k: 'b', n: 'Indigo + Rings', d: 'Dark blue menu on the left, a panel with Issued / Replaced rings on the right.', c: ['#eef1fb', '#1a2260', '#4c6ef5'] },
+  { k: 'c', n: 'Teal + Top menu', d: 'Menu on the top, the six big numbers on the left side.', c: ['#eef6f4', '#0f9d8a', '#ffffff'] },
+  { k: 'x', n: 'Excel Clean', d: 'Black grid lines and light blue headings, like an Excel sheet.', c: ['#f4f5f7', '#1b1b1b', '#e4e9fb'] },
+  { k: 'd', n: 'Dark', d: 'Dark background, easy on the eyes at night.', c: ['#10151f', '#fbbf24', '#243049'] }
+];
+function hsGet() { try { return localStorage.getItem('tt_hs') || ''; } catch (e) { return ''; } }
+function hsApply(k) {
+  var el = document.documentElement;
+  ['b', 'c', 'x', 'd'].forEach(function (x) { el.classList.remove('hs-' + x); });
+  if (k) el.classList.add('hs-' + k);
+}
+hsApply(hsGet());
+function hsOpen() {
+  var cur = hsGet(), m = document.getElementById('hsm');
+  if (!m) { m = document.createElement('div'); m.id = 'hsm'; document.body.appendChild(m); }
+  m.innerHTML = '<div class="hsbox"><div class="hsh"><b>Choose Home Screen</b><button type="button" id="hsx" aria-label="Close">&times;</button></div>' +
+    '<div class="hsg">' + HS_LIST.map(function (o) {
+      return '<button type="button" class="hso' + (o.k === cur ? ' on' : '') + '" data-k="' + o.k + '"><span class="hsw"><i style="background:' + o.c[0] + '"></i><i style="background:' + o.c[1] + '"></i><i style="background:' + o.c[2] + '"></i></span><b>' + o.n + '</b><small>' + o.d + '</small></button>';
+    }).join('') + '</div><div class="hsn">Your choice stays on this device. Next time you open the app, it opens in this look. Print and Excel do not change.</div></div>';
+  m.style.display = 'flex';
+}
+document.addEventListener('click', function (e) {
+  var t = e.target, m = document.getElementById('hsm');
+  if (t.closest && t.closest('#bhs')) { hsOpen(); return; }
+  if (!m || m.style.display === 'none') return;
+  var o = t.closest && t.closest('.hso');
+  if (o) { var k = o.dataset.k; try { localStorage.setItem('tt_hs', k); } catch (x) {} hsApply(k); if (SUM) renderRingCard(SUM); hsOpen(); return; }
+  if (t === m || (t.closest && t.closest('#hsx'))) m.style.display = 'none';
+});
+/* Indigo look: right side panel with the two rings (Issued and Replaced against Total PR) */
+function renderRingCard(s) {
+  var o = $('sout'), old = o.querySelector('.k-ring'); if (old) old.remove();
+  if (!s || !s.top) return;
+  var t = s.top.total, pr = t[6] || 0, iss = t[7] || 0, rep = t[8] || 0;
+  var pi = pr > 0 ? Math.min(100, iss / pr * 100) : 0, pp = pr > 0 ? Math.min(100, rep / pr * 100) : 0;
+  var c = document.createElement('div'); c.className = 'card k-ring';
+  c.innerHTML = '<h3>Against total PR</h3><div class="krr">' + dRb(pi, 84, 'Issued', 'gr-hr') + dRb(pp, 84, 'Replaced', 'gr-r') + '</div><div class="krn">Total PR <b>' + pr + '</b> &middot; Issued <b>' + iss + '</b> &middot; Replaced <b>' + rep + '</b></div>';
+  o.insertBefore(c, o.firstChild);
+}
 
 </script>
 <script>if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(function () {});</script>
