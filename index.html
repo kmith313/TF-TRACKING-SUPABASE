@@ -1733,6 +1733,26 @@ a.pscall{background:#16a34a;color:#fff!important;text-decoration:none;font-weigh
  .emform{background:#fff7ed!important}.emform label{color:#7c2d12!important}
  .emform input,.emform select{background:#fff!important;color:#000!important;border:1.5px solid #9a3412!important;border-radius:8px;padding:9px;font-size:16px}
 }
+@media screen and (max-width:760px){
+ #emgout .gwrap{max-height:none!important;overflow:visible!important;border:0!important;background:transparent!important;box-shadow:none!important}
+ #emgout{padding-bottom:110px}
+ #t-emg>.card:first-child{display:none}
+}
+@media screen and (min-width:761px){
+ #emt td.gc,#emt td.est,html.hs-t #emt td.gc{color:#000!important;font-weight:600;font-size:14px}
+ #emt td.lk,html.hs-t #emt td.lk{background:#f1f5f9!important;background-image:none!important;color:#000!important}
+ #emt td.est,html.hs-t #emt td.est{background:#fff!important;font-size:14px}
+ #emt th,html.hs-t #emt th{color:#111!important;font-weight:800;font-size:12px}
+ #emt th.ec,html.hs-t #emt th.ec{background:#fed7aa!important;color:#7c2d12!important}
+ #emt th.ea,html.hs-t #emt th.ea{background:#e2e8f0!important;color:#111!important}
+ #emt td.ein,html.hs-t #emt td.ein{background:#fef08a!important}
+ #emt td.ein input,html.hs-t #emt td.ein input{background:#fff!important;color:#000!important;border:1.5px solid #a16207!important;font-weight:600;font-size:14px}
+ #emt tbody tr,html.hs-t #emt tbody tr{background:#fff!important}
+ html.hs-t #emt td.gc a.ecall,#emt a.ecall{color:#0c4a9e!important;font-weight:700}
+ html.hs-t #emt .etag.r{color:#b91c1c!important}html.hs-t #emt .etag.g{color:#15803d!important}
+ .emform label{color:#7c2d12!important}.emform input,.emform select{background:#fff!important;color:#000!important;border:1.5px solid #9a3412!important;border-radius:6px;padding:7px;font-size:14px}
+ #emgout .gwrap{background:#fff!important;border:1px solid #cbd5e1!important}
+}
 </style>
 </head>
 <body class="on-home">
@@ -3627,7 +3647,8 @@ function renderRingCard(s) {
 var HS_FZ = 1, HS_T = 0;
 function hsFit() {
   var t = document.getElementById('t-sum'); if (!t || t.classList.contains('hide') || t.offsetParent === null) return;
-  var phone = window.innerWidth <= 900, floor = phone ? 0.56 : 0.62, nav = 0;
+  var phone = window.innerWidth <= 900, floor = phone ? 0.86 : 0.62, nav = 0;
+  if (phone) { HS_FZ = 1; document.documentElement.style.setProperty('--fz', 1); return; }   // phone: full size, the page scrolls
   if (phone) { var nv = document.querySelector('nav'); nav = nv && nv.getBoundingClientRect().top > window.innerHeight / 2 ? nv.offsetHeight : 0; }
   document.documentElement.style.setProperty('--fz', 1);
   for (var i = 0; i < 3; i++) {
