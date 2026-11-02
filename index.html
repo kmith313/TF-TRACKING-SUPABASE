@@ -1640,6 +1640,13 @@ a.pscall{background:#16a34a;color:#fff!important;text-decoration:none;font-weigh
  body:not(.printing) #sout .k-div td.l[data-sh]::after,body:not(.printing) #sout .k-div td.l a[data-sh]::after{content:attr(data-sh);font-size:12.5px!important;font-weight:700;line-height:1.2;letter-spacing:0}
  body:not(.printing) #sout .k-div td.l{white-space:nowrap}
 }
+
+.psl{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;text-align:left;background:#fff;border:1px solid #e4e8f5;border-radius:12px;padding:9px 11px;margin-top:6px;cursor:pointer;font:inherit;color:#1b2440}
+.psl:hover{border-color:#ff5a1f;box-shadow:0 2px 8px rgba(255,90,31,.15)}
+.pslm{min-width:0}.pslm b{display:block;font-size:13.5px;word-break:break-word}.pslm small{display:block;font-size:11px;color:#5b647f}
+.psch{flex:none;font-size:11px;font-weight:800;border-radius:99px;padding:3px 9px}.psch.gn{background:#dff6e8;color:#0a6b37}.psch.am{background:#fff1d6;color:#8a4b00}.psch.bl{background:#e4ecff;color:#1d3fa8}.psch.gr{background:#ececf0;color:#444}
+.psback{border:0;background:#eef1fb;color:#1d3fa8;font-weight:800;border-radius:10px;padding:7px 12px;margin-top:10px;cursor:pointer}
+@media screen and (prefers-reduced-motion:no-preference){.psl,.psc{animation:hsUp .3s ease both}}
 </style>
 </head>
 <body class="on-home">
@@ -1657,8 +1664,8 @@ a.pscall{background:#16a34a;color:#fff!important;text-decoration:none;font-weigh
   </div>
   <div class="pscard" id="ps">
     <h2>PR / Complaint search</h2>
-    <p>No login needed. Type the full PR number or complaint number.</p>
-    <div class="psr"><input type="text" id="psq" inputmode="numeric" autocomplete="off" placeholder="e.g. 8101707356"><button type="button" id="psb">Search</button></div>
+    <p>No login needed. Type 4 or more letters / digits of the PR number, complaint number or place of damage.</p>
+    <div class="psr"><input type="text" id="psq" autocomplete="off" placeholder="PR no, complaint no or place of damage"><button type="button" id="psb">Search</button></div>
     <div id="pso"></div>
   </div>
   <div class="hfoot"><a href="privacy.html" style="font-weight:400;border:0;color:#8fa0d6;font-size:11.5px">Privacy Policy</a></div>
@@ -3593,22 +3600,43 @@ window.addEventListener('load', function () { var on = ''; try { on = localStora
     if (!r.dup) h += call(r.je, 'JE', r.je_mob) + (r.issue ? call(r.drv, 'Driver' + (r.firm ? ' · ' + esc(r.firm) : ''), r.drv_mob) : '');
     return h + '</div>';
   }
-  function go() {
-    var q = (inp.value || '').trim();
-    if (q.length < 6) { out.innerHTML = '<div class="psm">Type the full PR number or complaint number.</div>'; return; }
-    if (!SB) { out.innerHTML = '<div class="psm err">Search is not ready. Check your internet.</div>'; return; }
-    btn.disabled = true; out.innerHTML = '<div class="psm">Searching...</div>';
-    SB.rpc('pr_lookup', { p_q: q }).then(function (r) {
-      btn.disabled = false;
-      if (r.error) { out.innerHTML = '<div class="psm err">' + esc(/pr_lookup/.test(r.error.message) ? 'Search is not switched on yet (the admin must run SQL step 31).' : r.error.message) + '</div>'; return; }
-      var d = r.data || {};
-      if (d.error) { out.innerHTML = '<div class="psm err">' + esc(d.error) + '</div>'; return; }
-      var rows = d.rows || [];
-      out.innerHTML = rows.length ? '<div class="psm ok">' + rows.length + ' record(s) found</div>' + rows.map(card).join('') : '<div class="psm err">No record found for ' + esc(q) + '. Check the number and try again.</div>';
-    }).catch(function (e) { btn.disabled = false; out.innerHTML = '<div class="psm err">' + esc(e.message || 'Search failed') + '</div>'; });
+  /* ---- short list (no mobile numbers) -> tap one -> full card with Call buttons ---- */
+  var timer = null, runId = 0, LIST = [], lastQ = '';
+  var CH = { R: ['Installed', 'gn'], I: ['Issued', 'am'], P: ['Not issued', 'bl'], D: ['Wrong / duplicate', 'gr'] };
+  function listHtml(rows, q) {
+    return '<div class="psm ok">' + rows.length + (rows.length >= 15 ? '+' : '') + ' found for "' + esc(q) + '" - tap one</div>' + rows.map(function (r, i) {
+      var c = CH[r.st] || CH.P;
+      return '<button type="button" class="psl" data-i="' + i + '"><span class="pslm"><b>' + esc(r.place || '-') + '</b><small>PR ' + esc(r.pr) + (r.complain ? ' · ' + esc(r.complain) : '') + '</small><small>' + esc(r.workshop) + (r.substation ? ' · ' + esc(r.substation) : '') + (r.cap ? ' · ' + esc(r.cap) + ' kVA' : '') + ' · ' + esc(r.pr_date || '') + '</small></span><span class="psch ' + c[1] + '">' + c[0] + '</span></button>';
+    }).join('');
   }
-  btn.addEventListener('click', go);
-  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') go(); });
+  function openOne(row) {
+    out.innerHTML = '<div class="psm">Opening...</div>';
+    SB.rpc('pr_lookup', { p_q: row.pr }).then(function (r) {
+      var d = (r && r.data) || {}, rows = (d.rows || []).filter(function (x) { return !row.workshop || x.workshop === row.workshop; });
+      if (!rows.length) rows = d.rows || [];
+      out.innerHTML = (LIST.length > 1 ? '<button type="button" class="psback" id="psback">&larr; Back to list</button>' : '') + (rows.length ? rows.map(card).join('') : '<div class="psm err">Could not open this record.</div>');
+      var b = document.getElementById('psback'); if (b) b.onclick = function () { out.innerHTML = listHtml(LIST, lastQ); };
+    }).catch(function (e) { out.innerHTML = '<div class="psm err">' + esc(e.message || 'Failed') + '</div>'; });
+  }
+  function go(quiet) {
+    var q = (inp.value || '').trim().replace(/\s+/g, ' '), my = ++runId;
+    if (q.length < 4) { out.innerHTML = quiet ? '' : '<div class="psm">Type at least 4 letters or digits of the PR number, complaint number or place of damage.</div>'; return; }
+    if (!SB) { out.innerHTML = '<div class="psm err">Search is not ready. Check your internet.</div>'; return; }
+    btn.disabled = true; if (!quiet || !out.innerHTML) out.innerHTML = '<div class="psm">Searching...</div>';
+    SB.rpc('pr_find', { p_q: q }).then(function (r) {
+      if (my !== runId) return; btn.disabled = false;
+      if (r.error) { out.innerHTML = '<div class="psm err">' + esc(/pr_find/.test(r.error.message) ? 'Search is not switched on yet (the admin must run SQL step 32).' : r.error.message) + '</div>'; return; }
+      var d = r.data || {}; if (d.error) { out.innerHTML = '<div class="psm err">' + esc(d.error) + '</div>'; return; }
+      var rows = d.rows || []; LIST = rows; lastQ = q;
+      if (!rows.length) { out.innerHTML = '<div class="psm err">No record found for "' + esc(q) + '". Try another part of the number or the place name.</div>'; return; }
+      if (rows.length === 1) { openOne(rows[0]); return; }
+      out.innerHTML = listHtml(rows, q);
+    }).catch(function (e) { if (my !== runId) return; btn.disabled = false; out.innerHTML = '<div class="psm err">' + esc(e.message || 'Search failed') + '</div>'; });
+  }
+  btn.addEventListener('click', function () { go(false); });
+  inp.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(function () { go(true); }, 400); });
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { clearTimeout(timer); go(false); } });
+  out.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.psl'); if (b) openOne(LIST[+b.dataset.i]); });
 })();
 
 </script>
