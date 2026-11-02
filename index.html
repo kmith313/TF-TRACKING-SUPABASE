@@ -1633,6 +1633,13 @@ a.pscall{background:#16a34a;color:#fff!important;text-decoration:none;font-weigh
  html.hs-top .top #bhs,html.hs-top .top #bpw,html.hs-top .top #bout{padding:7px 8px!important;font-size:11px!important;white-space:nowrap;flex:none}
  html.hs-top nav button::before{width:16px;height:16px}
 }
+
+/* Division wise summary: short division names (EDD-I AZH ...) on the computer too; Print / Excel keep the full names */
+@media screen and (min-width:901px){
+ body:not(.printing) #sout .k-div td.l[data-sh],body:not(.printing) #sout .k-div td.l a[data-sh]{font-size:0!important}
+ body:not(.printing) #sout .k-div td.l[data-sh]::after,body:not(.printing) #sout .k-div td.l a[data-sh]::after{content:attr(data-sh);font-size:12.5px!important;font-weight:700;line-height:1.2;letter-spacing:0}
+ body:not(.printing) #sout .k-div td.l{white-space:nowrap}
+}
 </style>
 </head>
 <body class="on-home">
