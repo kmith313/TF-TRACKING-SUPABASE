@@ -1647,6 +1647,22 @@ a.pscall{background:#16a34a;color:#fff!important;text-decoration:none;font-weigh
 .psch{flex:none;font-size:11px;font-weight:800;border-radius:99px;padding:3px 9px}.psch.gn{background:#dff6e8;color:#0a6b37}.psch.am{background:#fff1d6;color:#8a4b00}.psch.bl{background:#e4ecff;color:#1d3fa8}.psch.gr{background:#ececf0;color:#444}
 .psback{border:0;background:#eef1fb;color:#1d3fa8;font-weight:800;border-radius:10px;padding:7px 12px;margin-top:10px;cursor:pointer}
 @media screen and (prefers-reduced-motion:no-preference){.psl,.psc{animation:hsUp .3s ease both}}
+
+/* locked cells (stripes) must stay readable in the colour looks; Place of damage cell wider */
+@media screen{
+ html.hs-t .gt td.gc.lk{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--ink) 5%,transparent) 0 6px,color-mix(in srgb,var(--ink) 11%,transparent) 6px 12px)!important}
+ html.hs-t .gt td.gc.lk input{color:var(--tdink)!important;opacity:.9}
+ html.hs-t #t-data.clean .gt td.gc.lk{background:repeating-linear-gradient(135deg,#f6f6f6 0 6px,#ececec 6px 12px)!important}
+ html.hs-t #t-data.clean .gt td.gc.lk input{color:#222!important}
+ #dt td.gc:has(input[data-i="4"]){min-width:230px}
+ #dt input[data-i="4"]{min-width:230px}
+}
+@media screen and (max-width:760px){
+ #t-data.clean table.mt td:has(input[data-i="4"]){min-width:180px!important}
+ #t-data.clean .gt2.mt input[data-i="4"]{min-width:180px}
+ #dt td.gc:has(input[data-i="4"]),#dt input[data-i="4"]{min-width:0}
+ #t-data.clean #dt td.gc:has(input[data-i="4"]),#t-data.clean #dt input[data-i="4"]{min-width:180px}
+}
 </style>
 </head>
 <body class="on-home">
